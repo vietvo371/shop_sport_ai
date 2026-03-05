@@ -1,0 +1,433 @@
+// ============================================================
+// SPORTSTORE — DATABASE SCHEMA (DBML)
+// Paste vào: https://dbdiagram.io/d
+// ============================================================
+
+// ─────────────────────────────
+// 1. NGƯỜI DÙNG & XÁC THỰC
+// ─────────────────────────────
+
+Table nguoi_dung {
+  id                    bigint       [pk, increment]
+  ho_va_ten             varchar(100) [not null, note: 'Họ và tên đầy đủ']
+  email                 varchar(150) [unique, not null, note: 'Email đăng nhập']
+  mat_khau              varchar(255) [not null, note: 'Mật khẩu đã hash']
+  so_dien_thoai         varchar(20)  [null, note: 'Số điện thoại']
+  anh_dai_dien          varchar(255) [null, note: 'URL ảnh đại diện']
+  vai_tro               enum('quan_tri','khach_hang') [not null, default: 'khach_hang', note: 'Phân quyền: quản trị viên hoặc khách hàng']
+  trang_thai            boolean      [not null, default: true, note: 'true = đang hoạt động']
+  xac_thuc_email_luc    timestamp    [null, note: 'Thời điểm xác thực email']
+  created_at            timestamp
+  updated_at            timestamp
+
+  indexes {
+    email [unique]
+  }
+}
+
+Table token_truy_cap {
+  id             bigint      [pk, increment]
+  tokenable_type varchar(255) [not null, note: 'Loại model (App\\Models\\User)']
+  tokenable_id   bigint       [not null, note: 'ID của model']
+  ten_token      varchar(255) [not null, note: 'Tên token (vd: auth_token)']
+  token          varchar(64)  [unique, not null, note: 'Chuỗi token đã hash']
+  quyen_han      text         [null, note: 'Danh sách quyền của token']
+  dung_cuoi_luc  timestamp    [null, note: 'Lần cuối dùng token']
+  het_han_luc    timestamp    [null, note: 'Token hết hạn lúc']
+  created_at     timestamp
+  updated_at     timestamp
+}
+
+// ─────────────────────────────
+// 2. DANH MỤC & THƯƠNG HIỆU
+// ─────────────────────────────
+
+Table thuong_hieu {
+  id          bigint       [pk, increment]
+  ten         varchar(100) [unique, not null, note: 'Tên thương hiệu (Nike, Adidas...)']
+  duong_dan   varchar(120) [unique, not null, note: 'Slug URL (nike, adidas...)']
+  logo        varchar(255) [null, note: 'URL ảnh logo']
+  mo_ta       text         [null, note: 'Mô tả thương hiệu']
+  trang_thai  boolean      [not null, default: true, note: 'true = đang hiển thị']
+  created_at  timestamp
+  updated_at  timestamp
+}
+
+Table danh_muc {
+  id            bigint       [pk, increment]
+  danh_muc_cha_id bigint     [null, note: 'ID danh mục cha (null = danh mục gốc)']
+  ten           varchar(100) [not null, note: 'Tên danh mục (Giày chạy bộ, Áo thể thao...)']
+  duong_dan     varchar(120) [unique, not null, note: 'Slug URL']
+  hinh_anh      varchar(255) [null, note: 'URL ảnh đại diện danh mục']
+  mo_ta         text         [null, note: 'Mô tả danh mục']
+  thu_tu        integer      [default: 0, note: 'Thứ tự sắp xếp hiển thị']
+  trang_thai    boolean      [not null, default: true]
+  created_at    timestamp
+  updated_at    timestamp
+}
+
+// ─────────────────────────────
+// 3. SẢN PHẨM
+// ─────────────────────────────
+
+Table san_pham {
+  id                bigint        [pk, increment]
+  danh_muc_id       bigint        [not null, note: 'Thuộc danh mục nào']
+  thuong_hieu_id    bigint        [null, note: 'Thuộc thương hiệu nào']
+  ten_san_pham      varchar(200)  [not null, note: 'Tên sản phẩm']
+  duong_dan         varchar(220)  [unique, not null, note: 'Slug URL sản phẩm']
+  ma_sku            varchar(100)  [unique, null, note: 'Mã SKU nội bộ']
+  mo_ta_ngan        varchar(500)  [null, note: 'Mô tả ngắn hiển thị trên thẻ sản phẩm']
+  mo_ta_day_du      text          [null, note: 'Mô tả đầy đủ (HTML)']
+  gia_goc           decimal(12,2) [not null, note: 'Giá bán gốc (VND)']
+  gia_khuyen_mai    decimal(12,2) [null, note: 'Giá sau khuyến mãi (null = không giảm giá)']
+  so_luong_ton_kho  integer       [not null, default: 0, note: 'Tồn kho tổng (tính cả biến thể)']
+  can_nang_kg       decimal(8,2)  [null, note: 'Cân nặng (kg) - dùng tính phí ship']
+  noi_bat           boolean       [default: false, note: 'true = hiện ở trang chủ / banner']
+  trang_thai        boolean       [default: true, note: 'true = đang bán']
+  da_ban            integer       [default: 0, note: 'Tổng số lượng đã bán']
+  luot_xem          integer       [default: 0, note: 'Tổng lượt xem sản phẩm']
+  diem_danh_gia     decimal(3,2)  [default: 0, note: 'Điểm đánh giá trung bình (1.00 - 5.00)']
+  so_luot_danh_gia  integer       [default: 0, note: 'Tổng số lượt đánh giá']
+  created_at        timestamp
+  updated_at        timestamp
+
+  indexes {
+    danh_muc_id
+    thuong_hieu_id
+    duong_dan [unique]
+  }
+}
+
+Table hinh_anh_san_pham {
+  id           bigint       [pk, increment]
+  san_pham_id  bigint       [not null, note: 'Thuộc sản phẩm nào']
+  duong_dan_anh varchar(255) [not null, note: 'URL hình ảnh']
+  chu_thich    varchar(200) [null, note: 'Alt text cho SEO']
+  thu_tu       integer      [default: 0, note: 'Thứ tự hiển thị']
+  la_anh_chinh boolean      [default: false, note: 'true = ảnh thumbnail chính']
+  created_at   timestamp
+}
+
+Table bien_the_san_pham {
+  id           bigint        [pk, increment]
+  san_pham_id  bigint        [not null, note: 'Thuộc sản phẩm nào']
+  ma_sku       varchar(100)  [unique, null, note: 'SKU riêng của biến thể']
+  kich_co      varchar(20)   [null, note: 'Kích cỡ: S, M, L, XL, 40, 41, 42...']
+  mau_sac      varchar(50)   [null, note: 'Tên màu (Đỏ, Xanh, Đen...)']
+  ma_mau_hex   varchar(7)    [null, note: 'Mã màu HEX (#FF0000) để hiển thị chip màu']
+  hinh_anh     varchar(255)  [null, note: 'Ảnh riêng của biến thể màu sắc']
+  gia_rieng    decimal(12,2) [null, note: 'Giá riêng nếu biến thể có giá khác sản phẩm']
+  ton_kho      integer       [not null, default: 0, note: 'Tồn kho của biến thể này']
+  trang_thai   boolean       [default: true]
+  created_at   timestamp
+  updated_at   timestamp
+
+  indexes {
+    san_pham_id
+  }
+}
+
+// ─────────────────────────────
+// 4. ĐỊA CHỈ GIAO HÀNG
+// ─────────────────────────────
+
+Table dia_chi {
+  id              bigint       [pk, increment]
+  nguoi_dung_id   bigint       [not null, note: 'Địa chỉ của người dùng nào']
+  ho_va_ten       varchar(100) [not null, note: 'Tên người nhận hàng']
+  so_dien_thoai   varchar(20)  [not null, note: 'SĐT người nhận']
+  tinh_thanh      varchar(100) [not null, note: 'Tỉnh / Thành phố']
+  quan_huyen      varchar(100) [not null, note: 'Quận / Huyện']
+  phuong_xa       varchar(100) [not null, note: 'Phường / Xã']
+  dia_chi_cu_the  varchar(255) [not null, note: 'Số nhà, tên đường']
+  la_mac_dinh     boolean      [default: false, note: 'true = địa chỉ mặc định khi đặt hàng']
+  created_at      timestamp
+  updated_at      timestamp
+}
+
+// ─────────────────────────────
+// 5. GIỎ HÀNG
+// ─────────────────────────────
+
+Table gio_hang {
+  id              bigint       [pk, increment]
+  nguoi_dung_id   bigint       [null, note: 'null = khách không đăng nhập']
+  ma_phien        varchar(100) [null, note: 'Session ID cho khách vãng lai']
+  created_at      timestamp
+  updated_at      timestamp
+}
+
+Table gio_hang_san_pham {
+  id               bigint        [pk, increment]
+  gio_hang_id      bigint        [not null]
+  san_pham_id      bigint        [not null]
+  bien_the_id      bigint        [null, note: 'null = sản phẩm không có biến thể']
+  so_luong         integer       [not null, default: 1]
+  don_gia          decimal(12,2) [not null, note: 'Giá tại thời điểm thêm vào giỏ']
+  created_at       timestamp
+  updated_at       timestamp
+}
+
+// ─────────────────────────────
+// 6. MÃ GIẢM GIÁ
+// ─────────────────────────────
+
+Table ma_giam_gia {
+  id                   bigint        [pk, increment]
+  ma_code              varchar(50)   [unique, not null, note: 'Mã nhập: SALE20, NEWUSER50...']
+  loai_giam            enum('phan_tram','so_tien_co_dinh') [not null, note: 'Giảm % hoặc giảm tiền cố định']
+  gia_tri              decimal(12,2) [not null, note: 'Giá trị giảm (20 = 20% hoặc 20.000đ)']
+  gia_tri_don_hang_min decimal(12,2) [default: 0, note: 'Đơn hàng tối thiểu để áp dụng']
+  giam_toi_da          decimal(12,2) [null, note: 'Số tiền giảm tối đa (áp dụng cho loại %)']
+  gioi_han_su_dung     integer       [null, note: 'Tổng lượt dùng tối đa (null = không giới hạn)']
+  da_su_dung           integer       [default: 0, note: 'Số lượt đã dùng']
+  bat_dau_luc          timestamp     [null, note: 'Thời gian bắt đầu có hiệu lực']
+  het_han_luc          timestamp     [null, note: 'Thời gian hết hạn']
+  trang_thai           boolean       [default: true]
+  created_at           timestamp
+  updated_at           timestamp
+}
+
+Table lich_su_dung_ma {
+  id              bigint    [pk, increment]
+  ma_giam_gia_id  bigint    [not null]
+  nguoi_dung_id   bigint    [not null]
+  don_hang_id     bigint    [not null]
+  su_dung_luc     timestamp [note: 'Thời điểm áp dụng mã']
+
+  indexes {
+    (ma_giam_gia_id, nguoi_dung_id) [unique, note: 'Mỗi user chỉ dùng 1 mã 1 lần']
+  }
+}
+
+// ─────────────────────────────
+// 7. ĐƠN HÀNG
+// ─────────────────────────────
+
+Table don_hang {
+  id                  bigint        [pk, increment]
+  nguoi_dung_id       bigint        [null, note: 'null = đặt hàng không cần đăng nhập']
+  dia_chi_id          bigint        [null, note: 'Tham chiếu địa chỉ gốc']
+  ma_don_hang         varchar(50)   [unique, not null, note: 'Mã hiển thị: DH20250301001']
+  trang_thai          enum('cho_xac_nhan','da_xac_nhan','dang_xu_ly','dang_giao','da_giao','da_huy','hoan_tra') [default: 'cho_xac_nhan']
+  phuong_thuc_tt      enum('cod','chuyen_khoan','vnpay','momo') [not null, note: 'Phương thức thanh toán']
+  trang_thai_tt       enum('chua_thanh_toan','da_thanh_toan','da_hoan_tien') [default: 'chua_thanh_toan']
+  tam_tinh            decimal(12,2) [not null, note: 'Tổng tiền hàng trước giảm giá']
+  so_tien_giam        decimal(12,2) [default: 0, note: 'Số tiền được giảm']
+  phi_van_chuyen      decimal(12,2) [default: 0]
+  tong_tien           decimal(12,2) [not null, note: 'Số tiền thực tế cần thanh toán']
+  ma_giam_gia_id      bigint        [null]
+  ghi_chu             text          [null, note: 'Ghi chú của khách (giao giờ hành chính...)']
+  // Snapshot địa chỉ lúc đặt hàng (lưu lại để tránh mất khi user sửa địa chỉ)
+  ten_nguoi_nhan      varchar(100)  [null]
+  sdt_nguoi_nhan      varchar(20)   [null]
+  dia_chi_giao_hang   text          [null]
+  created_at          timestamp
+  updated_at          timestamp
+
+  indexes {
+    nguoi_dung_id
+    ma_don_hang [unique]
+  }
+}
+
+Table chi_tiet_don_hang {
+  id              bigint        [pk, increment]
+  don_hang_id     bigint        [not null]
+  san_pham_id     bigint        [not null]
+  bien_the_id     bigint        [null]
+  ten_san_pham    varchar(200)  [not null, note: 'Snapshot tên SP lúc đặt (tránh bị thay đổi sau)']
+  thong_tin_bien_the varchar(100) [null, note: 'Snapshot biến thể: "Size: L - Màu: Đỏ"']
+  so_luong        integer       [not null]
+  don_gia         decimal(12,2) [not null, note: 'Giá tại thời điểm mua']
+  thanh_tien      decimal(12,2) [not null, note: 'don_gia × so_luong']
+}
+
+Table lich_su_trang_thai_don {
+  id            bigint   [pk, increment]
+  don_hang_id   bigint   [not null]
+  trang_thai    varchar(50) [not null, note: 'Trạng thái mới']
+  ghi_chu       text     [null, note: 'Ghi chú khi đổi trạng thái']
+  cap_nhat_boi  bigint   [null, note: 'user_id admin thực hiện thay đổi']
+  created_at    timestamp
+}
+
+// ─────────────────────────────
+// 8. THANH TOÁN
+// ─────────────────────────────
+
+Table thanh_toan {
+  id                    bigint        [pk, increment]
+  don_hang_id           bigint        [not null]
+  phuong_thuc           varchar(50)   [not null, note: 'Cổng thanh toán: vnpay, momo...']
+  ma_giao_dich          varchar(200)  [null, note: 'Transaction ID từ cổng thanh toán']
+  so_tien               decimal(12,2) [not null]
+  trang_thai            enum('cho_xu_ly','thanh_cong','that_bai','da_hoan_tien') [default: 'cho_xu_ly']
+  phan_hoi_cong_tt      text          [null, note: 'Raw JSON response từ cổng thanh toán']
+  thanh_toan_luc        timestamp     [null, note: 'Thời điểm thanh toán thành công']
+  created_at            timestamp
+  updated_at            timestamp
+}
+
+// ─────────────────────────────
+// 9. ĐÁNH GIÁ SẢN PHẨM
+// ─────────────────────────────
+
+Table danh_gia {
+  id            bigint   [pk, increment]
+  san_pham_id   bigint   [not null]
+  nguoi_dung_id bigint   [not null]
+  don_hang_id   bigint   [null, note: 'Xác minh đã mua hàng trước khi đánh giá']
+  so_sao        tinyint  [not null, note: 'Số sao: 1-5']
+  tieu_de       varchar(200) [null, note: 'Tiêu đề đánh giá']
+  noi_dung      text     [null, note: 'Nội dung chi tiết']
+  da_duyet      boolean  [default: false, note: 'Admin duyệt trước khi hiển thị']
+  created_at    timestamp
+  updated_at    timestamp
+
+  indexes {
+    (san_pham_id, nguoi_dung_id, don_hang_id) [unique, note: 'Mỗi đơn hàng chỉ đánh giá 1 lần']
+  }
+}
+
+Table hinh_anh_danh_gia {
+  id          bigint   [pk, increment]
+  danh_gia_id bigint   [not null]
+  duong_dan_anh varchar(255) [not null, note: 'URL ảnh khách hàng gửi kèm khi đánh giá']
+}
+
+// ─────────────────────────────
+// 10. YÊU THÍCH (WISHLIST)
+// ─────────────────────────────
+
+Table yeu_thich {
+  id            bigint    [pk, increment]
+  nguoi_dung_id bigint    [not null]
+  san_pham_id   bigint    [not null]
+  created_at    timestamp [note: 'Thời điểm thêm vào danh sách yêu thích']
+
+  indexes {
+    (nguoi_dung_id, san_pham_id) [unique, note: 'Mỗi SP chỉ thêm 1 lần']
+  }
+}
+
+// ─────────────────────────────
+// 11. AI CHATBOT
+// ─────────────────────────────
+
+Table phien_chatbot {
+  id            bigint   [pk, increment]
+  nguoi_dung_id bigint   [null, note: 'null = khách chưa đăng nhập']
+  ma_phien      varchar(100) [unique, not null, note: 'UUID phiên chat']
+  bat_dau_luc   timestamp [note: 'Thời điểm bắt đầu phiên']
+  ket_thuc_luc  timestamp [null, note: 'Thời điểm kết thúc phiên']
+  created_at    timestamp
+}
+
+Table tin_nhan_chatbot {
+  id          bigint   [pk, increment]
+  phien_id    bigint   [not null]
+  vai_tro     enum('nguoi_dung','tro_ly') [not null, note: 'nguoi_dung = user gửi, tro_ly = Gemini trả lời']
+  noi_dung    text     [not null, note: 'Nội dung tin nhắn']
+  so_token    integer  [null, note: 'Số token tiêu thụ (theo dõi chi phí API)']
+  created_at  timestamp
+}
+
+// ─────────────────────────────
+// 12. HÀNH VI NGƯỜI DÙNG (ML)
+// ─────────────────────────────
+
+Table hanh_vi_nguoi_dung {
+  id              bigint   [pk, increment]
+  nguoi_dung_id   bigint   [null, note: 'null = khách chưa đăng nhập']
+  ma_phien        varchar(100) [null, note: 'Session ID cho khách vãng lai']
+  san_pham_id     bigint   [not null]
+  hanh_vi         enum('xem','click','them_gio_hang','mua_hang','yeu_thich') [not null, note: 'Loại hành vi - dữ liệu đầu vào cho ML']
+  thoi_gian_xem_s integer  [null, note: 'Thời gian xem trang sản phẩm (giây) - đặc trưng ML']
+  created_at      timestamp
+
+  indexes {
+    nguoi_dung_id
+    san_pham_id
+    hanh_vi
+  }
+}
+
+// ─────────────────────────────
+// 13. THÔNG BÁO
+// ─────────────────────────────
+
+Table thong_bao {
+  id              bigint   [pk, increment]
+  nguoi_dung_id   bigint   [not null]
+  loai            varchar(100) [not null, note: 'trang_thai_don, khuyen_mai, he_thong...']
+  tieu_de         varchar(200) [not null]
+  noi_dung        text     [null]
+  du_lieu_them    json     [null, note: 'Payload kèm theo: {"don_hang_id": 123}']
+  da_doc_luc      timestamp [null, note: 'null = chưa đọc']
+  created_at      timestamp
+}
+
+// ═══════════════════════════════════════════
+// QUAN HỆ (FOREIGN KEYS)
+// ═══════════════════════════════════════════
+
+// Xác thực
+Ref: token_truy_cap.tokenable_id           > nguoi_dung.id
+
+// Địa chỉ
+Ref: dia_chi.nguoi_dung_id                 > nguoi_dung.id
+
+// Danh mục (tự tham chiếu - subcategory)
+Ref: danh_muc.danh_muc_cha_id              > danh_muc.id
+
+// Sản phẩm
+Ref: san_pham.danh_muc_id                  > danh_muc.id
+Ref: san_pham.thuong_hieu_id               > thuong_hieu.id
+Ref: hinh_anh_san_pham.san_pham_id         > san_pham.id
+Ref: bien_the_san_pham.san_pham_id         > san_pham.id
+
+// Giỏ hàng
+Ref: gio_hang.nguoi_dung_id                > nguoi_dung.id
+Ref: gio_hang_san_pham.gio_hang_id         > gio_hang.id
+Ref: gio_hang_san_pham.san_pham_id         > san_pham.id
+Ref: gio_hang_san_pham.bien_the_id         > bien_the_san_pham.id
+
+// Đơn hàng
+Ref: don_hang.nguoi_dung_id                > nguoi_dung.id
+Ref: don_hang.dia_chi_id                   > dia_chi.id
+Ref: don_hang.ma_giam_gia_id               > ma_giam_gia.id
+Ref: chi_tiet_don_hang.don_hang_id         > don_hang.id
+Ref: chi_tiet_don_hang.san_pham_id         > san_pham.id
+Ref: chi_tiet_don_hang.bien_the_id         > bien_the_san_pham.id
+Ref: lich_su_trang_thai_don.don_hang_id    > don_hang.id
+
+// Mã giảm giá
+Ref: lich_su_dung_ma.ma_giam_gia_id        > ma_giam_gia.id
+Ref: lich_su_dung_ma.nguoi_dung_id         > nguoi_dung.id
+Ref: lich_su_dung_ma.don_hang_id           > don_hang.id
+
+// Thanh toán
+Ref: thanh_toan.don_hang_id                > don_hang.id
+
+// Đánh giá
+Ref: danh_gia.san_pham_id                  > san_pham.id
+Ref: danh_gia.nguoi_dung_id                > nguoi_dung.id
+Ref: danh_gia.don_hang_id                  > don_hang.id
+Ref: hinh_anh_danh_gia.danh_gia_id         > danh_gia.id
+
+// Yêu thích
+Ref: yeu_thich.nguoi_dung_id               > nguoi_dung.id
+Ref: yeu_thich.san_pham_id                 > san_pham.id
+
+// Chatbot
+Ref: phien_chatbot.nguoi_dung_id           > nguoi_dung.id
+Ref: tin_nhan_chatbot.phien_id             > phien_chatbot.id
+
+// Hành vi người dùng (ML)
+Ref: hanh_vi_nguoi_dung.nguoi_dung_id      > nguoi_dung.id
+Ref: hanh_vi_nguoi_dung.san_pham_id        > san_pham.id
+
+// Thông báo
+Ref: thong_bao.nguoi_dung_id               > nguoi_dung.id
