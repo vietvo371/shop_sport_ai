@@ -35,4 +35,14 @@ return [
         ],
     ],
 
+    // Gemini AI (Google)
+    'gemini' => [
+        'key' => env('GEMINI_API_KEY', ''),
+    ],
+
+    // Python AI Recommendation Service
+    'ai_service' => [
+        'url' => env('AI_SERVICE_URL', 'http://localhost:8001'),
+    ],
+
 ];

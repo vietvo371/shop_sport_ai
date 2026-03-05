@@ -27,24 +27,32 @@ ApiResponse Helper   ← Chuẩn hóa JSON response
 
 ### Controller — `app/Http/Controllers/Api/`
 ```php
-// ✅ ĐÚNG: Controller chỉ gọi service và trả về
-public function store(StoreProductRequest $request): JsonResponse
-{
-    $product = $this->productService->create($request->validated());
-    return ApiResponse::success($product, 'Tạo sản phẩm thành công', 201);
-}
-
-// ❌ SAI: Không viết logic / query trong controller
+// ✅ ĐÚNG: Controller dùng inline validate + gọi service
 public function store(Request $request): JsonResponse
 {
-    $product = Product::create([...]); // SAI!
+    $data = $request->validate([
+        'ten_san_pham' => 'required|string|max:200',
+        'gia_goc'      => 'required|numeric|min:0',
+    ], [
+        'ten_san_pham.required' => 'Vui lòng nhập tên sản phẩm.',
+    ]);
+
+    $product = $this->sanPhamService->create($data);
+    return ApiResponse::created($product, 'Tạo sản phẩm thành công');
+}
+
+// ❌ SAI: Viết query/logic trong controller
+public function store(Request $request): JsonResponse
+{
+    $product = SanPham::create([...]); // SAI!
     return response()->json($product); // SAI!
 }
 ```
 
-### FormRequest — `app/Http/Requests/`
-- Mỗi action có FormRequest riêng: `StoreProductRequest`, `UpdateProductRequest`
-- Đặt rules và messages bằng tiếng Việt trong `messages()`
+### Validation — inline trong Controller
+- Dùng **`$request->validate()`** trực tiếp trong controller — **không cần tạo FormRequest riêng**
+- Luôn kèm mảng messages tiếng Việt để FE hiển thị đúng
+- Validation vẫn tự throw `ValidationException` → `bootstrap/app.php` bắt và trả `ApiResponse::validationError()`
 
 ### Service Layer — `app/Services/`
 ```

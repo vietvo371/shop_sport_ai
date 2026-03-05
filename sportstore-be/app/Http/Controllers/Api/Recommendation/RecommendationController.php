@@ -1,0 +1,73 @@
+<?php
+
+namespace App\Http\Controllers\Api\Recommendation;
+
+use App\Http\Controllers\Controller;
+use App\Http\Helpers\ApiResponse;
+use App\Models\HanhViNguoiDung;
+use App\Models\SanPham;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+
+class RecommendationController extends Controller
+{
+    /**
+     * Lấy gợi ý sản phẩm từ Python AI service hoặc trả fallback.
+     */
+    public function index(Request $request): JsonResponse
+    {
+        $user = $request->user();
+        $aiUrl = config('services.ai_service.url');
+
+        try {
+            $endpoint = $user
+                ? "{$aiUrl}/api/v1/recommend/user/{$user->id}"
+                : "{$aiUrl}/api/v1/recommend/popular";
+
+            $response = Http::timeout(3)->get($endpoint);
+
+            if ($response->successful()) {
+                $ids = $response->json('data', []);
+                $products = SanPham::with(['anhChinh', 'danhMuc'])
+                    ->whereIn('id', $ids)
+                    ->where('trang_thai', true)
+                    ->get();
+                return ApiResponse::success($products, 'Gợi ý sản phẩm');
+            }
+        } catch (\Throwable $e) {
+            // AI service không khả dụng → fallback
+        }
+
+        // Fallback: trả sản phẩm bán chạy
+        $fallback = SanPham::with(['anhChinh', 'danhMuc'])
+            ->where('trang_thai', true)
+            ->orderBy('da_ban', 'desc')
+            ->take(8)
+            ->get();
+
+        return ApiResponse::success($fallback, 'Sản phẩm phổ biến');
+    }
+
+    /**
+     * Ghi nhận hành vi người dùng cho ML.
+     */
+    public function recordBehavior(Request $request): JsonResponse
+    {
+        $data = $request->validate([
+            'san_pham_id'   => 'required|integer|exists:san_pham,id',
+            'hanh_vi'       => 'required|in:xem,click,them_gio_hang,mua_hang,yeu_thich',
+            'thoi_gian_xem_s' => 'nullable|integer|min:0',
+        ]);
+
+        HanhViNguoiDung::create([
+            'nguoi_dung_id'   => $request->user()?->id,
+            'ma_phien'        => $request->header('X-Session-ID'),
+            'san_pham_id'     => $data['san_pham_id'],
+            'hanh_vi'         => $data['hanh_vi'],
+            'thoi_gian_xem_s' => $data['thoi_gian_xem_s'] ?? null,
+        ]);
+
+        return ApiResponse::success(null, 'Đã ghi nhận hành vi');
+    }
+}
