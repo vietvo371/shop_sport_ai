@@ -1,0 +1,51 @@
+# .gitignore — Root level
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Node / Next.js
+node_modules/
+.next/
+out/
+dist/
+
+# Laravel
+vendor/
+.env
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+*.ipynb_checkpoints
+
+# Data & Models (large files)
+data/raw/*.csv
+data/processed/*.csv
+data/models/*.pkl
+*.h5
+
+# IDE
+.idea/
+.vscode/
+*.swp
+
+# Environment
+*.env
+.env.local
+.env.production
