@@ -20,6 +20,7 @@
 10. [Wishlist](#10-wishlist)
 11. [Mã giảm giá (Coupon)](#11-mã-giảm-giá-coupon)
 12. [Thông báo](#12-thông-báo)
+13. [Banner & Slider](#13-banner--slider)
 
 ---
 
@@ -435,6 +436,22 @@ WHERE nguoi_dung_id = ? AND da_doc_luc IS NULL
 
 ---
 
+## 13. Banner & Slider
+
+**Bảng liên quan:** `banners`
+
+### Quản lý hiển thị Slider trang chủ
+
+- Bảng `banners` lưu trữ các hình ảnh slider chính hiển thị trên trang chủ Frontend.
+- Các trường quan trọng:
+  - `tieu_de`: Tên chiến dịch hoặc mô tả ngắn gọn.
+  - `hinh_anh`: Đường dẫn URL ảnh (thường kích thước lớn 16:9 hoặc tỷ lệ ngang).
+  - `duong_dan`: Link điều hướng khi người dùng click vào banner.
+  - `thu_tu`: Trọng số/vị trí sắp xếp (số càng nhỏ càng lên trước).
+  - `trang_thai`: Boolean `true`/`false` để bật tắt nhanh banner mà không cần xóa đi.
+
+---
+
 ## Sơ đồ tổng quan quan hệ
 
 ```
@@ -458,4 +475,6 @@ san_pham
     ├── hinh_anh_san_pham[]     (gallery)
     ├── danh_gia[]              (reviews)
     └── danh_muc (cha → con)
+
+banners[]                       (slider trang chủ, quảng cáo)
 ```
