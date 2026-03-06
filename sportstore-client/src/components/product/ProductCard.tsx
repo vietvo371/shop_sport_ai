@@ -10,8 +10,8 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
-    const mainImage = product.hinh_anh_san_pham?.find((img) => img.la_anh_chinh)?.duong_dan_anh
-        || product.hinh_anh_san_pham?.[0]?.duong_dan_anh
+    const mainImage = product.hinh_anh_san_pham?.find((img) => img.la_anh_chinh)?.url
+        || product.hinh_anh_san_pham?.[0]?.url
         || '/placeholder.png'; // Fallback image
 
     const salePercent = product.gia_khuyen_mai && product.gia_khuyen_mai < product.gia_goc

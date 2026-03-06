@@ -23,8 +23,8 @@ function ProductsContent() {
         }),
     });
 
-    const products = data?.data?.data || [];
-    const meta = data?.data;
+    const products = data?.data || [];
+    const meta = data?.meta;
 
     return (
         <div className="container mx-auto px-4 py-8">

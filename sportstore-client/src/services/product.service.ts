@@ -10,7 +10,7 @@ export const productService = {
             const response: PaginatedResponse<Product> = await apiClient.get('/products', {
                 params: { limit, noi_bat: 1, sort: 'newest' },
             });
-            return response.data.data;
+            return response.data || [];
         } catch (error) {
             console.error('Failed to fetch featured products:', error);
             return [];

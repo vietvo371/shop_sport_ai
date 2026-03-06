@@ -34,6 +34,7 @@ export interface ProductImage {
     id: number;
     san_pham_id: number;
     duong_dan_anh: string;
+    url?: string;
     chu_thich: string | null;
     thu_tu: number;
     la_anh_chinh: boolean;
@@ -58,9 +59,9 @@ export interface Product {
     diem_danh_gia: number;
     so_luot_danh_gia: number;
 
-  // Relationships(optional, based on API response inclusion)
-danh_muc ?: Category;
-thuong_hieu ?: Brand;
-bien_the_san_pham ?: ProductVariant[];
-hinh_anh_san_pham ?: ProductImage[];
+    // Relationships(optional, based on API response inclusion)
+    danh_muc?: Category;
+    thuong_hieu?: Brand;
+    bien_the_san_pham?: ProductVariant[];
+    hinh_anh_san_pham?: ProductImage[];
 }

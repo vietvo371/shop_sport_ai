@@ -42,8 +42,8 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
         return notFound();
     }
 
-    const mainImage = product.hinh_anh_san_pham?.find((img) => img.la_anh_chinh)?.duong_dan_anh
-        || product.hinh_anh_san_pham?.[0]?.duong_dan_anh
+    const mainImage = product.hinh_anh_san_pham?.find((img) => img.la_anh_chinh)?.url
+        || product.hinh_anh_san_pham?.[0]?.url
         || '/placeholder.png';
 
     // Extract unique sizes from variants
@@ -78,7 +78,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                         <div className="flex gap-4 overflow-x-auto pb-2">
                             {product.hinh_anh_san_pham.map((img) => (
                                 <div key={img.id} className="relative w-20 h-20 rounded-lg overflow-hidden border shrink-0 cursor-pointer hover:ring-2 ring-primary">
-                                    <Image src={img.duong_dan_anh} alt="Thumnail" fill className="object-cover" />
+                                    <Image src={img.url || img.duong_dan_anh} alt="Thumnail" fill className="object-cover" />
                                 </div>
                             ))}
                         </div>

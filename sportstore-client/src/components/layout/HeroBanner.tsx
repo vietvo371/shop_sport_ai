@@ -43,12 +43,12 @@ export function HeroBanner() {
                                 className="object-cover"
                                 priority={banner.thu_tu === 1}
                             />
-                            {(banner.tieu_de || banner.mo_ta) && (
+                            {/* {(banner.tieu_de || banner.mo_ta) && (
                                 <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/40 text-white text-center p-4">
                                     <h2 className="text-3xl md:text-5xl font-bold mb-4">{banner.tieu_de}</h2>
                                     {banner.mo_ta && <p className="text-lg md:text-xl max-w-2xl">{banner.mo_ta}</p>}
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </CarouselItem>
                 ))}

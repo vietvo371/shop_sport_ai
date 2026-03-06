@@ -21,6 +21,8 @@ Route::get('brands',            [\App\Http\Controllers\Api\ThuongHieuController:
 Route::get('products',          [\App\Http\Controllers\Api\SanPhamController::class, 'index']);
 Route::get('products/{slug}',   [\App\Http\Controllers\Api\SanPhamController::class, 'show']);
 
+Route::get('banners',           [\App\Http\Controllers\Api\BannerController::class, 'index']);
+
 // Chatbot — cả guest lẫn user đều dùng được
 Route::post('chatbot/message',  [\App\Http\Controllers\Api\Chatbot\ChatbotController::class, 'sendMessage']);
 Route::get('chatbot/history',   [\App\Http\Controllers\Api\Chatbot\ChatbotController::class, 'history']);
