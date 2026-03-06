@@ -9,41 +9,37 @@ class BannerSeeder extends Seeder
 {
     public function run(): void
     {
-        $banners = [
-            [
-                'tieu_de' => 'Banner Giày bóng đá Wika 1',
-                'hinh_anh'=> 'https://wikasports.com/wp-content/uploads/2021/06/banner-giay-da-bong-1-2048x823.jpg',
-                'duong_dan'=> '/danh-muc/giay-bong-da',
-                'thu_tu'  => 1
-            ],
-            [
-                'tieu_de' => 'Banner Giày bóng đá Wika 2',
-                'hinh_anh'=> 'https://wikasports.com/wp-content/uploads/2021/06/banner-giay-da-bong-2-scaled.jpg',
-                'duong_dan'=> '/danh-muc/giay-bong-da',
-                'thu_tu'  => 2
-            ],
-            [
-                'tieu_de' => 'Nguyễn Hoàng Đức x Wika',
-                'hinh_anh'=> 'https://wikasports.com/wp-content/uploads/2023/02/nguyen-hoang-duc-banner.jpg',
-                'duong_dan'=> '/danh-muc/ao-bong-da',
-                'thu_tu'  => 3
-            ],
-            [
-                'tieu_de' => 'Wika Hunter',
-                'hinh_anh'=> 'https://wikasports.com/wp-content/uploads/2022/02/banner-wika-hunter-1536x568.jpg',
-                'duong_dan'=> '/danh-muc/giay-bong-da',
-                'thu_tu'  => 4
-            ]
-        ];
-
-        foreach ($banners as $banner) {
-            DB::table('banners')->insert(array_merge($banner, [
-                'trang_thai' => true,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]));
+        $jsonPath = database_path('seeders/wika_full_dataset.json');
+        if (!file_exists($jsonPath)) {
+            $this->command->error("Không tìm thấy file wika_full_dataset.json");
+            return;
         }
 
-        $this->command->info('✅ BannerSeeder: Đã tạo 4 Slide Banners');
+        $json = file_get_contents($jsonPath);
+        $data = json_decode($json, true);
+
+        if (!isset($data['banners'])) {
+            $this->command->info('Không có dữ liệu banners trong JSON.');
+            return;
+        }
+
+        $banners = $data['banners'];
+        $now = now();
+        $count = 0;
+
+        foreach ($banners as $index => $banner) {
+            DB::table('banners')->insert([
+                'tieu_de'    => $banner['title'] ?? ('Banner ' . ($index + 1)),
+                'hinh_anh'   => $banner['image'],
+                'duong_dan'  => $banner['link'] ?? '/',
+                'trang_thai' => true,
+                'thu_tu'     => $index + 1,
+                'created_at' => $now,
+                'updated_at' => $now,
+            ]);
+            $count++;
+        }
+
+        $this->command->info("✅ BannerSeeder: Đã tạo {$count} Slide Banners từ JSON");
     }
 }

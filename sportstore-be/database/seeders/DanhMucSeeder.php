@@ -4,68 +4,51 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class DanhMucSeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = [
-            'Bóng Đá' => [
-                'Giày Bóng Đá',
-                'Áo Bóng Đá',
-                'Găng Tay Thủ Môn',
-                'Quả Bóng Đá'
-            ],
-            'Pickleball' => [
-                'Vợt Pickleball',
-                'Giày Pickleball',
-                'Phụ Kiện Pickleball'
-            ],
-            'Chạy Bộ' => [
-                'Giày Chạy Bộ',
-                'Quần Áo Chạy Bộ'
-            ],
-            'Bóng Chuyền' => [
-                'Giày Bóng Chuyền',
-                'Trang Phục Bóng Chuyền'
-            ],
-            'Bóng Rổ' => [
-                'Quả Bóng Rổ',
-                'Trang Phục Bóng Rổ'
-            ],
-            'Phụ Kiện Thể Thao' => [
-                'Balo & Túi Trống',
-                'Tất Thể Thao',
-                'Băng Đội Đầu'
-            ]
-        ];
+        $jsonPath = database_path('seeders/wika_full_dataset.json');
+        if (!file_exists($jsonPath)) {
+            $this->command->error("Không tìm thấy file wika_full_dataset.json");
+            return;
+        }
 
-        $now = now();
-        $countParent = 0;
-        $countChild = 0;
+        $json = file_get_contents($jsonPath);
+        $data = json_decode($json, true);
 
-        foreach ($categories as $parent => $children) {
-            $parentId = DB::table('danh_muc')->insertGetId([
-                'ten'          => $parent,
-                'duong_dan'    => \Illuminate\Support\Str::slug($parent),
-                'danh_muc_cha_id' => null,
-                'created_at'   => $now,
-                'updated_at'   => $now,
-            ]);
-            $countParent++;
+        if (!isset($data['products'])) {
+            $this->command->info('Không có dữ liệu products trong JSON.');
+            return;
+        }
 
-            foreach ($children as $child) {
-                DB::table('danh_muc')->insert([
-                    'ten'          => $child,
-                    'duong_dan'    => \Illuminate\Support\Str::slug($child),
-                    'danh_muc_cha_id' => $parentId,
-                    'created_at'   => $now,
-                    'updated_at'   => $now,
-                ]);
-                $countChild++;
+        $uniqueCategories = [];
+        foreach ($data['products'] as $product) {
+            if (isset($product['categories']) && is_array($product['categories'])) {
+                foreach ($product['categories'] as $catName) {
+                    $uniqueCategories[$catName] = true;
+                }
             }
         }
 
-        $this->command->info("✅ DanhMucSeeder: {$countParent} danh mục cha + {$countChild} danh mục con đã tạo");
+        $now = now();
+        $count = 0;
+
+        foreach (array_keys($uniqueCategories) as $idx => $catName) {
+            DB::table('danh_muc')->insert([
+                'ten'             => $catName,
+                'duong_dan'       => Str::slug($catName),
+                'danh_muc_cha_id' => null,
+                'thu_tu'          => $idx,
+                'trang_thai'      => true,
+                'created_at'      => $now,
+                'updated_at'      => $now,
+            ]);
+            $count++;
+        }
+
+        $this->command->info("✅ DanhMucSeeder: Đã tạo {$count} danh mục gốc từ JSON");
     }
 }
