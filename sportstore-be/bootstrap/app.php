@@ -25,9 +25,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
-
-        // Sanctum stateful domains
-        $middleware->statefulApi();
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         // Trả JSON cho ValidationException thay vì redirect

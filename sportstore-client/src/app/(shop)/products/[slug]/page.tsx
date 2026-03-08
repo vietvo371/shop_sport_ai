@@ -11,13 +11,16 @@ import { Badge } from '@/components/ui/badge';
 import { productService } from '@/services/product.service';
 import { formatCurrency } from '@/lib/utils';
 import { useCartStore } from '@/store/cart.store';
+import { useCart } from '@/hooks/useCart';
+import { toast } from 'sonner';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
     const [selectedSize, setSelectedSize] = useState<string | null>(null);
     const [quantity, setQuantity] = useState(1);
     const [activeImage, setActiveImage] = useState<string>('/placeholder.png');
-    const { openCart, setItemCount } = useCartStore(); // Using dummy setItemCount for now
+    const { openCart } = useCartStore();
+    const { addToCart, isAdding } = useCart();
 
     const { data: product, isLoading, isError } = useQuery({
         queryKey: ['product', slug],
@@ -61,10 +64,33 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     const sizes = Array.from(new Set(product.bien_the?.map(v => v.kich_co).filter(Boolean) || product.bien_the_san_pham?.map(v => v.kich_co).filter(Boolean))) as string[];
     const currentPrice = product.gia_khuyen_mai || product.gia_goc;
 
-    const handleAddToCart = () => {
-        // Basic placeholder action
-        setItemCount(useCartStore.getState().itemCount + quantity);
-        openCart();
+    const handleAddToCart = async () => {
+        if (sizes.length > 0 && !selectedSize) {
+            toast.error('Vui lòng chọn kích cỡ/phân loại sản phẩm.');
+            return;
+        }
+
+        let variantId = undefined;
+        if (selectedSize) {
+            const variants = product.bien_the || product.bien_the_san_pham || [];
+            const matched = variants.find(v => v.kich_co === selectedSize);
+            if (matched) variantId = matched.id;
+        }
+
+        try {
+            await addToCart({
+                san_pham_id: product.id,
+                so_luong: quantity,
+                bien_the_id: variantId,
+            });
+            toast.success('Đã thêm vào giỏ hàng');
+            openCart();
+        } catch (error: any) {
+            toast.error(error.message || 'Có lỗi xảy ra khi thêm vào giỏ');
+            if (error?.message?.includes('Unauth')) {
+                // Should redirect to login? Interceptor handles 401 anyway.
+            }
+        }
     };
 
     return (
@@ -176,9 +202,10 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                             size="lg"
                             className="flex-1 h-14 text-base gap-2"
                             onClick={handleAddToCart}
+                            disabled={isAdding}
                         >
                             <ShoppingCart className="h-5 w-5" />
-                            Thêm Vào Giỏ
+                            {isAdding ? 'Đang thêm...' : 'Thêm Vào Giỏ'}
                         </Button>
                     </div>
                 </div>

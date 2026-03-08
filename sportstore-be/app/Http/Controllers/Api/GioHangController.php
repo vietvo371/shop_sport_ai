@@ -27,6 +27,19 @@ class GioHangController extends Controller
         ];
     }
 
+    private function formatCartResponse($cart): array
+    {
+        if (!$cart) {
+            return ['items' => [], 'tong_so_luong' => 0, 'tam_tinh' => 0];
+        }
+        return [
+            'id'           => $cart->id,
+            'items'        => $cart->items,
+            'tong_so_luong'=> $cart->tong_so_luong,
+            'tam_tinh'     => $cart->tam_tinh,
+        ];
+    }
+
     /**
      * Lấy thông tin giỏ hàng
      *
@@ -38,16 +51,7 @@ class GioHangController extends Controller
         ['nguoiDungId' => $uid, 'maPhien' => $sid] = $this->getCartSession($request);
         $cart = $this->service->getCart($uid, $sid);
 
-        if (!$cart) {
-            return ApiResponse::success(['items' => [], 'tong_so_luong' => 0, 'tam_tinh' => 0], 'Giỏ hàng trống');
-        }
-
-        return ApiResponse::success([
-            'id'           => $cart->id,
-            'items'        => $cart->items,
-            'tong_so_luong'=> $cart->tong_so_luong,
-            'tam_tinh'     => $cart->tam_tinh,
-        ], 'Giỏ hàng');
+        return ApiResponse::success($this->formatCartResponse($cart), 'Giỏ hàng');
     }
 
     /**
@@ -72,9 +76,10 @@ class GioHangController extends Controller
 
         ['nguoiDungId' => $uid, 'maPhien' => $sid] = $this->getCartSession($request);
         $cart = $this->service->getOrCreate($uid, $sid);
-        $item = $this->service->addItem($cart, $data['san_pham_id'], $data['bien_the_id'] ?? null, $data['so_luong']);
+        $this->service->addItem($cart, $data['san_pham_id'], $data['bien_the_id'] ?? null, $data['so_luong']);
 
-        return ApiResponse::created($item->load('sanPham', 'bienThe'), 'Đã thêm vào giỏ hàng');
+        $cart = $this->service->getCart($uid, $sid);
+        return ApiResponse::created($this->formatCartResponse($cart), 'Đã thêm vào giỏ hàng');
     }
 
     /**
@@ -89,9 +94,10 @@ class GioHangController extends Controller
         $data = $request->validate(['so_luong' => 'required|integer|min:1|max:99']);
         ['nguoiDungId' => $uid, 'maPhien' => $sid] = $this->getCartSession($request);
         $cart = $this->service->getOrCreate($uid, $sid);
-        $item = $this->service->updateItem($cart, $id, $data['so_luong']);
+        $this->service->updateItem($cart, $id, $data['so_luong']);
 
-        return ApiResponse::success($item, 'Đã cập nhật số lượng');
+        $cart = $this->service->getCart($uid, $sid);
+        return ApiResponse::success($this->formatCartResponse($cart), 'Đã cập nhật số lượng');
     }
 
     /**
@@ -106,7 +112,8 @@ class GioHangController extends Controller
         $cart = $this->service->getOrCreate($uid, $sid);
         $this->service->removeItem($cart, $id);
 
-        return ApiResponse::deleted('Đã xóa sản phẩm khỏi giỏ hàng');
+        $cart = $this->service->getCart($uid, $sid);
+        return ApiResponse::success($this->formatCartResponse($cart), 'Đã xóa sản phẩm khỏi giỏ hàng');
     }
 
     /**

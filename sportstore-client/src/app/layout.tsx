@@ -22,6 +22,7 @@ import Providers from "@/lib/queryClient";
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
   children,
@@ -40,6 +41,7 @@ export default function RootLayout({
             <Footer />
             <CartDrawer />
           </div>
+          <Toaster position="top-center" richColors />
         </Providers>
       </body>
     </html>
