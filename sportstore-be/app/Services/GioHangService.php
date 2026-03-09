@@ -42,14 +42,14 @@ class GioHangService
      */
     public function addItem(GioHang $cart, int $sanPhamId, ?int $bienTheId, int $soLuong): GioHangSanPham
     {
+        $sp = SanPham::findOrFail($sanPhamId);
+        
         // Lấy giá hiện tại
         if ($bienTheId) {
             $bienThe = BienTheSanPham::findOrFail($bienTheId);
-            $donGia  = $bienThe->gia_rieng ?? SanPham::findOrFail($sanPhamId)->gia_khuyen_mai
-                       ?? SanPham::findOrFail($sanPhamId)->gia_goc;
+            $donGia = $bienThe->gia_rieng > 0 ? $bienThe->gia_rieng : ($sp->gia_khuyen_mai > 0 ? $sp->gia_khuyen_mai : $sp->gia_goc);
         } else {
-            $sp     = SanPham::findOrFail($sanPhamId);
-            $donGia = $sp->gia_khuyen_mai ?? $sp->gia_goc;
+            $donGia = $sp->gia_khuyen_mai > 0 ? $sp->gia_khuyen_mai : $sp->gia_goc;
         }
 
         // Nếu item đã có → cộng số lượng

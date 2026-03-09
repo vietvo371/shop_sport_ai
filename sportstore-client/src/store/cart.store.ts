@@ -7,6 +7,7 @@ interface CartState {
     closeCart: () => void;
     toggleCart: () => void;
     setItemCount: (count: number) => void;
+    clearCart: () => void;
 }
 
 // Client-side UI state for Cart Drawer
@@ -17,4 +18,5 @@ export const useCartStore = create<CartState>((set) => ({
     closeCart: () => set({ isOpen: false }),
     toggleCart: () => set((state) => ({ isOpen: !state.isOpen })),
     setItemCount: (count) => set({ itemCount: count }),
+    clearCart: () => set({ itemCount: 0, isOpen: false }),
 }));

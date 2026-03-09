@@ -61,7 +61,7 @@ export default function LoginPage() {
                         <div>
                             <Link href="/">
                                 <span className="text-2xl font-black tracking-tighter cursor-pointer hover:text-primary transition-colors">
-                                    SPORT<span className="text-primary">STORE</span>
+                                    SPORTSTORE
                                 </span>
                             </Link>
                         </div>
