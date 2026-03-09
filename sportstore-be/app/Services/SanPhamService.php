@@ -30,7 +30,14 @@ class SanPhamService
 
         // Lọc theo thương hiệu
         if (!empty($filters['thuong_hieu'])) {
-            $query->where('thuong_hieu_id', $filters['thuong_hieu']);
+            $thuongHieu = $filters['thuong_hieu'];
+            if (is_numeric($thuongHieu)) {
+                $query->where('thuong_hieu_id', $thuongHieu);
+            } else {
+                $query->whereHas('thuongHieu', function ($q) use ($thuongHieu) {
+                    $q->where('duong_dan', $thuongHieu);
+                });
+            }
         }
 
         // Lọc theo giá

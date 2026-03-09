@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/cart.store';
 import { useAuthStore } from '@/store/auth.store';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
 
 import { useCategories } from '@/hooks/useCategory';
 
@@ -36,10 +37,49 @@ export function Header() {
                 <div className="flex h-16 items-center justify-between">
                     {/* Mobile Menu Button */}
                     <div className="flex items-center md:hidden">
-                        <Button variant="ghost" size="icon" className="mr-2">
-                            <Menu className="h-5 w-5" />
-                            <span className="sr-only">Toggle Menu</span>
-                        </Button>
+                        <Sheet>
+                            <SheetTrigger asChild>
+                                <Button variant="ghost" size="icon" className="mr-2">
+                                    <Menu className="h-5 w-5" />
+                                    <span className="sr-only">Toggle Menu</span>
+                                </Button>
+                            </SheetTrigger>
+                            <SheetContent side="left" className="w-[80vw] sm:max-w-sm flex flex-col pt-10 px-0">
+                                <SheetTitle className="px-6 text-xl text-primary font-bold">Danh Mục</SheetTitle>
+                                <SheetDescription className="sr-only">Menu phụ cho thiết bị di động</SheetDescription>
+
+                                <div className="flex-1 overflow-y-auto mt-4">
+                                    <div className="flex flex-col">
+                                        <SheetClose asChild>
+                                            <Link href="/products" className="px-6 py-3 text-base font-medium border-b hover:bg-slate-50 transition-colors">
+                                                Tất cả sản phẩm
+                                            </Link>
+                                        </SheetClose>
+
+                                        {categories && categories.length > 0 ? (
+                                            categories.map((cat: any) => (
+                                                <SheetClose asChild key={cat.id}>
+                                                    <Link
+                                                        href={`/products?category=${cat.duong_dan}`}
+                                                        className="px-6 py-3 text-sm text-slate-600 border-b hover:bg-slate-50 hover:text-primary transition-colors"
+                                                    >
+                                                        {cat.ten}
+                                                    </Link>
+                                                </SheetClose>
+                                            ))
+                                        ) : (
+                                            <div className="px-6 py-4 text-sm text-slate-500">Đang tải danh mục...</div>
+                                        )}
+
+                                        <SheetClose asChild>
+                                            <Link href="/#brands" className="px-6 py-3 text-base font-medium border-b hover:bg-slate-50 transition-colors">
+                                                Thương hiệu
+                                            </Link>
+                                        </SheetClose>
+                                    </div>
+                                </div>
+                            </SheetContent>
+                        </Sheet>
                     </div>
 
                     {/* Logo */}

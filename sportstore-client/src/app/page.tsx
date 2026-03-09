@@ -6,6 +6,7 @@ import { ProductCard } from '@/components/product/ProductCard';
 import { productService } from '@/services/product.service';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
+import { BrandsTab } from '@/components/brand/BrandsTab';
 
 export default function Home() {
   const { data: featuredProducts = [], isLoading } = useQuery({
@@ -67,7 +68,19 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories Highlights or Other Sections Could Go Here */}
+      {/* Brands Section */}
+      <section className="container mx-auto px-4 mt-8" id="brands">
+        <div className="flex items-center justify-center mb-10">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold tracking-tight mb-2">Thương Hiệu Đồng Hành</h2>
+            <p className="text-muted-foreground mx-auto max-w-2xl">
+              SPORTSTORE hân hạnh phân phối chính hãng các sản phẩm thể thao chất lượng cao từ các thương hiệu uy tín hàng đầu.
+            </p>
+          </div>
+        </div>
+
+        <BrandsTab />
+      </section>
     </div>
   );
 }
