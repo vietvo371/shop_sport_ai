@@ -29,6 +29,8 @@ class DatabaseSeeder extends Seeder
             HinhAnhSanPhamSeeder::class,  // ← phải sau SanPhamSeeder
             MaGiamGiaSeeder::class,
             BannerSeeder::class,
+            DonHangSeeder::class,
+            DanhGiaSeeder::class, // DanhGia cần SanPham và NguoiDung
         ]);
     }
 }

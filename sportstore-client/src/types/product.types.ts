@@ -56,15 +56,37 @@ export interface Product {
     trang_thai: boolean;
     da_ban: number;
     luot_xem: number;
-    diem_danh_gia: number;
+    diem_danh_gia: string;
     so_luot_danh_gia: number;
+    can_review?: boolean;
+    has_reviewed?: boolean;
+    eligible_order_id?: number | null;
+    created_at?: string;
+    updated_at?: string;
 
-    // Relationships(optional, based on API response inclusion)
+    // Relationships
     danh_muc?: Category;
     thuong_hieu?: Brand;
-    bien_the_san_pham?: ProductVariant[]; // Dùng trong danh sách cũ
-    bien_the?: ProductVariant[]; // Dùng trong chi tiết sản phẩm / danh sách mới
-    hinh_anh_san_pham?: ProductImage[]; // Dùng trong danh sách cũ
-    hinh_anh?: ProductImage[]; // Dùng trong chi tiết sản phẩm / danh sách mới
+    bien_the?: ProductVariant[];
+    hinh_anh?: ProductImage[];
+    hinh_anh_san_pham?: ProductImage[];
+    danh_gia?: Review[];
     anh_chinh?: ProductImage;
+}
+
+export interface Review {
+    id: number;
+    san_pham_id: number;
+    nguoi_dung_id: number;
+    don_hang_id: number | null;
+    so_sao: number;
+    tieu_de: string | null;
+    noi_dung: string | null;
+    da_duyet: boolean;
+    created_at: string;
+    nguoi_dung?: {
+        id: number;
+        ho_va_ten: string;
+        anh_dai_dien: string | null;
+    };
 }

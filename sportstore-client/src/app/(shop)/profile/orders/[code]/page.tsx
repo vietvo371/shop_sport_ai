@@ -83,7 +83,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ code: s
                                                 />
                                             </div>
                                             <div>
-                                                <Link href={`/products/${item.san_pham_id}`} className="font-semibold text-slate-900 hover:text-primary transition-colors line-clamp-1">
+                                                <Link href={`/products/${item.san_pham?.duong_dan}`} className="font-semibold text-slate-900 hover:text-primary transition-colors line-clamp-1">
                                                     {item.ten_san_pham}
                                                 </Link>
                                                 {item.thong_tin_bien_the && (

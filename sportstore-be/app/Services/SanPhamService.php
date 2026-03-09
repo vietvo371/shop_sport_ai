@@ -75,15 +75,46 @@ class SanPhamService
     /**
      * Chi tiết sản phẩm theo slug.
      */
-    public function findBySlug(string $slug): ?SanPham
+    public function findBySlug(string $slug, $user = null): ?SanPham
     {
-        return SanPham::with([
+        $product = SanPham::with([
             'danhMuc',
             'thuongHieu',
             'hinhAnh',
             'bienThe' => fn($q) => $q->where('trang_thai', true),
             'danhGia' => fn($q) => $q->where('da_duyet', true)->with('nguoiDung')->latest()->take(10),
         ])->where('duong_dan', $slug)->where('trang_thai', true)->first();
+
+        // Nếu không có user từ middleware, thử lấy từ token nếu có (đối với route public)
+        if (!$user) {
+            $user = auth('sanctum')->user();
+        }
+
+        if ($product && $user) {
+            // Kiểm tra xem user đã mua SP này trong đơn hàng 'da_giao' chưa
+            $orderItem = \App\Models\ChiTietDonHang::where('san_pham_id', $product->id)
+                ->whereHas('donHang', function ($q) use ($user) {
+                    $q->where('nguoi_dung_id', $user->id)
+                        ->where('trang_thai', 'da_giao');
+                })
+                ->latest('id')
+                ->first();
+
+            // Kiểm tra xem đã đánh giá chưa
+            $hasReviewed = \App\Models\DanhGia::where('san_pham_id', $product->id)
+                ->where('nguoi_dung_id', $user->id)
+                ->exists();
+
+            $product->can_review = $orderItem && !$hasReviewed;
+            $product->has_reviewed = $hasReviewed;
+            $product->eligible_order_id = $orderItem ? $orderItem->don_hang_id : null;
+        } else if ($product) {
+            $product->can_review = false;
+            $product->has_reviewed = false;
+            $product->eligible_order_id = null;
+        }
+
+        return $product;
     }
 
     /**

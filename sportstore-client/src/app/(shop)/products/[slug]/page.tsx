@@ -13,6 +13,8 @@ import { useCartStore } from '@/store/cart.store';
 import { useCart } from '@/hooks/useCart';
 import { useWishlist } from '@/hooks/useWishlist';
 import { toast } from 'sonner';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ProductReviews } from '@/components/product/ProductReviews';
 
 export default function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
@@ -77,7 +79,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
     const imagesList = product.hinh_anh || product.hinh_anh_san_pham;
 
     // Extract unique sizes from variants
-    const sizes = Array.from(new Set(product.bien_the?.map(v => v.kich_co).filter(Boolean) || product.bien_the_san_pham?.map(v => v.kich_co).filter(Boolean))) as string[];
+    const sizes = Array.from(new Set(product.bien_the?.map(v => v.kich_co).filter(Boolean))) as string[];
     const currentPrice = product.gia_khuyen_mai || product.gia_goc;
 
     const handleAddToCart = async () => {
@@ -88,7 +90,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
 
         let variantId = undefined;
         if (selectedSize) {
-            const variants = product.bien_the || product.bien_the_san_pham || [];
+            const variants = product.bien_the || [];
             const matched = variants.find(v => v.kich_co === selectedSize);
             if (matched) variantId = matched.id;
         }
@@ -238,16 +240,42 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 </div>
             </div>
 
-            {/* Full Description Section */}
-            {product.mo_ta_day_du && (
-                <div className="mt-16 pt-16 border-t">
-                    <h2 className="text-2xl font-bold mb-8">Thông Tin Sản Phẩm</h2>
-                    <div
-                        className="prose prose-slate max-w-none"
-                        dangerouslySetInnerHTML={{ __html: product.mo_ta_day_du }}
-                    />
-                </div>
-            )}
+            {/* Tabs Section: Description & Reviews */}
+            <div className="mt-16 border-t pt-8">
+                <Tabs defaultValue="description" className="w-full">
+                    <TabsList className="flex w-full justify-start items-center bg-transparent border-b rounded-none h-auto p-0 gap-8 mb-8 overflow-x-auto">
+                        <TabsTrigger
+                            value="description"
+                            className="relative text-lg py-4 px-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-primary font-bold text-slate-500 hover:text-slate-900 transition-all bg-transparent"
+                        >
+                            Mô tả sản phẩm
+                        </TabsTrigger>
+                        <TabsTrigger
+                            value="reviews"
+                            className="relative text-lg py-4 px-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-primary font-bold text-slate-500 hover:text-slate-900 transition-all bg-transparent"
+                        >
+                            Đánh giá ({product.so_luot_danh_gia || 0})
+                        </TabsTrigger>
+                    </TabsList>
+
+                    <TabsContent value="description" className="mt-4 outline-none">
+                        {product.mo_ta_day_du ? (
+                            <div
+                                className="prose prose-slate max-w-none prose-img:rounded-2xl prose-headings:font-bold prose-a:text-primary"
+                                dangerouslySetInnerHTML={{ __html: product.mo_ta_day_du }}
+                            />
+                        ) : (
+                            <div className="py-12 text-center bg-slate-50 rounded-2xl border border-dashed">
+                                <p className="text-slate-500 italic">Đang cập nhật thêm thông tin mô tả chi tiết cho sản phẩm này.</p>
+                            </div>
+                        )}
+                    </TabsContent>
+
+                    <TabsContent value="reviews" className="mt-4 outline-none">
+                        <ProductReviews product={product} />
+                    </TabsContent>
+                </Tabs>
+            </div>
         </div>
     );
 }

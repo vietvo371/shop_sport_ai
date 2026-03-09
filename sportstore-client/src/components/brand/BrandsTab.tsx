@@ -48,27 +48,27 @@ export function BrandsTab() {
                                 value={brand.duong_dan}
                                 className={`
                                     data-[state=active]:border-primary data-[state=active]:text-primary data-[state=active]:shadow-sm
-                                    px-6 py-4 rounded-2xl border-2 border-transparent bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] 
+                                    px-6 py-4 rounded-xl border-2 border-transparent bg-white shadow-[0_2px_10px_rgba(0,0,0,0.03)] 
                                     hover:shadow-[0_4px_15px_rgba(0,0,0,0.06)] hover:border-slate-200 hover:-translate-y-0.5 transition-all duration-300
-                                    flex items-center gap-3 min-w-[160px] justify-center text-slate-500
+                                    flex flex-col items-center gap-3 min-w-[170px] justify-center text-slate-500
                                 `}
                             >
                                 {brand.logo ? (
-                                    <div className="relative w-10 h-10 rounded-full overflow-hidden flex items-center justify-center p-0.5 bg-white drop-shadow-sm border border-slate-100">
+                                    <div className="relative w-32 h-12 flex items-center justify-center">
                                         <Image
                                             src={brand.logo}
                                             alt={brand.ten}
                                             fill
                                             className="object-contain"
-                                            sizes="40px"
+                                            sizes="128px"
                                         />
                                     </div>
                                 ) : (
-                                    <div className="w-10 h-10 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center font-bold text-slate-400 text-lg">
+                                    <div className="w-12 h-12 rounded-full bg-slate-50 border border-slate-100 flex items-center justify-center font-bold text-slate-400 text-xl">
                                         {brand.ten.charAt(0)}
                                     </div>
                                 )}
-                                <span className="font-bold text-base">{brand.ten}</span>
+                                <span className="font-bold text-sm tracking-wide">{brand.ten}</span>
                             </TabsTrigger>
                         ))}
                     </TabsList>

@@ -19,6 +19,7 @@ export interface OrderItem {
         anh_chinh?: {
             duong_dan_anh: string;
         }
+        duong_dan: string;
     };
 }
 

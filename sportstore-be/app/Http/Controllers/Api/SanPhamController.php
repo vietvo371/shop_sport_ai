@@ -51,7 +51,7 @@ class SanPhamController extends Controller
      */
     public function show(Request $request, string $slug): JsonResponse
     {
-        $product = $this->service->findBySlug($slug);
+        $product = $this->service->findBySlug($slug, $request->user());
 
         if (!$product) {
             return ApiResponse::notFound('Sản phẩm không tồn tại hoặc đã ngừng bán');

@@ -32,7 +32,7 @@ class SanPhamSeeder extends Seeder
         $products = $data['products'];
         $count = 0;
 
-        $wikaBrandId = $brands['Wika Sports'] ?? null;
+        $brandIds = array_values($brands->toArray());
 
         foreach ($products as $p) {
             $catId = null;
@@ -67,7 +67,7 @@ class SanPhamSeeder extends Seeder
                 'mo_ta_ngan'     => $moTaNgan,
                 'mo_ta_day_du'   => $p['description'] ?? '',
                 'danh_muc_id'    => $catId,
-                'thuong_hieu_id' => $wikaBrandId,
+                'thuong_hieu_id' => $brandIds[array_rand($brandIds)],
                 'so_luong_ton_kho'=> 100,
                 'noi_bat'        => $count < 12 ? true : false,
                 'trang_thai'     => true,
