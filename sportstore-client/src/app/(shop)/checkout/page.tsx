@@ -18,17 +18,25 @@ import { MapPin, CreditCard, ShoppingBag, Loader2, ArrowLeft } from 'lucide-reac
 import Link from 'next/link';
 
 import { AddAddressModal } from '@/components/checkout/AddAddressModal';
+import { useCoupon } from '@/hooks/useCoupon';
+import { CouponResponse } from '@/types/coupon.types';
+import { Tag, X } from 'lucide-react';
 
 export default function CheckoutPage() {
     const router = useRouter();
     const { cart, isLoading: isCartLoading } = useCart();
     const { addresses, isLoading: isAddressesLoading } = useAddress();
     const { placeOrder, isPlacing } = useOrder();
+    const { validateCoupon, isValidating: isVerifyingCoupon } = useCoupon();
     const clearCartStore = useCartStore((state) => state.clearCart);
 
     const [selectedAddressId, setSelectedAddressId] = useState<number | null>(null);
     const [paymentMethod, setPaymentMethod] = useState<'cod' | 'chuyen_khoan' | 'vnpay' | 'momo'>('cod');
     const [note, setNote] = useState('');
+
+    // Coupon States
+    const [couponInput, setCouponInput] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState<CouponResponse | null>(null);
 
     useEffect(() => {
         if (addresses && addresses.length > 0) {
@@ -37,6 +45,29 @@ export default function CheckoutPage() {
         }
     }, [addresses]);
 
+    const handleApplyCoupon = async () => {
+        if (!couponInput.trim()) return;
+        if (!cart?.tam_tinh) return;
+
+        try {
+            const res = await validateCoupon({
+                ma_code: couponInput.trim(),
+                tam_tinh: cart.tam_tinh,
+            });
+            setAppliedCoupon(res);
+            toast.success(`Áp dụng mã ${res.ma_code} thành công! Giảm ${new Intl.NumberFormat('vi-VN').format(res.so_tien_giam)}đ`);
+        } catch (error: any) {
+            setAppliedCoupon(null);
+            const errMsgs = error?.errors ? Object.values(error.errors).flat().join(', ') : error?.message;
+            toast.error(errMsgs || 'Mã giảm giá không hợp lệ.');
+        }
+    };
+
+    const handleRemoveCoupon = () => {
+        setAppliedCoupon(null);
+        setCouponInput('');
+    };
+
     const handlePlaceOrder = async () => {
         if (!selectedAddressId) {
             toast.error('Vui lòng chọn địa chỉ giao hàng');
@@ -44,16 +75,17 @@ export default function CheckoutPage() {
         }
 
         try {
-            const order = await placeOrder({
+            const res = await placeOrder({
                 dia_chi_id: selectedAddressId,
                 phuong_thuc_tt: paymentMethod,
+                ma_coupon: appliedCoupon?.ma_code,
                 ghi_chu: note,
             });
 
             toast.success('Đặt hàng thành công!');
             clearCartStore();
-            // In a real app, redirect to order success page or payment gateway if vnpay/momo
-            router.push('/');
+            // Redirect to success page
+            router.push(`/checkout/success?order=${res.data.ma_don_hang}`);
         } catch (error: any) {
             const errMsgs = error?.errors ? Object.values(error.errors).flat().join(', ') : error?.message;
             toast.error(errMsgs || 'Lỗi đặt hàng. Vui lòng thử lại sau.');
@@ -228,20 +260,76 @@ export default function CheckoutPage() {
                             </div>
 
                             <div className="px-6 py-6 bg-slate-50 mt-4 space-y-3">
+                                {/* MÃ GIẢM GIÁ */}
+                                <div className="mb-4">
+                                    {!appliedCoupon ? (
+                                        <div className="flex space-x-2">
+                                            <div className="relative flex-1">
+                                                <Tag className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                                                <Input
+                                                    placeholder="Nhập mã giảm giá..."
+                                                    value={couponInput}
+                                                    onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                                                    className="pl-9 h-10 bg-white"
+                                                    onKeyDown={(e) => {
+                                                        if (e.key === 'Enter') {
+                                                            e.preventDefault();
+                                                            handleApplyCoupon();
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <Button
+                                                onClick={handleApplyCoupon}
+                                                disabled={isVerifyingCoupon || !couponInput.trim()}
+                                                variant="secondary"
+                                            >
+                                                {isVerifyingCoupon ? <Loader2 className="h-4 w-4 animate-spin" /> : 'Áp dụng'}
+                                            </Button>
+                                        </div>
+                                    ) : (
+                                        <div className="flex items-center justify-between p-3 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-800">
+                                            <div className="flex items-center space-x-2">
+                                                <Tag className="h-4 w-4" />
+                                                <span className="font-semibold">{appliedCoupon.ma_code}</span>
+                                            </div>
+                                            <button
+                                                onClick={handleRemoveCoupon}
+                                                className="text-emerald-600 hover:text-emerald-900 transition-colors"
+                                                title="Xóa mã giảm giá"
+                                            >
+                                                <X className="h-4 w-4" />
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
                                 <div className="flex justify-between text-sm text-slate-600">
                                     <span>Tạm tính ({cart.tong_so_luong} sản phẩm)</span>
                                     <span className="font-medium">{new Intl.NumberFormat('vi-VN').format(cart.tam_tinh || 0)} ₫</span>
                                 </div>
+
+                                {appliedCoupon && (
+                                    <div className="flex justify-between text-sm text-emerald-600 font-medium pb-1">
+                                        <span>Giảm giá (Coupon)</span>
+                                        <span>-{new Intl.NumberFormat('vi-VN').format(appliedCoupon.so_tien_giam)} ₫</span>
+                                    </div>
+                                )}
+
                                 <div className="flex justify-between text-sm text-slate-600">
                                     <span>Phí giao hàng</span>
                                     <span className="font-medium text-emerald-600">Miễn phí</span>
                                 </div>
+
                                 <Separator className="my-3 opacity-50" />
+
                                 <div className="flex justify-between items-end">
                                     <span className="text-base font-semibold text-slate-900">Tổng cộng</span>
                                     <div className="text-right">
                                         <span className="text-2xl font-bold text-primary block">
-                                            {new Intl.NumberFormat('vi-VN').format(cart.tam_tinh || 0)} ₫
+                                            {new Intl.NumberFormat('vi-VN').format(
+                                                Math.max(0, (cart.tam_tinh || 0) - (appliedCoupon?.so_tien_giam || 0))
+                                            )} ₫
                                         </span>
                                         <span className="text-xs text-muted-foreground">(Đã bao gồm VAT)</span>
                                     </div>

@@ -30,4 +30,14 @@ export const authService = {
             throw error;
         }
     },
+
+    getMe: async (): Promise<any> => {
+        const response: any = await apiClient.get('/auth/me');
+        return response.data;
+    },
+
+    updateProfile: async (data: Record<string, string>): Promise<any> => {
+        const response: any = await apiClient.put('/auth/me', data);
+        return response.data;
+    },
 };

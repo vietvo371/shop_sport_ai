@@ -1,7 +1,7 @@
 export interface User {
     id: number;
     email: string;
-    ho_ten: string;
+    ho_va_ten: string;
     so_dien_thoai: string | null;
     vai_tro: 'khach_hang' | 'quan_tri';
     anh_dai_dien: string | null;

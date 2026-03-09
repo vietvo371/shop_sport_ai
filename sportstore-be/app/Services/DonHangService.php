@@ -111,7 +111,7 @@ class DonHangService
     public function getUserOrders(NguoiDung $user): LengthAwarePaginator
     {
         return DonHang::where('nguoi_dung_id', $user->id)
-            ->with('items')
+            ->with('items.sanPham.anhChinh')
             ->latest()
             ->paginate(10);
     }
@@ -121,7 +121,7 @@ class DonHangService
      */
     public function getByCode(string $code, NguoiDung $user): ?DonHang
     {
-        return DonHang::with(['items.sanPham', 'lichSuTrangThai', 'thanhToan'])
+        return DonHang::with(['items.sanPham.anhChinh', 'lichSuTrangThai', 'thanhToan'])
             ->where('ma_don_hang', $code)
             ->where('nguoi_dung_id', $user->id)
             ->first();

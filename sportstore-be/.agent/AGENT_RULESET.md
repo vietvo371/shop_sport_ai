@@ -4,7 +4,7 @@
 - Đọc toàn bộ `.agent/` **trước** khi bắt đầu bất kỳ tác vụ nào
 - **Plan trước → chờ user duyệt → implement sau**
 - Cập nhật `IMPLEMENTATION_STATUS.md` sau mỗi module hoàn thành
-- Dùng `ApiResponse::success()` / `ApiResponse::error()` cho mọi response
+- Dùng `ApiResponse::success()`, `ApiResponse::error()`, hoặc `ApiResponse::paginate()` cho mọi response
 - Đặt business logic vào **Service layer**, không viết trong Controller
 - Validate input qua **FormRequest**, không trong Controller hay Service
 

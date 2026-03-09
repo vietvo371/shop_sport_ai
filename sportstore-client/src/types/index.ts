@@ -150,6 +150,7 @@ export interface Product {
     thuong_hieu: Brand | null
     hinh_anh: ProductImage[]
     bien_the: ProductVariant[]
+    anh_chinh?: ProductImage
     created_at: string
 }
 
@@ -163,7 +164,7 @@ export interface CartItem {
     bien_the_id: number | null
     so_luong: number
     don_gia: number
-    san_pham: Pick<Product, 'id' | 'ten_san_pham' | 'duong_dan' | 'hinh_anh'>
+    san_pham: Pick<Product, 'id' | 'ten_san_pham' | 'duong_dan' | 'hinh_anh' | 'anh_chinh'>
     bien_the: Pick<ProductVariant, 'id' | 'kich_co' | 'mau_sac'> | null
 }
 

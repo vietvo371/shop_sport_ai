@@ -1,14 +1,21 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ShoppingCart, User, Search, Menu, LogOut } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, LogOut, Package } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/cart.store';
 import { useAuthStore } from '@/store/auth.store';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 
 export function Header() {
     const { itemCount, openCart } = useCartStore();
     const { isAuthenticated, user, logout } = useAuthStore();
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -53,21 +60,46 @@ export function Header() {
                             <Search className="h-5 w-5" />
                         </Button>
 
-                        {isAuthenticated ? (
-                            <div className="flex items-center justify-center gap-2">
-                                <span className="hidden md:inline-block text-sm font-medium pr-2 border-r">
-                                    {user?.ho_ten || 'User'}
-                                </span>
-                                <Button variant="ghost" size="icon" onClick={logout} title="Đăng xuất">
-                                    <LogOut className="h-5 w-5" />
-                                </Button>
-                            </div>
-                        ) : (
-                            <Link href="/login">
-                                <Button variant="ghost" size="icon" aria-label="Tài khoản">
-                                    <User className="h-5 w-5" />
-                                </Button>
-                            </Link>
+                        {isMounted && (
+                            isAuthenticated ? (
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" className="relative h-8 w-8 rounded-full border border-slate-200">
+                                            <div className="flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-primary">
+                                                {user?.ho_va_ten?.charAt(0) || 'U'}
+                                            </div>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
+                                        <div className="flex flex-col space-y-1 p-2 border-b border-slate-100 mb-1">
+                                            <p className="text-sm font-medium leading-none text-slate-800">{user?.ho_va_ten}</p>
+                                            <p className="text-xs leading-none text-slate-500">{user?.email}</p>
+                                        </div>
+                                        <DropdownMenuItem asChild className="cursor-pointer py-2">
+                                            <Link href="/profile" className="flex items-center w-full">
+                                                <User className="mr-2 h-4 w-4 text-slate-500" />
+                                                <span>Tài khoản của tôi</span>
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem asChild className="cursor-pointer py-2">
+                                            <Link href="/profile/orders" className="flex items-center w-full">
+                                                <ShoppingCart className="mr-2 h-4 w-4 text-slate-500" />
+                                                <span>Đơn mua</span>
+                                            </Link>
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem onClick={logout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
+                                            <LogOut className="mr-2 h-4 w-4" />
+                                            <span>Đăng xuất</span>
+                                        </DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
+                            ) : (
+                                <Link href="/login">
+                                    <Button variant="ghost" size="icon" aria-label="Tài khoản">
+                                        <User className="h-5 w-5" />
+                                    </Button>
+                                </Link>
+                            )
                         )}
 
                         <Button

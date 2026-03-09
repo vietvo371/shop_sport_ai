@@ -11,28 +11,32 @@ export interface OrderItem {
     san_pham_id: number;
     bien_the_id: number | null;
     ten_san_pham: string;
-    phong_loai: string | null;
+    thong_tin_bien_the: string | null;
     so_luong: number;
     don_gia: number;
     thanh_tien: number;
-    anh_san_pham: string | null;
+    san_pham?: {
+        anh_chinh?: {
+            duong_dan_anh: string;
+        }
+    };
 }
 
 export interface Order {
     id: number;
     nguoi_dung_id: number;
     ma_don_hang: string;
-    ho_ten_nguoi_nhan: string;
-    so_dien_thoai_nhan: string;
-    dia_chi_nhan: string;
+    ten_nguoi_nhan: string;
+    sdt_nguoi_nhan: string;
+    dia_chi_giao_hang: string;
     ghi_chu: string | null;
-    tong_tien_hang: number;
+    tam_tinh: number;
     phi_van_chuyen: number;
-    giam_gia: number;
-    tong_thanh_toan: number;
+    so_tien_giam: number;
+    tong_tien: number;
     phuong_thuc_tt: string;
     trang_thai_tt: string;
-    trang_thai_don_hang: string;
-    ngay_dat_hang: string;
+    trang_thai: string;
+    created_at: string;
     items?: OrderItem[];
 }
