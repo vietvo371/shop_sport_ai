@@ -48,6 +48,18 @@ export const adminService = {
     getAllBrands: async (): Promise<ApiResponse<any[]>> => {
         return apiClient.get('/brands');
     },
+
+    // Upload
+    uploadImage: async (file: File, folder: string = 'products'): Promise<ApiResponse<{ url: string; path: string; filename: string }>> => {
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('folder', folder);
+        return apiClient.post('/admin/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
+    },
 };
 
 export const adminKeys = {

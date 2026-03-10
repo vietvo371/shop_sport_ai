@@ -98,5 +98,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('reviews',              [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'index']);
         Route::put('reviews/{id}/approve', [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'approve']);
         Route::delete('reviews/{id}',      [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'destroy']);
+
+        // Upload
+        Route::post('upload', [\App\Http\Controllers\Api\Admin\UploadController::class, 'upload']);
     });
 });

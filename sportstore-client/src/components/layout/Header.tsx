@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { ShoppingCart, User, Search, Menu, LogOut, Package, Heart } from 'lucide-react';
+import { ShoppingCart, User, Search, Menu, LogOut, Package, Heart, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useCartStore } from '@/store/cart.store';
 import { useAuthStore } from '@/store/auth.store';
@@ -55,6 +55,14 @@ export function Header() {
                                                 Tất cả sản phẩm
                                             </Link>
                                         </SheetClose>
+
+                                        {user?.vai_tro === 'quan_tri' && (
+                                            <SheetClose asChild>
+                                                <Link href="/admin" className="px-6 py-3 text-base font-bold text-primary border-b hover:bg-slate-50 transition-colors">
+                                                    Quản trị hệ thống
+                                                </Link>
+                                            </SheetClose>
+                                        )}
 
                                         {categories && categories.length > 0 ? (
                                             categories.map((cat: any) => (
@@ -152,6 +160,14 @@ export function Header() {
                                             <p className="text-sm font-medium leading-none text-slate-800">{user?.ho_va_ten}</p>
                                             <p className="text-xs leading-none text-slate-500">{user?.email}</p>
                                         </div>
+                                        {user?.vai_tro === 'quan_tri' && (
+                                            <DropdownMenuItem asChild className="cursor-pointer py-2 text-primary font-semibold">
+                                                <Link href="/admin" className="flex items-center w-full">
+                                                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                                                    <span>Quản trị hệ thống</span>
+                                                </Link>
+                                            </DropdownMenuItem>
+                                        )}
                                         <DropdownMenuItem asChild className="cursor-pointer py-2">
                                             <Link href="/profile" className="flex items-center w-full">
                                                 <User className="mr-2 h-4 w-4 text-slate-500" />

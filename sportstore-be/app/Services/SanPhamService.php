@@ -146,17 +146,62 @@ class SanPhamService
 
     public function create(array $data): SanPham
     {
-        return SanPham::create($data);
+        return \DB::transaction(function () use ($data) {
+            $bienThe = $data['bien_the'] ?? [];
+            $hinhAnh = $data['hinh_anh'] ?? [];
+            unset($data['bien_the'], $data['hinh_anh']);
+
+            $product = SanPham::create($data);
+
+            // Lưu biến thể
+            foreach ($bienThe as $bt) {
+                $product->bienThe()->create($bt);
+            }
+
+            // Lưu hình ảnh
+            foreach ($hinhAnh as $ha) {
+                $product->hinhAnh()->create($ha);
+            }
+
+            return $product->load(['danhMuc', 'thuongHieu', 'bienThe', 'hinhAnh']);
+        });
     }
 
     public function update(SanPham $sanPham, array $data): SanPham
     {
-        $sanPham->update($data);
-        return $sanPham->fresh(['danhMuc', 'thuongHieu']);
+        return \DB::transaction(function () use ($sanPham, $data) {
+            $bienThe = $data['bien_the'] ?? null;
+            $hinhAnh = $data['hinh_anh'] ?? null;
+            unset($data['bien_the'], $data['hinh_anh']);
+
+            $sanPham->update($data);
+
+            // Cập nhật biến thể
+            if ($bienThe !== null) {
+                $sanPham->bienThe()->delete();
+                foreach ($bienThe as $bt) {
+                    $sanPham->bienThe()->create($bt);
+                }
+            }
+
+            // Cập nhật hình ảnh
+            if ($hinhAnh !== null) {
+                $sanPham->hinhAnh()->delete();
+                foreach ($hinhAnh as $ha) {
+                    $sanPham->hinhAnh()->create($ha);
+                }
+            }
+
+            return $sanPham->fresh(['danhMuc', 'thuongHieu', 'bienThe', 'hinhAnh']);
+        });
     }
 
     public function delete(SanPham $sanPham): void
     {
-        $sanPham->delete();
+        \DB::transaction(function () use ($sanPham) {
+            $sanPham->bienThe()->delete();
+            $sanPham->hinhAnh()->delete();
+            $sanPham->delete();
+        });
     }
 }

@@ -22,7 +22,11 @@ export default function LoginPage() {
         mutationFn: () => authService.login({ email, mat_khau: password }),
         onSuccess: (data) => {
             setAuth(data.user, data.token);
-            router.push('/');
+            if (data.user.vai_tro === 'quan_tri') {
+                router.push('/admin');
+            } else {
+                router.push('/');
+            }
         },
         onError: (error: any) => {
             if (error?.errors) {

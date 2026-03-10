@@ -53,6 +53,17 @@ class SanPhamAdminController extends Controller
             'mo_ta_day_du'   => 'nullable|string',
             'trang_thai'     => 'boolean',
             'noi_bat'        => 'boolean',
+            // Biến thể
+            'bien_the'             => 'nullable|array',
+            'bien_the.*.kich_co'    => 'required|string',
+            'bien_the.*.mau_sac'     => 'nullable|string',
+            'bien_the.*.gia_rieng'   => 'nullable|numeric|min:0',
+            'bien_the.*.ton_kho'     => 'required|integer|min:0',
+            // Hình ảnh
+            'hinh_anh'              => 'nullable|array',
+            'hinh_anh.*.duong_dan_anh' => 'required|string',
+            'hinh_anh.*.la_anh_chinh'   => 'boolean',
+            'hinh_anh.*.thu_tu'         => 'integer',
         ]);
 
         // Tạo slug từ tên
@@ -77,8 +88,21 @@ class SanPhamAdminController extends Controller
             'thuong_hieu_id' => 'nullable|integer|exists:thuong_hieu,id',
             'gia_goc'        => 'sometimes|numeric|min:0',
             'gia_khuyen_mai' => 'nullable|numeric|min:0',
+            'mo_ta_ngan'     => 'nullable|string|max:500',
+            'mo_ta_day_du'   => 'nullable|string',
             'trang_thai'     => 'boolean',
             'noi_bat'        => 'boolean',
+            // Biến thể
+            'bien_the'             => 'nullable|array',
+            'bien_the.*.kich_co'    => 'required|string',
+            'bien_the.*.mau_sac'     => 'nullable|string',
+            'bien_the.*.gia_rieng'   => 'nullable|numeric|min:0',
+            'bien_the.*.ton_kho'     => 'required|integer|min:0',
+            // Hình ảnh
+            'hinh_anh'              => 'nullable|array',
+            'hinh_anh.*.duong_dan_anh' => 'required|string',
+            'hinh_anh.*.la_anh_chinh'   => 'boolean',
+            'hinh_anh.*.thu_tu'         => 'integer',
         ]);
         $updated = $this->service->update($product, $data);
         return ApiResponse::success($updated, '[Admin] Cập nhật sản phẩm thành công');

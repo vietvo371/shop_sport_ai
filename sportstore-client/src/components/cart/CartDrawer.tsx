@@ -6,6 +6,7 @@ import {
     SheetContent,
     SheetHeader,
     SheetTitle,
+    SheetDescription,
 } from '@/components/ui/sheet';
 import { ShoppingCart, Trash2, Plus, Minus, Loader2 } from 'lucide-react';
 import Link from 'next/link';
@@ -51,6 +52,9 @@ export function CartDrawer() {
                         <ShoppingCart className="h-5 w-5" />
                         Giỏ hàng của bạn ({itemCount})
                     </SheetTitle>
+                    <SheetDescription className="sr-only">
+                        Danh sách sản phẩm bạn đã thêm vào giỏ hàng
+                    </SheetDescription>
                 </SheetHeader>
 
                 <div className="flex-1 overflow-y-auto p-6">

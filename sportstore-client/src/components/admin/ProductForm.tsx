@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {
@@ -24,12 +24,13 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useAdminMetadata } from "@/hooks/useAdmin";
-import { Loader2, Save, X } from "lucide-react";
+import { Plus, Loader2, Save, X, Trash2, Image as ImageIcon, CheckCircle2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Product } from "@/types/product.types";
 import { toast } from "sonner";
 import { adminService } from "@/services/admin.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 const productSchema = z.object({
     ten_san_pham: z.string().min(3, "Tên sản phẩm ít nhất 3 ký tự"),
@@ -41,6 +42,18 @@ const productSchema = z.object({
     mo_ta_day_du: z.string().optional(),
     trang_thai: z.boolean(),
     noi_bat: z.boolean(),
+    bien_the: z.array(z.object({
+        id: z.number().optional(),
+        kich_co: z.string().min(1, "Thiếu size"),
+        mau_sac: z.string().optional().nullable(),
+        gia_rieng: z.number().min(0).optional().nullable(),
+        ton_kho: z.number().min(0, "Tồn kho không được âm"),
+    })).optional().default([]),
+    hinh_anh: z.array(z.object({
+        duong_dan_anh: z.string(),
+        la_anh_chinh: z.boolean(),
+        thu_tu: z.number().default(0),
+    })).optional().default([]),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -67,6 +80,18 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
             mo_ta_day_du: initialData.mo_ta_day_du || "",
             trang_thai: !!initialData.trang_thai,
             noi_bat: !!initialData.noi_bat,
+            bien_the: initialData.bien_the?.map(bt => ({
+                id: bt.id,
+                kich_co: bt.kich_co || "",
+                mau_sac: bt.mau_sac || "",
+                gia_rieng: bt.gia_rieng ? parseFloat(bt.gia_rieng as any) : null,
+                ton_kho: bt.ton_kho,
+            })) || [],
+            hinh_anh: initialData.hinh_anh?.map(img => ({
+                duong_dan_anh: img.duong_dan_anh,
+                la_anh_chinh: !!img.la_anh_chinh,
+                thu_tu: img.thu_tu || 0,
+            })) || [],
         } : {
             ten_san_pham: "",
             danh_muc_id: "",
@@ -77,7 +102,19 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
             mo_ta_day_du: "",
             trang_thai: true,
             noi_bat: false,
+            bien_the: [],
+            hinh_anh: [],
         },
+    });
+
+    const { fields: variantFields, append: appendVariant, remove: removeVariant } = useFieldArray({
+        control: form.control,
+        name: "bien_the",
+    });
+
+    const { fields: imageFields, append: appendImage, remove: removeImage, update: updateImage } = useFieldArray({
+        control: form.control,
+        name: "hinh_anh",
     });
 
     const mutation = useMutation({
@@ -140,7 +177,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Danh mục</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Chọn danh mục" />
@@ -166,7 +203,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Thương hiệu</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Chọn thương hiệu" />
@@ -227,6 +264,167 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                             </FormItem>
                         )}
                     />
+
+                    {/* Hinh anh Section */}
+                    <div className="md:col-span-2 space-y-4 pt-4 border-t border-slate-100">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-lg font-medium flex items-center gap-2">
+                                <ImageIcon className="h-5 w-5 text-primary" />
+                                Hình ảnh sản phẩm
+                            </h3>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => {
+                                    const input = document.createElement("input");
+                                    input.type = "file";
+                                    input.accept = "image/*";
+                                    input.multiple = true;
+                                    input.onchange = async (e) => {
+                                        const files = (e.target as HTMLInputElement).files;
+                                        if (files) {
+                                            for (let i = 0; i < files.length; i++) {
+                                                const file = files[i];
+                                                try {
+                                                    const res = await adminService.uploadImage(file);
+                                                    appendImage({
+                                                        duong_dan_anh: res.data.url,
+                                                        la_anh_chinh: imageFields.length === 0 && i === 0,
+                                                        thu_tu: imageFields.length + i,
+                                                    });
+                                                } catch (err) {
+                                                    toast.error(`Lỗi upload ảnh ${file.name}`);
+                                                }
+                                            }
+                                        }
+                                    };
+                                    input.click();
+                                }}
+                            >
+                                <Plus className="h-4 w-4 mr-1" /> Thêm ảnh
+                            </Button>
+                        </div>
+
+                        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                            {imageFields.map((field, index) => (
+                                <div key={field.id} className="relative group aspect-square rounded-lg border border-slate-200 overflow-hidden bg-slate-50">
+                                    <img
+                                        src={field.duong_dan_anh}
+                                        alt="Product"
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                        <Button
+                                            type="button"
+                                            variant={field.la_anh_chinh ? "default" : "secondary"}
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            onClick={() => {
+                                                imageFields.forEach((_, i) => {
+                                                    updateImage(i, { ...imageFields[i], la_anh_chinh: i === index });
+                                                });
+                                            }}
+                                            title={field.la_anh_chinh ? "Ảnh chính" : "Đặt làm ảnh chính"}
+                                        >
+                                            <CheckCircle2 className="h-4 w-4" />
+                                        </Button>
+                                        <Button
+                                            type="button"
+                                            variant="destructive"
+                                            size="icon"
+                                            className="h-8 w-8"
+                                            onClick={() => removeImage(index)}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                    {field.la_anh_chinh && (
+                                        <div className="absolute top-2 left-2 bg-primary text-white text-[10px] px-2 py-0.5 rounded shadow-sm">
+                                            CHÍNH
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                            {imageFields.length === 0 && (
+                                <div className="col-span-full py-8 text-center text-slate-400 border-2 border-dashed border-slate-200 rounded-lg">
+                                    Chưa có hình ảnh nào. Nhấn "Thêm ảnh" để upload.
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Bien the Section */}
+                    <div className="md:col-span-2 space-y-4 pt-4 border-t border-slate-100">
+                        <div className="flex items-center justify-between">
+                            <h3 className="text-lg font-medium flex items-center gap-2">
+                                <Plus className="h-5 w-5 text-primary" />
+                                Biến thể sản phẩm (Size / Màu sắc)
+                            </h3>
+                            <Button
+                                type="button"
+                                variant="outline"
+                                size="sm"
+                                onClick={() => appendVariant({ kich_co: "", mau_sac: "", ton_kho: 0, gia_rieng: null })}
+                            >
+                                <Plus className="h-4 w-4 mr-1" /> Thêm biến thể
+                            </Button>
+                        </div>
+
+                        <div className="space-y-3">
+                            {variantFields.map((field, index) => (
+                                <div key={field.id} className="grid grid-cols-12 gap-3 items-end p-3 rounded-lg border border-slate-200 bg-white shadow-sm">
+                                    <div className="col-span-3">
+                                        <FormLabel className="text-xs">Kích cỡ (Size)</FormLabel>
+                                        <Input
+                                            placeholder="VD: L, XL, 42..."
+                                            {...form.register(`bien_the.${index}.kich_co`)}
+                                        />
+                                    </div>
+                                    <div className="col-span-3">
+                                        <FormLabel className="text-xs">Màu sắc</FormLabel>
+                                        <Input
+                                            placeholder="VD: Đen, Trắng..."
+                                            {...form.register(`bien_the.${index}.mau_sac`)}
+                                        />
+                                    </div>
+                                    <div className="col-span-2">
+                                        <FormLabel className="text-xs">Tồn kho</FormLabel>
+                                        <Input
+                                            type="number"
+                                            {...form.register(`bien_the.${index}.ton_kho`, { valueAsNumber: true })}
+                                        />
+                                    </div>
+                                    <div className="col-span-3">
+                                        <FormLabel className="text-xs">Giá riêng (₫)</FormLabel>
+                                        <Input
+                                            type="number"
+                                            placeholder="Để trống nếu = giá gốc"
+                                            {...form.register(`bien_the.${index}.gia_rieng`, {
+                                                setValueAs: (v: any) => v === "" ? null : parseFloat(v)
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="col-span-1 flex justify-center">
+                                        <Button
+                                            type="button"
+                                            variant="ghost"
+                                            size="icon"
+                                            className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                                            onClick={() => removeVariant(index)}
+                                        >
+                                            <Trash2 className="h-4 w-4" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            ))}
+                            {variantFields.length === 0 && (
+                                <div className="py-8 text-center text-slate-400 border-2 border-dashed border-slate-200 rounded-lg">
+                                    Sản phẩm chưa có biến thể nào.
+                                </div>
+                            )}
+                        </div>
+                    </div>
 
                     {/* Mo ta ngan */}
                     <FormField
