@@ -20,7 +20,12 @@ export function useCreateCategory() {
             toast.success("Đã tạo danh mục mới");
         },
         onError: (error: any) => {
-            toast.error(error.message || "Lỗi khi tạo danh mục");
+            if (error.errors) {
+                const firstError = Object.values(error.errors)[0] as string[];
+                toast.error(firstError[0] || "Dữ liệu không hợp lệ");
+            } else {
+                toast.error(error.message || "Lỗi khi tạo danh mục");
+            }
         },
     });
 }
@@ -35,7 +40,12 @@ export function useUpdateCategory() {
             toast.success("Đã cập nhật danh mục");
         },
         onError: (error: any) => {
-            toast.error(error.message || "Lỗi khi cập nhật danh mục");
+            if (error.errors) {
+                const firstError = Object.values(error.errors)[0] as string[];
+                toast.error(firstError[0] || "Dữ liệu không hợp lệ");
+            } else {
+                toast.error(error.message || "Lỗi khi cập nhật danh mục");
+            }
         },
     });
 }
@@ -72,7 +82,12 @@ export function useCreateBrand() {
             toast.success("Đã tạo thương hiệu mới");
         },
         onError: (error: any) => {
-            toast.error(error.message || "Lỗi khi tạo thương hiệu");
+            if (error.errors) {
+                const firstError = Object.values(error.errors)[0] as string[];
+                toast.error(firstError[0] || "Dữ liệu không hợp lệ");
+            } else {
+                toast.error(error.message || "Lỗi khi tạo thương hiệu");
+            }
         },
     });
 }
@@ -87,7 +102,12 @@ export function useUpdateBrand() {
             toast.success("Đã cập nhật thương hiệu");
         },
         onError: (error: any) => {
-            toast.error(error.message || "Lỗi khi cập nhật thương hiệu");
+            if (error.errors) {
+                const firstError = Object.values(error.errors)[0] as string[];
+                toast.error(firstError[0] || "Dữ liệu không hợp lệ");
+            } else {
+                toast.error(error.message || "Lỗi khi cập nhật thương hiệu");
+            }
         },
     });
 }

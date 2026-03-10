@@ -18,9 +18,17 @@ class MaGiamGiaAdminController extends Controller
     /**
      * Danh sách mã giảm giá (Admin)
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return ApiResponse::paginate(MaGiamGia::latest()->paginate(20), '[Admin] Danh sách mã giảm giá');
+        $query = MaGiamGia::query();
+
+        if ($request->has('search') && $request->search) {
+            $query->where('ma_code', 'like', '%' . $request->search . '%');
+        }
+
+        $query->orderByDesc('created_at');
+
+        return ApiResponse::paginate($query->paginate(20), '[Admin] Danh sách mã giảm giá');
     }
 
     /**
@@ -36,7 +44,7 @@ class MaGiamGiaAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate([
+        $rules = [
             'ma_code'               => 'required|string|max:50|unique:ma_giam_gia',
             'loai_giam'             => 'required|in:phan_tram,so_tien_co_dinh',
             'gia_tri'               => 'required|numeric|min:0',
@@ -44,14 +52,51 @@ class MaGiamGiaAdminController extends Controller
             'gioi_han_su_dung'      => 'nullable|integer|min:1',
             'bat_dau_luc'           => 'nullable|date',
             'het_han_luc'           => 'nullable|date|after:bat_dau_luc',
-        ]);
+        ];
+
+        $messages = [
+            'ma_code.required' => 'Vui lòng nhập mã giảm giá.',
+            'ma_code.unique' => 'Mã giảm giá này đã tồn tại, vui lòng chọn mã khác.',
+            'ma_code.max' => 'Mã giảm giá không được vượt quá 50 ký tự.',
+            'loai_giam.required' => 'Vui lòng chọn loại giảm giá.',
+            'gia_tri.required' => 'Vui lòng nhập giá trị giảm.',
+            'gia_tri.min' => 'Giá trị giảm không được âm.',
+            'gia_tri_don_hang_min.min' => 'Giá trị đơn hàng tối thiểu không được âm.',
+            'gioi_han_su_dung.min' => 'Giới hạn sử dụng phải từ 1 trở lên.',
+            'het_han_luc.after' => 'Thời gian kết thúc phải sau thời gian bắt đầu.',
+        ];
+
+        $data = $request->validate($rules, $messages);
         return ApiResponse::created(MaGiamGia::create($data), '[Admin] Tạo mã giảm giá thành công');
     }
     public function show(int $id): JsonResponse { return ApiResponse::success(MaGiamGia::findOrFail($id), '[Admin] Chi tiết mã giảm giá'); }
     public function update(Request $request, int $id): JsonResponse
     {
         $coupon = MaGiamGia::findOrFail($id);
-        $coupon->update($request->validate(['trang_thai' => 'boolean', 'het_han_luc' => 'nullable|date']));
+        
+        $rules = [
+            'ma_code'               => 'sometimes|string|max:50|unique:ma_giam_gia,ma_code,' . $id,
+            'loai_giam'             => 'sometimes|in:phan_tram,so_tien_co_dinh',
+            'gia_tri'               => 'sometimes|numeric|min:0',
+            'gia_tri_don_hang_min'  => 'nullable|numeric|min:0',
+            'gioi_han_su_dung'      => 'nullable|integer|min:1',
+            'bat_dau_luc'           => 'nullable|date',
+            'het_han_luc'           => 'nullable|date|after_or_equal:bat_dau_luc',
+            'trang_thai'            => 'nullable|boolean',
+        ];
+
+        $messages = [
+            'ma_code.unique' => 'Mã giảm giá này đã tồn tại, vui lòng chọn mã khác.',
+            'ma_code.max' => 'Mã giảm giá không được vượt quá 50 ký tự.',
+            'gia_tri.min' => 'Giá trị giảm không được âm.',
+            'gia_tri_don_hang_min.min' => 'Giá trị đơn hàng tối thiểu không được âm.',
+            'gioi_han_su_dung.min' => 'Giới hạn sử dụng phải từ 1 trở lên.',
+            'het_han_luc.after_or_equal' => 'Thời gian kết thúc phải sau thời gian bắt đầu.',
+        ];
+        
+        $data = $request->validate($rules, $messages);
+        
+        $coupon->update($data);
         return ApiResponse::success($coupon, '[Admin] Cập nhật mã giảm giá');
     }
     public function destroy(int $id): JsonResponse { MaGiamGia::findOrFail($id)->delete(); return ApiResponse::deleted('[Admin] Đã xóa mã giảm giá'); }

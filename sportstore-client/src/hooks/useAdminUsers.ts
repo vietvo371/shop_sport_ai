@@ -35,7 +35,12 @@ export function useUpdateUser() {
             toast.success('Đã cập nhật thông tin người dùng thành công');
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.message || 'Không thể cập nhật người dùng');
+            if (error.errors) {
+                const firstError = Object.values(error.errors)[0] as string[];
+                toast.error(firstError[0] || 'Dữ liệu không hợp lệ');
+            } else {
+                toast.error(error.message || 'Không thể cập nhật người dùng');
+            }
         },
     });
 }
@@ -50,7 +55,7 @@ export function useDeleteUser() {
             toast.success('Đã xóa người dùng thành công');
         },
         onError: (error: any) => {
-            toast.error(error.response?.data?.message || 'Không thể xóa người dùng');
+            toast.error(error.message || 'Không thể xóa người dùng');
         },
     });
 }

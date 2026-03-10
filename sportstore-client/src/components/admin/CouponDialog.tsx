@@ -61,7 +61,7 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
     const createCoupon = useCreateCoupon();
     const updateCoupon = useUpdateCoupon();
 
-    const form = useForm<z.infer<typeof couponSchema>>({
+    const form = useForm<any>({
         resolver: zodResolver(couponSchema),
         defaultValues: {
             ma_code: "",
@@ -111,22 +111,16 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
 
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
-            <DialogContent className="sm:max-w-[550px] rounded-[2.5rem] p-0 overflow-hidden border-none shadow-2xl">
-                <div className="bg-slate-900 p-8 text-white relative overflow-hidden">
-                    <div className="absolute top-0 right-0 w-64 h-64 bg-primary/20 rounded-full blur-3xl -mr-32 -mt-32" />
-                    <div className="relative z-10 space-y-2">
-                        <div className="flex items-center gap-3">
-                            <div className="h-12 w-12 rounded-2xl bg-white/10 flex items-center justify-center backdrop-blur-md border border-white/10 shadow-lg">
-                                <Ticket className="h-6 w-6 text-primary" />
-                            </div>
-                            <DialogTitle className="text-2xl font-black tracking-tight uppercase">
-                                {isEdit ? "Chỉnh sửa mã" : "Tạo mã giảm giá"}
-                            </DialogTitle>
-                        </div>
-                        <DialogDescription className="text-slate-400 font-medium">
-                            {isEdit ? "Cập nhật thông tin và điều kiện áp dụng cho mã giảm giá" : "Thiết lập mã code và các chương trình ưu đãi mới cho cửa hàng"}
+            <DialogContent className="sm:max-w-[550px] rounded-2xl shadow-lg bg-white overflow-hidden p-0 border border-slate-100">
+                <div className="bg-slate-50 border-b border-slate-100 p-6">
+                    <DialogHeader>
+                        <DialogTitle className="text-xl font-bold text-slate-900">
+                            {isEdit ? "Chỉnh sửa mã giảm giá" : "Tạo mã giảm giá"}
+                        </DialogTitle>
+                        <DialogDescription className="text-sm text-slate-500 mt-1">
+                            {isEdit ? "Cập nhật thông tin và điều kiện áp dụng cho mã" : "Thiết lập mã code và các chương trình ưu đãi mới"}
                         </DialogDescription>
-                    </div>
+                    </DialogHeader>
                 </div>
 
                 <div className="p-8 pb-10">
@@ -138,19 +132,16 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="ma_code"
                                     render={({ field }) => (
                                         <FormItem className="col-span-2">
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Mã giảm giá (Code)</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Mã giảm giá (Code)</FormLabel>
                                             <FormControl>
-                                                <div className="relative group">
-                                                    <Ticket className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors" />
-                                                    <Input
-                                                        placeholder="Vd: SUMMER2025"
-                                                        {...field}
-                                                        className="pl-11 h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus-visible:ring-primary/20 focus-visible:border-primary/30 uppercase"
-                                                        disabled={isEdit}
-                                                    />
-                                                </div>
+                                                <Input
+                                                    placeholder="Vd: SUMMER2025"
+                                                    {...field}
+                                                    className="rounded-xl border-slate-200 bg-white h-11 focus-visible:ring-primary/20 focus-visible:border-primary transition-all uppercase"
+                                                    disabled={isEdit}
+                                                />
                                             </FormControl>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
@@ -160,29 +151,19 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="loai_giam"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Loại giảm</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Loại giảm</FormLabel>
                                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                 <FormControl>
-                                                    <SelectTrigger className="h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus:ring-primary/20">
+                                                    <SelectTrigger className="rounded-xl border-slate-200 bg-white h-11 focus:ring-primary/20">
                                                         <SelectValue placeholder="Chọn loại giảm" />
                                                     </SelectTrigger>
                                                 </FormControl>
-                                                <SelectContent className="rounded-2xl border-slate-100 shadow-xl">
-                                                    <SelectItem value="phan_tram" className="rounded-xl font-bold py-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <Calculator className="h-4 w-4 text-primary" />
-                                                            Phần trăm (%)
-                                                        </div>
-                                                    </SelectItem>
-                                                    <SelectItem value="so_tien_co_dinh" className="rounded-xl font-bold py-3">
-                                                        <div className="flex items-center gap-2">
-                                                            <Banknote className="h-4 w-4 text-emerald-500" />
-                                                            Số tiền (VNĐ)
-                                                        </div>
-                                                    </SelectItem>
+                                                <SelectContent className="rounded-xl border-slate-100 shadow-xl">
+                                                    <SelectItem value="phan_tram">Phần trăm (%)</SelectItem>
+                                                    <SelectItem value="so_tien_co_dinh">Số tiền (VNĐ)</SelectItem>
                                                 </SelectContent>
                                             </Select>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
@@ -192,15 +173,15 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="gia_tri"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Mức giảm</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Mức giảm</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="number"
                                                     {...field}
-                                                    className="h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus-visible:ring-primary/20 focus-visible:border-primary/30"
+                                                    className="rounded-xl border-slate-200 bg-white h-11 focus-visible:ring-primary/20 focus-visible:border-primary transition-all"
                                                 />
                                             </FormControl>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
@@ -210,15 +191,15 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="gia_tri_don_hang_min"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Đơn tối thiểu</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Đơn tối thiểu</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="number"
                                                     {...field}
-                                                    className="h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus-visible:ring-primary/20 focus-visible:border-primary/30"
+                                                    className="rounded-xl border-slate-200 bg-white h-11 focus-visible:ring-primary/20 focus-visible:border-primary transition-all"
                                                 />
                                             </FormControl>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
@@ -228,15 +209,15 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="gioi_han_su_dung"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Tổng lượt dùng</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Tổng lượt dùng</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     type="number"
                                                     {...field}
-                                                    className="h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus-visible:ring-primary/20 focus-visible:border-primary/30"
+                                                    className="rounded-xl border-slate-200 bg-white h-11 focus-visible:ring-primary/20 focus-visible:border-primary transition-all"
                                                 />
                                             </FormControl>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
@@ -246,18 +227,15 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="bat_dau_luc"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Ngày bắt đầu</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Ngày bắt đầu</FormLabel>
                                             <FormControl>
-                                                <div className="relative group">
-                                                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors pointer-events-none" />
-                                                    <Input
-                                                        type="date"
-                                                        {...field}
-                                                        className="pl-11 h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus-visible:ring-primary/20 focus-visible:border-primary/30"
-                                                    />
-                                                </div>
+                                                <Input
+                                                    type="date"
+                                                    {...field}
+                                                    className="rounded-xl border-slate-200 bg-white h-11 focus-visible:ring-primary/20 focus-visible:border-primary transition-all"
+                                                />
                                             </FormControl>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
@@ -267,39 +245,36 @@ export function CouponDialog({ open, onOpenChange, coupon }: CouponDialogProps) 
                                     name="het_han_luc"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel className="text-xs font-black text-slate-400 uppercase tracking-widest ml-1">Ngày hết hạn</FormLabel>
+                                            <FormLabel className="text-sm font-semibold text-slate-700">Ngày hết hạn</FormLabel>
                                             <FormControl>
-                                                <div className="relative group">
-                                                    <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-error transition-colors pointer-events-none" />
-                                                    <Input
-                                                        type="date"
-                                                        {...field}
-                                                        className="pl-11 h-12 bg-slate-50 border-slate-100 rounded-2xl font-bold text-slate-900 focus-visible:ring-primary/20 focus-visible:border-primary/30"
-                                                    />
-                                                </div>
+                                                <Input
+                                                    type="date"
+                                                    {...field}
+                                                    className="rounded-xl border-slate-200 bg-white h-11 focus-visible:ring-primary/20 focus-visible:border-primary transition-all"
+                                                />
                                             </FormControl>
-                                            <FormMessage className="text-[10px] font-bold" />
+                                            <FormMessage className="text-xs" />
                                         </FormItem>
                                     )}
                                 />
                             </div>
 
-                            <DialogFooter className="mt-8 gap-3 sm:justify-start">
-                                <Button
-                                    type="submit"
-                                    className="h-14 flex-1 rounded-[1.25rem] bg-slate-900 hover:bg-slate-800 text-white font-black text-sm uppercase tracking-widest shadow-xl shadow-slate-200 transition-all active:scale-95 disabled:opacity-50"
-                                    disabled={isPending}
-                                >
-                                    {isPending ? <Loader2 className="h-5 w-5 animate-spin mr-2" /> : null}
-                                    {isEdit ? "Cập nhật mã" : "Kích hoạt mã ngay"}
-                                </Button>
+                            <DialogFooter className="px-8 pb-6 pt-4 gap-2 border-t border-slate-100 sm:justify-end">
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    className="h-14 rounded-[1.25rem] border-slate-100 font-black text-xs uppercase tracking-widest text-slate-500 hover:bg-slate-50 transition-all px-8"
+                                    className="rounded-xl"
                                     onClick={() => onOpenChange(false)}
                                 >
                                     Hủy bỏ
+                                </Button>
+                                <Button
+                                    type="submit"
+                                    className="rounded-xl bg-slate-900 hover:bg-slate-800 text-white shadow-md shadow-slate-200"
+                                    disabled={isPending}
+                                >
+                                    {isPending ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                                    {isEdit ? "Cập nhật" : "Tạo mã giảm giá"}
                                 </Button>
                             </DialogFooter>
                         </form>

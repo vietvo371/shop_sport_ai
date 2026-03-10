@@ -56,7 +56,7 @@ export function CouponTable({ coupons, onEdit }: CouponTableProps) {
 
         if (end && now > end) {
             return (
-                <Badge className="bg-slate-50 text-slate-400 border-slate-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg">
+                <Badge variant="secondary" className="bg-slate-100 text-slate-700 hover:bg-slate-100">
                     Hết hạn
                 </Badge>
             );
@@ -64,7 +64,7 @@ export function CouponTable({ coupons, onEdit }: CouponTableProps) {
 
         if (start && now < start) {
             return (
-                <Badge className="bg-amber-50 text-amber-500 border-amber-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg">
+                <Badge variant="secondary" className="bg-amber-100 text-amber-700 hover:bg-amber-100">
                     Chưa bắt đầu
                 </Badge>
             );
@@ -72,14 +72,14 @@ export function CouponTable({ coupons, onEdit }: CouponTableProps) {
 
         if (coupon.gioi_han_su_dung && coupon.so_luong_da_dung >= coupon.gioi_han_su_dung) {
             return (
-                <Badge className="bg-rose-50 text-rose-500 border-rose-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg">
+                <Badge variant="secondary" className="bg-rose-100 text-rose-700 hover:bg-rose-100">
                     Hết lượt
                 </Badge>
             );
         }
 
         return (
-            <Badge className="bg-emerald-50 text-emerald-600 border-emerald-100 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider rounded-lg">
+            <Badge variant="secondary" className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
                 Đang chạy
             </Badge>
         );
@@ -193,23 +193,20 @@ export function CouponTable({ coupons, onEdit }: CouponTableProps) {
                                                         <Trash2 className="h-4 w-4" />
                                                     </Button>
                                                 </AlertDialogTrigger>
-                                                <AlertDialogContent className="rounded-[2.5rem] border-none shadow-2xl">
+                                                <AlertDialogContent className="rounded-2xl sm:max-w-[425px]">
                                                     <AlertDialogHeader>
-                                                        <div className="h-12 w-12 rounded-2xl bg-rose-50 flex items-center justify-center text-rose-500 mb-4">
-                                                            <AlertCircle className="h-6 w-6" />
-                                                        </div>
-                                                        <AlertDialogTitle className="text-xl font-black text-slate-900 tracking-tight italic uppercase">Xoá mã giảm giá này?</AlertDialogTitle>
-                                                        <AlertDialogDescription className="text-slate-500 font-medium leading-relaxed">
-                                                            Mã <span className="font-black text-slate-900">"{coupon.ma_code}"</span> sẽ không thể sử dụng sau khi xoá. Hành động này không thể hoàn tác.
+                                                        <AlertDialogTitle>Xóa mã giảm giá</AlertDialogTitle>
+                                                        <AlertDialogDescription>
+                                                            Bạn có chắc chắn muốn xóa mã giảm giá "{coupon.ma_code}"? Hành động này không thể hoàn tác.
                                                         </AlertDialogDescription>
                                                     </AlertDialogHeader>
-                                                    <AlertDialogFooter className="mt-8 gap-3">
-                                                        <AlertDialogCancel className="rounded-2xl border-slate-100 font-bold text-slate-400 px-6">Huỷ bỏ</AlertDialogCancel>
+                                                    <AlertDialogFooter>
+                                                        <AlertDialogCancel>Hủy</AlertDialogCancel>
                                                         <AlertDialogAction
-                                                            className="rounded-2xl bg-rose-500 hover:bg-rose-600 font-bold text-white shadow-lg shadow-rose-200 px-6"
                                                             onClick={() => deleteCoupon.mutate(coupon.id)}
+                                                            className="bg-destructive hover:bg-destructive/90"
                                                         >
-                                                            Xác nhận xoá
+                                                            Xóa
                                                         </AlertDialogAction>
                                                     </AlertDialogFooter>
                                                 </AlertDialogContent>
