@@ -112,6 +112,51 @@ export const adminService = {
     deleteReview: async (id: number): Promise<ApiResponse<any>> => {
         return apiClient.delete(`/admin/reviews/${id}`);
     },
+
+    // Coupons
+    getCoupons: async (params: any = {}): Promise<PaginatedResponse<any>> => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, String(value));
+            }
+        });
+        const queryString = queryParams.toString();
+        return apiClient.get(`/admin/coupons${queryString ? `?${queryString}` : ''}`);
+    },
+    getCoupon: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get(`/admin/coupons/${id}`);
+    },
+    createCoupon: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post('/admin/coupons', data);
+    },
+    updateCoupon: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put(`/admin/coupons/${id}`, data);
+    },
+    deleteCoupon: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete(`/admin/coupons/${id}`);
+    },
+
+    // Users
+    getUsers: async (params: any = {}): Promise<PaginatedResponse<any>> => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, String(value));
+            }
+        });
+        const queryString = queryParams.toString();
+        return apiClient.get(`/admin/users${queryString ? `?${queryString}` : ''}`);
+    },
+    getUser: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get(`/admin/users/${id}`);
+    },
+    updateUser: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put(`/admin/users/${id}`, data);
+    },
+    deleteUser: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete(`/admin/users/${id}`);
+    },
 };
 
 export const adminKeys = {

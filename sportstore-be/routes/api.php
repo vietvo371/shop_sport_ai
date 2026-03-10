@@ -99,6 +99,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('reviews/{id}/approve', [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'approve']);
         Route::delete('reviews/{id}',      [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'destroy']);
 
+        // Users management
+        Route::apiResource('users', \App\Http\Controllers\Api\Admin\NguoiDungAdminController::class);
+
         // Upload
         Route::post('upload', [\App\Http\Controllers\Api\Admin\UploadController::class, 'upload']);
     });

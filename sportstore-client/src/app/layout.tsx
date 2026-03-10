@@ -18,6 +18,7 @@ export const metadata: Metadata = {
 };
 
 import Providers from "@/lib/queryClient";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Toaster } from "@/components/ui/sonner";
 
@@ -32,8 +33,10 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <main className="flex min-h-screen flex-col">{children}</main>
-          <Toaster position="top-center" richColors />
+          <TooltipProvider>
+            <main className="flex min-h-screen flex-col">{children}</main>
+            <Toaster position="top-center" richColors />
+          </TooltipProvider>
         </Providers>
       </body>
     </html>
