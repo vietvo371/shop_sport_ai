@@ -33,6 +33,8 @@ export const adminService = {
         return apiClient.get('/admin/dashboard');
     },
 
+
+
     // Products
     getProducts: async (params: any = {}): Promise<PaginatedResponse<Product>> => {
         const queryParams = new URLSearchParams();
@@ -156,6 +158,56 @@ export const adminService = {
     },
     deleteUser: async (id: number): Promise<ApiResponse<any>> => {
         return apiClient.delete(`/admin/users/${id}`);
+    },
+
+    // Admin Categories
+    adminGetCategories: async (params: any = {}): Promise<ApiResponse<any[]>> => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, String(value));
+            }
+        });
+        const queryString = queryParams.toString();
+        // Dùng đúng route API /admin/categories
+        return apiClient.get(`/admin/categories${queryString ? `?${queryString}` : ''}`);
+    },
+    adminGetCategory: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get(`/admin/categories/${id}`);
+    },
+    adminCreateCategory: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post('/admin/categories', data);
+    },
+    adminUpdateCategory: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put(`/admin/categories/${id}`, data);
+    },
+    adminDeleteCategory: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete(`/admin/categories/${id}`);
+    },
+
+    // Admin Brands
+    adminGetBrands: async (params: any = {}): Promise<PaginatedResponse<any>> => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, String(value));
+            }
+        });
+        const queryString = queryParams.toString();
+        // Dùng đúng route API /admin/brands
+        return apiClient.get(`/admin/brands${queryString ? `?${queryString}` : ''}`);
+    },
+    adminGetBrand: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get(`/admin/brands/${id}`);
+    },
+    adminCreateBrand: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post('/admin/brands', data);
+    },
+    adminUpdateBrand: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put(`/admin/brands/${id}`, data);
+    },
+    adminDeleteBrand: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete(`/admin/brands/${id}`);
     },
 };
 

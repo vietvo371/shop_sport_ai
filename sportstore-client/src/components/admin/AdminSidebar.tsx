@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
     LayoutDashboard,
     Package,
+    LayoutGrid,
     ShoppingCart,
     Star,
     Ticket,
@@ -17,6 +18,7 @@ import { cn } from '@/lib/utils';
 const sidebarItems = [
     { name: 'Dashboard', href: '/admin', icon: LayoutDashboard },
     { name: 'Sản phẩm', href: '/admin/products', icon: Package },
+    { name: 'Danh mục', href: '/admin/catalog', icon: LayoutGrid },
     { name: 'Đơn hàng', href: '/admin/orders', icon: ShoppingCart },
     { name: 'Đánh giá', href: '/admin/reviews', icon: Star },
     { name: 'Mã giảm giá', href: '/admin/coupons', icon: Ticket },

@@ -19,9 +19,16 @@ class ThuongHieuAdminController extends Controller
     /**
      * Danh sách thương hiệu (Admin)
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return ApiResponse::paginate(ThuongHieu::paginate(20), '[Admin] Thương hiệu');
+        $query = ThuongHieu::query();
+        
+        if ($request->has('search') && $request->search != '') {
+            $query->where('ten', 'like', '%' . $request->search . '%');
+        }
+        
+        $brands = $query->orderByDesc('created_at')->paginate(20);
+        return ApiResponse::paginate($brands, '[Admin] Thương hiệu');
     }
 
     /**
@@ -32,15 +39,37 @@ class ThuongHieuAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        $data = $request->validate(['ten' => 'required|string|max:100', 'mo_ta' => 'nullable|string']);
+        $data = $request->validate([
+            'ten' => 'required|string|max:100', 
+            'mo_ta' => 'nullable|string'
+        ]);
+        
         $data['duong_dan'] = Str::slug($data['ten']);
+        
+        if (ThuongHieu::where('duong_dan', $data['duong_dan'])->exists()) {
+            return ApiResponse::error('Tên thương hiệu này tạo ra đường dẫn đã tồn tại, vui lòng chọn tên khác.', 422);
+        }
+
         return ApiResponse::created(ThuongHieu::create($data), '[Admin] Đã tạo thương hiệu');
     }
     public function show(int $id): JsonResponse { return ApiResponse::success(ThuongHieu::findOrFail($id), '[Admin] Chi tiết thương hiệu'); }
     public function update(Request $request, int $id): JsonResponse
     {
         $b = ThuongHieu::findOrFail($id);
-        $b->update($request->validate(['ten' => 'sometimes|string', 'trang_thai' => 'boolean']));
+        $data = $request->validate([
+            'ten' => 'sometimes|string|max:100', 
+            'mo_ta' => 'nullable|string', 
+            'trang_thai' => 'boolean'
+        ]);
+
+        if (isset($data['ten']) && $data['ten'] !== $b->ten) {
+            $data['duong_dan'] = Str::slug($data['ten']);
+            if (ThuongHieu::where('duong_dan', $data['duong_dan'])->where('id', '!=', $id)->exists()) {
+                return ApiResponse::error('Tên thương hiệu này tạo ra đường dẫn đã tồn tại, vui lòng chọn tên khác.', 422);
+            }
+        }
+
+        $b->update($data);
         return ApiResponse::success($b, '[Admin] Cập nhật thương hiệu');
     }
     public function destroy(int $id): JsonResponse
