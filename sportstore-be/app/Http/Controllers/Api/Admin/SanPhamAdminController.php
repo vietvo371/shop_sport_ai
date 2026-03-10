@@ -23,9 +23,9 @@ class SanPhamAdminController extends Controller
      *
      * Lấy toàn bộ danh sách sản phẩm phục vụ trang quản trị.
      */
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        return ApiResponse::paginate($this->service->adminIndex(), '[Admin] Danh sách sản phẩm');
+        return ApiResponse::paginate($this->service->adminIndex($request->all()), '[Admin] Danh sách sản phẩm');
     }
 
     /**

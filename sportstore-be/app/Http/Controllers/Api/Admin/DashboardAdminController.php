@@ -31,6 +31,31 @@ class DashboardAdminController extends Controller
         $productCount = SanPham::count();
         $userCount = NguoiDung::where('vai_tro', 'khach_hang')->count();
 
+        // 1. Doanh thu theo tháng (6 tháng gần nhất)
+        $revenueChart = DB::table('don_hang')
+            ->where('trang_thai', '!=', 'da_huy')
+            ->where('created_at', '>=', now()->subMonths(6))
+            ->selectRaw("DATE_FORMAT(created_at, '%m/%Y') as month, SUM(tong_tien) as total")
+            ->groupBy('month')
+            ->orderByRaw("MIN(created_at)")
+            ->get();
+
+        // 2. Top sản phẩm bán chạy (theo số lượng trong chi tiết đơn hàng)
+        $topProducts = DB::table('chi_tiet_don_hang')
+            ->join('san_pham', 'chi_tiet_don_hang.san_pham_id', '=', 'san_pham.id')
+            ->select('san_pham.id', 'san_pham.ten_san_pham', DB::raw('SUM(chi_tiet_don_hang.so_luong) as total_sold'))
+            ->groupBy('san_pham.id', 'san_pham.ten_san_pham')
+            ->orderByDesc('total_sold')
+            ->take(5)
+            ->get();
+
+        // 3. Phân bổ sản phẩm theo danh mục
+        $categoryDistribution = DB::table('san_pham')
+            ->join('danh_muc', 'san_pham.danh_muc_id', '=', 'danh_muc.id')
+            ->select('danh_muc.ten as name', DB::raw('COUNT(*) as value'))
+            ->groupBy('danh_muc.id', 'danh_muc.ten')
+            ->get();
+
         $recentOrders = DonHang::with('nguoiDung')
             ->latest()
             ->take(10)
@@ -53,6 +78,11 @@ class DashboardAdminController extends Controller
                 'total_products' => $productCount,
                 'total_users' => $userCount,
             ],
+            'charts' => [
+                'revenue' => $revenueChart,
+                'category_distribution' => $categoryDistribution,
+            ],
+            'top_products' => $topProducts,
             'recent_orders' => $recentOrders
         ], 'Thống kê tổng quan');
     }

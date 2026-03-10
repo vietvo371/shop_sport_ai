@@ -13,10 +13,10 @@ export const useAdminDashboard = () => {
     });
 };
 
-export const useAdminProducts = (page = 1) => {
+export const useAdminProducts = (params: any = { page: 1 }) => {
     return useQuery({
-        queryKey: [...adminKeys.all, 'products', { page }],
-        queryFn: () => adminService.getProducts(page),
+        queryKey: [...adminKeys.all, 'products', params],
+        queryFn: () => adminService.getProducts(params),
     });
 };
 

@@ -9,6 +9,15 @@ export interface DashboardStats {
         total_products: number;
         total_users: number;
     };
+    charts: {
+        revenue: Array<{ month: string; total: number }>;
+        category_distribution: Array<{ name: string; value: number }>;
+    };
+    top_products: Array<{
+        id: number;
+        ten_san_pham: string;
+        total_sold: number;
+    }>;
     recent_orders: Array<{
         id: number;
         ma_don_hang: string;
@@ -25,8 +34,15 @@ export const adminService = {
     },
 
     // Products
-    getProducts: async (page = 1): Promise<PaginatedResponse<Product>> => {
-        return apiClient.get(`/admin/products?page=${page}`);
+    getProducts: async (params: any = {}): Promise<PaginatedResponse<Product>> => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, String(value));
+            }
+        });
+        const queryString = queryParams.toString();
+        return apiClient.get(`/admin/products${queryString ? `?${queryString}` : ''}`);
     },
     getProduct: async (id: number): Promise<ApiResponse<Product>> => {
         return apiClient.get(`/admin/products/${id}`);

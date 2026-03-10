@@ -48,12 +48,12 @@ const productSchema = z.object({
         mau_sac: z.string().optional().nullable(),
         gia_rieng: z.number().min(0).optional().nullable(),
         ton_kho: z.number().min(0, "Tồn kho không được âm"),
-    })).optional().default([]),
+    })),
     hinh_anh: z.array(z.object({
         duong_dan_anh: z.string(),
         la_anh_chinh: z.boolean(),
-        thu_tu: z.number().default(0),
-    })).optional().default([]),
+        thu_tu: z.number(),
+    })),
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;

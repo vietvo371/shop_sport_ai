@@ -139,9 +139,51 @@ class SanPhamService
     }
 
     // ── Admin methods ──────────────────────────────────────
-    public function adminIndex(): LengthAwarePaginator
+    public function adminIndex(array $filters = []): LengthAwarePaginator
     {
-        return SanPham::with(['danhMuc', 'thuongHieu'])->latest()->paginate(20);
+        $query = SanPham::with(['danhMuc', 'thuongHieu', 'anhChinh', 'hinhAnh', 'bienThe']);
+
+        // Tìm kiếm theo tên hoặc SKU
+        if (!empty($filters['tu_khoa'])) {
+            $keyword = $filters['tu_khoa'];
+            $query->where(function($q) use ($keyword) {
+                $q->where('ten_san_pham', 'like', "%$keyword%")
+                  ->orWhere('ma_sku', 'like', "%$keyword%");
+            });
+        }
+
+        // Lọc theo danh mục
+        if (!empty($filters['danh_muc_id'])) {
+            $query->where('danh_muc_id', $filters['danh_muc_id']);
+        }
+
+        // Lọc theo thương hiệu
+        if (!empty($filters['thuong_hieu_id'])) {
+            $query->where('thuong_hieu_id', $filters['thuong_hieu_id']);
+        }
+
+        // Lọc theo trạng thái
+        if (isset($filters['trang_thai']) && $filters['trang_thai'] !== '') {
+            $query->where('trang_thai', (bool)$filters['trang_thai']);
+        }
+
+        // Lọc theo nổi bật
+        if (isset($filters['noi_bat']) && $filters['noi_bat'] !== '') {
+            $query->where('noi_bat', (bool)$filters['noi_bat']);
+        }
+
+        // Sắp xếp
+        $sapXep = $filters['sap_xep'] ?? 'moi_nhat';
+        match ($sapXep) {
+            'gia_tang' => $query->orderBy('gia_goc', 'asc'),
+            'gia_giam' => $query->orderBy('gia_goc', 'desc'),
+            'ban_chay' => $query->orderBy('da_ban', 'desc'),
+            'ton_kho'  => $query->orderBy('so_luong_ton_kho', 'asc'),
+            default    => $query->latest(),
+        };
+
+        $perPage = (int) ($filters['per_page'] ?? 20);
+        return $query->paginate($perPage);
     }
 
     public function create(array $data): SanPham
