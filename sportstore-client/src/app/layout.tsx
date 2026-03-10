@@ -19,9 +19,6 @@ export const metadata: Metadata = {
 
 import Providers from "@/lib/queryClient";
 
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
-import { CartDrawer } from "@/components/cart/CartDrawer";
 import { Toaster } from "@/components/ui/sonner";
 
 export default function RootLayout({
@@ -35,12 +32,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <CartDrawer />
-          </div>
+          <main className="flex min-h-screen flex-col">{children}</main>
           <Toaster position="top-center" richColors />
         </Providers>
       </body>

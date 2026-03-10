@@ -240,19 +240,18 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                 </div>
             </div>
 
-            {/* Tabs Section: Description & Reviews */}
             <div className="mt-16 border-t pt-8">
                 <Tabs defaultValue="description" className="w-full">
-                    <TabsList className="flex w-full justify-start items-center bg-transparent border-b rounded-none h-auto p-0 gap-8 mb-8 overflow-x-auto">
+                    <TabsList variant="line" className="flex w-full justify-start items-center bg-transparent border-b rounded-none h-auto p-0 gap-8 mb-8 overflow-x-auto no-scrollbar">
                         <TabsTrigger
                             value="description"
-                            className="relative text-lg py-4 px-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-primary font-bold text-slate-500 hover:text-slate-900 transition-all bg-transparent"
+                            className="text-lg py-4 px-1 font-bold text-slate-400 data-[state=active]:text-slate-900 data-[state=active]:bg-transparent transition-all hover:text-slate-600 relative after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[3px] after:bg-primary after:opacity-0 data-[state=active]:after:opacity-100 after:transition-all after:rounded-t-full"
                         >
                             Mô tả sản phẩm
                         </TabsTrigger>
                         <TabsTrigger
                             value="reviews"
-                            className="relative text-lg py-4 px-2 rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none data-[state=active]:text-primary font-bold text-slate-500 hover:text-slate-900 transition-all bg-transparent"
+                            className="text-lg py-4 px-1 font-bold text-slate-400 data-[state=active]:text-slate-900 data-[state=active]:bg-transparent transition-all hover:text-slate-600 relative after:absolute after:bottom-[-1px] after:left-0 after:right-0 after:h-[3px] after:bg-primary after:opacity-0 data-[state=active]:after:opacity-100 after:transition-all after:rounded-t-full"
                         >
                             Đánh giá ({product.so_luot_danh_gia || 0})
                         </TabsTrigger>

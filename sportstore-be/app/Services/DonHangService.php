@@ -121,7 +121,7 @@ class DonHangService
      */
     public function getByCode(string $code, NguoiDung $user): ?DonHang
     {
-        return DonHang::with(['items.sanPham.anhChinh', 'lichSuTrangThai', 'thanhToan'])
+        return DonHang::with(['items.sanPham.anhChinh', 'lichSuTrangThai', 'thanhToan', 'danhGia'])
             ->where('ma_don_hang', $code)
             ->where('nguoi_dung_id', $user->id)
             ->first();

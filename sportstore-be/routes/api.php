@@ -79,6 +79,8 @@ Route::middleware('auth:sanctum')->group(function () {
     // ─── ADMIN ONLY ───────────────────────────────────────
     Route::prefix('admin')->middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function () {
 
+        Route::get('dashboard', [\App\Http\Controllers\Api\Admin\DashboardAdminController::class, 'index']);
+
         // Products CRUD
         Route::apiResource('products',   \App\Http\Controllers\Api\Admin\SanPhamAdminController::class);
         Route::apiResource('categories', \App\Http\Controllers\Api\Admin\DanhMucAdminController::class);

@@ -26,13 +26,13 @@
 | Chi tiết SP `[slug]` | 🟢 DONE | `src/app/(shop)/products/[slug]/` | Gallery, variants, reviews |
 | Auth (`/login`, `/register`) | 🟢 DONE | `src/app/(auth)/` | Form + Zustand auth store |
 | Giỏ hàng (Drawer) | 🟢 DONE | `src/components/cart/` | Slide-in drawer |
-| Checkout `/checkout` | 🔴 TODO | `src/app/(shop)/checkout/` | Form, coupon, summary |
-| Đơn hàng `/orders` | 🔴 TODO | `src/app/(shop)/orders/` | List + detail |
+| Checkout `/checkout` | � DONE | `src/app/(shop)/checkout/` | Form, coupon, summary |
+| Đơn hàng `/orders` | � DONE | `src/app/(shop)/profile/orders/` | List + detail |
 | AI Chatbot Widget | 🔴 TODO | `src/components/chatbot/` | Float widget, session |
-| Wishlist `/wishlist` | 🔴 TODO | `src/app/(shop)/wishlist/` | - |
+| Wishlist `/wishlist` | � DONE | `src/app/(shop)/profile/wishlist/` | - |
 | Recommendation Section | 🔴 TODO | `src/components/recommendation/` | Homepage + Product detail |
 | Admin `/admin` | 🔴 TODO | `src/app/(admin)/admin/` | Product, Order, Coupon CRUD |
-| Profile `/profile` | 🔴 TODO | `src/app/(shop)/profile/` | Info + addresses |
+| Profile `/profile` | � DONE | `src/app/(shop)/profile/` | Info + addresses |
 
 ---
 
@@ -44,8 +44,6 @@
 - ⚠️ ISSUES — Có vấn đề cần xử lý
 
 ---
-
-## Log thay đổi
 
 ## Log thay đổi
 
@@ -63,3 +61,16 @@
 - Tạo trang Danh sách Sản Phẩm `/products` với Pagination.
 - Tạo trang Chi tiết Sản phẩm `/products/[slug]`.
 - Dựng trang Authentication (Đăng nhập `/login` & Đăng ký `/register`).
+
+### Session 3 — 03/2025 — Checkout, Profile & Orders
+- Triển khai luồng Thanh toán (`/checkout`) tích hợp mã giảm giá.
+- Xây dựng trang Thành công sau khi đặt hàng (`/checkout/success`).
+- Hoàn thiện trang Thông tin cá nhân (`/profile`) và Sổ địa chỉ.
+- Triển khai Lịch sử đơn hàng và Chi tiết đơn hàng tại `/profile/orders`.
+- Sửa lỗi mapping API response cho Paginated data và Order details.
+
+### Session 4 — 03/2025 — Review & Wishlist
+- Triển khai tính năng Yêu thích (Wishlist) tại trang chi tiết SP và trang `/profile/wishlist`.
+- Tích hợp gửi Đánh giá (Review) sản phẩm từ trang chi tiết đơn hàng đã giao.
+- Tự động làm mới dữ liệu sau khi gửi đánh giá.
+- Chuẩn hóa header hiển thị thông tin User và link nhanh tới đơn hàng/yêu thích.

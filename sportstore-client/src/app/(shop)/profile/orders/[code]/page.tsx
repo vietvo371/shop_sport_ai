@@ -1,6 +1,6 @@
 'use client';
 
-import { use } from 'react';
+import { useState, use } from 'react';
 import { useOrderDetails } from '@/hooks/useOrder';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { Separator } from '@/components/ui/separator';
 import { OrderItem } from '@/types/order.types';
+import { ReviewModal } from '@/components/product/ReviewModal';
 
 const getStatusBadge = (status: string) => {
     switch (status) {
@@ -22,9 +23,11 @@ const getStatusBadge = (status: string) => {
 
 export default function OrderDetailsPage({ params }: { params: Promise<{ code: string }> }) {
     const { code } = use(params);
-    const { data: responseData, isLoading, error } = useOrderDetails(code);
+    const { data: responseData, isLoading, error, refetch } = useOrderDetails(code);
 
     const order = responseData?.data; // The interceptor returns { success, data } from API
+
+    const [selectedReviewItem, setSelectedReviewItem] = useState<{ id: number, name: string } | null>(null);
 
     if (isLoading) {
         return (
@@ -94,9 +97,27 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ code: s
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <p className="text-xs text-slate-500 mb-1">Thành tiền</p>
-                                            <p className="font-bold text-slate-900">{new Intl.NumberFormat('vi-VN').format(item.thanh_tien)} ₫</p>
+                                        <div className="flex flex-col items-end gap-2">
+                                            <div className="text-right">
+                                                <p className="text-xs text-slate-500 mb-1">Thành tiền</p>
+                                                <p className="font-bold text-slate-900">{new Intl.NumberFormat('vi-VN').format(item.thanh_tien)} ₫</p>
+                                            </div>
+                                            {order.trang_thai === 'da_giao' && (
+                                                <Button
+                                                    variant="outline"
+                                                    size="sm"
+                                                    disabled={order.danh_gia?.some((dg: any) => dg.san_pham_id === item.san_pham_id)}
+                                                    className="mt-2 text-xs h-8 border-primary text-primary hover:bg-primary hover:text-white disabled:bg-slate-50 disabled:text-slate-400 disabled:border-slate-200"
+                                                    onClick={() => setSelectedReviewItem({
+                                                        id: item.san_pham_id,
+                                                        name: item.ten_san_pham
+                                                    })}
+                                                >
+                                                    {order.danh_gia?.some((dg: any) => dg.san_pham_id === item.san_pham_id)
+                                                        ? 'Đã đánh giá'
+                                                        : 'Viết đánh giá'}
+                                                </Button>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
@@ -193,6 +214,19 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ code: s
 
                 </div>
             </div>
+
+            {selectedReviewItem && (
+                <ReviewModal
+                    isOpen={!!selectedReviewItem}
+                    onClose={() => setSelectedReviewItem(null)}
+                    productName={selectedReviewItem.name}
+                    productId={selectedReviewItem.id}
+                    orderId={order.id}
+                    onSuccess={() => {
+                        refetch();
+                    }}
+                />
+            )}
         </div>
     );
 }

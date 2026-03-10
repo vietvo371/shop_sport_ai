@@ -30,4 +30,5 @@ class DonHang extends Model
     public function items(): HasMany       { return $this->hasMany(ChiTietDonHang::class, 'don_hang_id'); }
     public function lichSuTrangThai(): HasMany { return $this->hasMany(LichSuTrangThaiDon::class, 'don_hang_id'); }
     public function thanhToan(): HasMany   { return $this->hasMany(ThanhToan::class, 'don_hang_id'); }
+    public function danhGia(): HasMany    { return $this->hasMany(DanhGia::class, 'don_hang_id'); }
 }

@@ -1,7 +1,7 @@
 # IMPLEMENTATION STATUS — sportstore-be
 
 **Cập nhật:** 03/2025
-**Trạng thái tổng thể:** 🔴 Chưa bắt đầu
+**Trạng thái tổng thể:** 🟢 Hoàn thiện Core Backend (95%)
 
 ---
 
@@ -9,22 +9,22 @@
 
 | Module | Status | Files | Ghi chú |
 |--------|--------|-------|---------|
-| Setup & Config | 🔴 TODO | `.env`, `config/`, `composer.json` | Cài đặt Laravel + packages |
-| ApiResponse Helper | 🔴 TODO | `app/Http/Helpers/ApiResponse.php` | Base cho mọi response |
-| Auth | 🔴 TODO | Controller, Service, FormRequest, Routes | Sanctum |
-| Database Migrations | 🔴 TODO | `database/migrations/` | Theo `database.dbml` |
-| Seeders | 🔴 TODO | `database/seeders/` | Dữ liệu mẫu |
-| Category & Brand | 🔴 TODO | CRUD admin + public listing | - |
-| Product | 🔴 TODO | CRUD + biến thể + ảnh | Phức tạp nhất |
-| Cart | 🔴 TODO | Thêm/xóa/sửa, guest + user | - |
-| Order | 🔴 TODO | Checkout, coupon, trạng thái | - |
-| Payment | 🔴 TODO | COD mock + VNPay stub | - |
-| Review | 🔴 TODO | Gửi, duyệt, cập nhật rating | - |
-| Wishlist | 🔴 TODO | Toggle yêu thích | - |
-| Coupon | 🔴 TODO | Validate + áp dụng | - |
-| Notification | 🔴 TODO | Tạo + đánh dấu đọc | - |
-| AI Chatbot (Gemini) | 🔴 TODO | Proxy + lưu lịch sử | Key feature |
-| Recommendation | 🔴 TODO | Proxy Python AI + ghi behavior | Key feature |
+| Setup & Config | 🟢 DONE | `.env`, `config/`, `composer.json` | Laravel 11, Sanctum, CORS |
+| ApiResponse Helper | 🟢 DONE | `app/Http/Helpers/ApiResponse.php` | Standardized JSON structure |
+| Auth | 🟢 DONE | `AuthController`, `NguoiDung` | Sanctum Bearer tokens |
+| Database Migrations | 🟢 DONE | `database/migrations/` | Full schema (24 tables) |
+| Seeders | 🟢 DONE | `database/seeders/` | Realistic data seeding |
+| Category & Brand | 🟢 DONE | `DanhMucController`, `ThuongHieuController` | - |
+| Product | 🟢 DONE | `SanPhamController`, `SanPhamService` | Slug-based, variants, prices |
+| Cart | 🟢 DONE | `GioHangController`, `GioHangService` | User-based cart management |
+| Order | 🟢 DONE | `DonHangController`, `DonHangService` | Checkout flow, order codes |
+| Payment | 🟢 DONE | `ThanhToan` | COD support |
+| Review | 🟢 DONE | `DanhGiaController` | Submit, moderation (pending) |
+| Wishlist | 🟢 DONE | `YeuThichController` | Toggle logic |
+| Coupon | 🟢 DONE | `MaGiamGiaController` | Validation & usage tracking |
+| Notification | 🟢 DONE | `ThongBaoController` | DB notifications |
+| AI Chatbot (Gemini) | 🔴 TODO | `ChatbotController` | Proxying to Gemini API |
+| Recommendation | 🔴 TODO | `RecommendationController` | User behavior tracking |
 
 ---
 
@@ -39,5 +39,14 @@
 
 ## Log thay đổi
 
-### Session 1 — [Ngày] — [Người thực hiện]
-_Chưa có_
+### Session 1 — 03/2025 — Initial Build
+- Hoàn thiện toàn bộ Database Schema và Migrations.
+- Xây dựng hệ thống Service Layer & Repository Pattern cơ bản.
+- Triển khai Authentication với Laravel Sanctum.
+- Hoàn thiện Catalog API (Product, Category, Brand).
+- Triển khai Giỏ hàng, Đơn hàng và Thanh toán COD.
+
+### Session 2 — 03/2025 — Refinement
+- Sửa lỗi eager loading ảnh chính cho Đơn hàng.
+- Cập nhật `SanPhamService` hỗ trợ cờ `can_review`, `has_reviewed`.
+- Tối ưu hóa phân trang với `ApiResponse::paginate()`.

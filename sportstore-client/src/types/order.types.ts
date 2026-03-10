@@ -40,4 +40,5 @@ export interface Order {
     trang_thai: string;
     created_at: string;
     items?: OrderItem[];
+    danh_gia?: any[];
 }
