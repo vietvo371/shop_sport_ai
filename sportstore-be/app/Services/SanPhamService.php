@@ -186,6 +186,22 @@ class SanPhamService
         return $query->paginate($perPage);
     }
 
+    public function generateUniqueSlug(string $name, ?int $ignoreId = null): string
+    {
+        $slug = \Illuminate\Support\Str::slug($name);
+        $originalSlug = $slug;
+        $count = 1;
+
+        while (SanPham::where('duong_dan', $slug)
+            ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+            ->exists()
+        ) {
+            $slug = $originalSlug . '-' . $count++;
+        }
+
+        return $slug;
+    }
+
     public function create(array $data): SanPham
     {
         return \DB::transaction(function () use ($data) {

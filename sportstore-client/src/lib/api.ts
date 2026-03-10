@@ -46,6 +46,11 @@ apiClient.interceptors.response.use(
       message: error.message || 'Có lỗi xảy ra',
     };
 
+    // Add status code for easier handling in components
+    if (error.response) {
+      formattedError.status = error.response.status;
+    }
+
     return Promise.reject(formattedError);
   }
 );

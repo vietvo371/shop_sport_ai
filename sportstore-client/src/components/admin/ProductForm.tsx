@@ -33,14 +33,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 const productSchema = z.object({
-    ten_san_pham: z.string().min(3, "Tên sản phẩm ít nhất 3 ký tự"),
+    ten_san_pham: z.string().min(5, "Tên sản phẩm ít nhất 5 ký tự").max(200, "Tên sản phẩm tối đa 200 ký tự"),
     danh_muc_id: z.string().min(1, "Vui lòng chọn danh mục"),
-    thuong_hieu_id: z.string().optional(),
-    gia_goc: z.number().min(0, "Giá gốc không được âm"),
+    thuong_hieu_id: z.string().optional().nullable(),
+    gia_goc: z.number().positive("Giá gốc phải lớn hơn 0"),
     gia_khuyen_mai: z.number().min(0).optional().nullable(),
-    mo_ta_ngan: z.string().max(500, "Mô tả ngắn tối đa 500 ký tự").optional(),
-    mo_ta_day_du: z.string().optional(),
+    mo_ta_ngan: z.string().min(10, "Mô tả ngắn ít nhất 10 ký tự").max(500, "Mô tả ngắn tối đa 500 ký tự"),
+    mo_ta_day_du: z.string().min(20, "Mô tả chi tiết ít nhất 20 ký tự"),
     trang_thai: z.boolean(),
+    ma_sku: z.string().min(1, "Mã SKU là bắt buộc").max(100, "SKU tối đa 100 ký tự"),
     noi_bat: z.boolean(),
     bien_the: z.array(z.object({
         id: z.number().optional(),
@@ -48,12 +49,20 @@ const productSchema = z.object({
         mau_sac: z.string().optional().nullable(),
         gia_rieng: z.number().min(0).optional().nullable(),
         ton_kho: z.number().min(0, "Tồn kho không được âm"),
-    })),
+    })).min(1, "Sản phẩm phải có ít nhất 1 phân loại (Size/Màu)"),
     hinh_anh: z.array(z.object({
         duong_dan_anh: z.string(),
         la_anh_chinh: z.boolean(),
         thu_tu: z.number(),
-    })),
+    })).min(1, "Vui lòng thêm ít nhất 1 hình ảnh sản phẩm"),
+}).refine(data => {
+    if (data.gia_khuyen_mai !== null && data.gia_khuyen_mai !== undefined) {
+        return data.gia_khuyen_mai < data.gia_goc;
+    }
+    return true;
+}, {
+    message: "Giá khuyến mãi phải nhỏ hơn giá gốc",
+    path: ["gia_khuyen_mai"]
 });
 
 type ProductFormValues = z.infer<typeof productSchema>;
@@ -79,6 +88,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
             mo_ta_ngan: initialData.mo_ta_ngan || "",
             mo_ta_day_du: initialData.mo_ta_day_du || "",
             trang_thai: !!initialData.trang_thai,
+            ma_sku: initialData.ma_sku || "",
             noi_bat: !!initialData.noi_bat,
             bien_the: initialData.bien_the?.map(bt => ({
                 id: bt.id,
@@ -101,6 +111,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
             mo_ta_ngan: "",
             mo_ta_day_du: "",
             trang_thai: true,
+            ma_sku: "",
             noi_bat: false,
             bien_the: [],
             hinh_anh: [],
@@ -135,7 +146,22 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
             router.refresh();
         },
         onError: (error: any) => {
-            toast.error(error.message || "Có lỗi xảy ra");
+            if (error.status === 422 && error.errors) {
+                const errors = error.errors;
+                Object.keys(errors).forEach((key) => {
+                    form.setError(key as any, {
+                        type: "server",
+                        message: errors[key][0],
+                    });
+                });
+
+                // Show the first error in the toast for better visibility
+                const firstErrorKey = Object.keys(errors)[0];
+                const firstErrorMessage = errors[firstErrorKey][0];
+                toast.error(firstErrorMessage || "Dữ liệu không hợp lệ");
+            } else {
+                toast.error(error.message || "Có lỗi xảy ra");
+            }
         }
     });
 
@@ -161,7 +187,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         name="ten_san_pham"
                         render={({ field }) => (
                             <FormItem className="md:col-span-2">
-                                <FormLabel>Tên sản phẩm</FormLabel>
+                                <FormLabel>Tên sản phẩm <span className="text-rose-500">*</span></FormLabel>
                                 <FormControl>
                                     <Input placeholder="Nhập tên sản phẩm..." {...field} />
                                 </FormControl>
@@ -176,7 +202,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         name="danh_muc_id"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Danh mục</FormLabel>
+                                <FormLabel>Danh mục <span className="text-rose-500">*</span></FormLabel>
                                 <Select onValueChange={field.onChange} value={field.value}>
                                     <FormControl>
                                         <SelectTrigger>
@@ -203,7 +229,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Thương hiệu</FormLabel>
-                                <Select onValueChange={field.onChange} value={field.value}>
+                                <Select onValueChange={field.onChange} value={field.value || undefined}>
                                     <FormControl>
                                         <SelectTrigger>
                                             <SelectValue placeholder="Chọn thương hiệu" />
@@ -222,13 +248,28 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         )}
                     />
 
+                    {/* Ma SKU */}
+                    <FormField
+                        control={form.control}
+                        name="ma_sku"
+                        render={({ field }) => (
+                            <FormItem>
+                                <FormLabel>Mã SKU <span className="text-rose-500">*</span></FormLabel>
+                                <FormControl>
+                                    <Input placeholder="VD: BALO-HELIX-01" {...field} value={field.value || ""} />
+                                </FormControl>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
                     {/* Gia goc */}
                     <FormField
                         control={form.control}
                         name="gia_goc"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Giá gốc (₫)</FormLabel>
+                                <FormLabel>Giá gốc (₫) <span className="text-rose-500">*</span></FormLabel>
                                 <FormControl>
                                     <Input
                                         type="number"
@@ -270,7 +311,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-medium flex items-center gap-2">
                                 <ImageIcon className="h-5 w-5 text-primary" />
-                                Hình ảnh sản phẩm
+                                Hình ảnh sản phẩm <span className="text-rose-500 text-sm">* (Ít nhất 1 ảnh)</span>
                             </h3>
                             <Button
                                 type="button"
@@ -359,7 +400,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         <div className="flex items-center justify-between">
                             <h3 className="text-lg font-medium flex items-center gap-2">
                                 <Plus className="h-5 w-5 text-primary" />
-                                Biến thể sản phẩm (Size / Màu sắc)
+                                Biến thể sản phẩm (Size / Màu sắc) <span className="text-rose-500 text-sm">* (Ít nhất 1 phân loại)</span>
                             </h3>
                             <Button
                                 type="button"
@@ -432,7 +473,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         name="mo_ta_ngan"
                         render={({ field }) => (
                             <FormItem className="md:col-span-2">
-                                <FormLabel>Mô tả ngắn</FormLabel>
+                                <FormLabel>Mô tả ngắn <span className="text-rose-500">*</span></FormLabel>
                                 <FormControl>
                                     <Textarea
                                         placeholder="Tóm tắt đặc điểm nổi bật..."
@@ -451,7 +492,7 @@ export function ProductForm({ initialData, isEdit = false }: ProductFormProps) {
                         name="mo_ta_day_du"
                         render={({ field }) => (
                             <FormItem className="md:col-span-2">
-                                <FormLabel>Mô tả chi tiết</FormLabel>
+                                <FormLabel>Mô tả chi tiết <span className="text-rose-500">*</span></FormLabel>
                                 <FormControl>
                                     <Textarea
                                         placeholder="Thông tin chi tiết kỹ thuật, chất liệu..."

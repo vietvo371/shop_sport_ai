@@ -25,9 +25,8 @@ class HinhAnhSanPham extends Model
             return $this->duong_dan_anh;
         }
 
-        $path = str_replace('/storage/', '', $this->duong_dan_anh);
-        // Fallback localhost:8000 for local testing if APP_URL is not set properly
-        return rtrim(env('APP_URL', 'http://localhost:8000'), '/') . Storage::url($path);
+        $path = ltrim(str_replace('/storage/', '', $this->duong_dan_anh), '/');
+        return asset('storage/' . $path);
     }
 
     public function sanPham(): BelongsTo

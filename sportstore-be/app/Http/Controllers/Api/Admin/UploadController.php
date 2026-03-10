@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use App\Helpers\ApiResponse;
+use App\Http\Helpers\ApiResponse;
 use Illuminate\Http\JsonResponse;
 
 class UploadController extends Controller
@@ -30,10 +30,10 @@ class UploadController extends Controller
             
             // Tạo tên file ngẫu nhiên
             $filename = Str::random(20) . '.' . $file->getClientOriginalExtension();
-            $path = $file->storeAs('public/' . $folder, $filename);
+            $path = $file->storeAs($folder, $filename, 'public');
             
             // Trả về URL để frontend dùng làm preview/lưu vào DB
-            $url = Storage::url($folder . '/' . $filename);
+            $url = asset('storage/' . $folder . '/' . $filename);
             
             return ApiResponse::success([
                 'url'      => $url,
