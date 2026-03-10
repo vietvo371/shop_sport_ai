@@ -86,6 +86,7 @@ export function CartDrawer() {
                                                 src={imgUrl}
                                                 alt={prod?.ten_san_pham || 'Product'}
                                                 fill
+                                                unoptimized
                                                 className="object-cover"
                                             />
                                         </div>

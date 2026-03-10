@@ -234,7 +234,7 @@ export default function CheckoutPage() {
                                     return (
                                         <div key={item.id} className="flex gap-4">
                                             <div className="relative w-16 h-16 rounded-md overflow-hidden bg-slate-100 flex-shrink-0 border border-slate-100">
-                                                <Image src={imgUrl} alt={prod?.ten_san_pham || 'Product'} fill className="object-cover" />
+                                                <Image src={imgUrl} alt={prod?.ten_san_pham || 'Product'} fill unoptimized className="object-cover" />
                                             </div>
                                             <div className="flex-1 flex flex-col justify-center">
                                                 <h4 className="text-sm font-medium line-clamp-2 text-slate-800 leading-tight">

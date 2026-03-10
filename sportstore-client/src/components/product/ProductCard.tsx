@@ -60,6 +60,7 @@ export function ProductCard({ product }: ProductCardProps) {
                         src={mainImage}
                         alt={product.ten_san_pham}
                         fill
+                        unoptimized
                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                     />
                     <div className="absolute top-2 left-2 flex flex-col gap-2">

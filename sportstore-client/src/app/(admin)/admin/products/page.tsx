@@ -234,6 +234,7 @@ export default function AdminProductsPage() {
                                                         src={product.anh_chinh?.url || product.hinh_anh?.[0]?.url || product.hinh_anh_san_pham?.[0]?.url || '/placeholder.png'}
                                                         alt={product.ten_san_pham}
                                                         fill
+                                                        unoptimized
                                                         className="object-cover group-hover:scale-110 transition-transform duration-300"
                                                     />
                                                 </div>

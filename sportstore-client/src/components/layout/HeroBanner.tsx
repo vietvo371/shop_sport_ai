@@ -40,6 +40,7 @@ export function HeroBanner() {
                                 src={banner.hinh_anh}
                                 alt={banner.tieu_de || 'Banner'}
                                 fill
+                                unoptimized
                                 className="object-cover"
                                 priority={banner.thu_tu === 1}
                             />

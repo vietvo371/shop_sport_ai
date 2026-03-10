@@ -82,6 +82,7 @@ export default function OrderDetailsPage({ params }: { params: Promise<{ code: s
                                                     src={item.san_pham?.anh_chinh?.duong_dan_anh || '/placeholder.png'}
                                                     alt={item.ten_san_pham}
                                                     fill
+                                                    unoptimized
                                                     className="object-cover"
                                                 />
                                             </div>

@@ -103,6 +103,7 @@ export default function OrderHistoryPage() {
                                                             src={firstItem.san_pham?.anh_chinh?.duong_dan_anh || '/placeholder.png'}
                                                             alt={firstItem.ten_san_pham}
                                                             fill
+                                                            unoptimized
                                                             className="object-cover"
                                                         />
                                                     </div>

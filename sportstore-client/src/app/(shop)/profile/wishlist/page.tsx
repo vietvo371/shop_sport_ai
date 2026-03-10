@@ -72,6 +72,7 @@ export default function WishlistPage() {
                                         src={mainImage}
                                         alt={product.ten_san_pham}
                                         fill
+                                        unoptimized
                                         className="object-cover transition-transform duration-300 group-hover:scale-105"
                                     />
                                 </Link>

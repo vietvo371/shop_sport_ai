@@ -59,6 +59,7 @@ export function BrandsTab() {
                                             src={brand.logo}
                                             alt={brand.ten}
                                             fill
+                                            unoptimized
                                             className="object-contain"
                                             sizes="128px"
                                         />

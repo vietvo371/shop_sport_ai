@@ -121,6 +121,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                             src={activeImage}
                             alt={product.ten_san_pham}
                             fill
+                            unoptimized
                             className="object-cover"
                             priority
                         />
@@ -139,7 +140,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ slug: 
                                         onClick={() => setActiveImage(imgUrl)}
                                         className={`relative w-20 h-20 rounded-lg overflow-hidden border shrink-0 cursor-pointer hover:ring-2 ring-primary transition-all ${activeImage === imgUrl ? 'ring-2 ring-primary border-primary' : 'border-slate-200'}`}
                                     >
-                                        <Image src={imgUrl} alt="Thumbnail" fill className="object-cover" />
+                                        <Image src={imgUrl} alt="Thumbnail" fill unoptimized className="object-cover" />
                                     </div>
                                 );
                             })}
