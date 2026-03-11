@@ -128,5 +128,9 @@ Route::middleware('auth:sanctum')->group(function () {
         });
         // Upload
         Route::post('upload', [\App\Http\Controllers\Api\Admin\UploadController::class, 'upload']);
+
+        // Banners
+        Route::apiResource('banners', \App\Http\Controllers\Api\Admin\BannerAdminController::class);
+        Route::patch('banners/{banner}/status', [\App\Http\Controllers\Api\Admin\BannerAdminController::class, 'toggleStatus']);
     });
 });

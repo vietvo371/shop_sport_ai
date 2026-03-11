@@ -12,7 +12,8 @@ import {
     Users,
     Settings,
     Home,
-    BarChart3
+    BarChart3,
+    Image as ImageIcon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -25,6 +26,7 @@ const sidebarItems = [
     { name: 'Mã giảm giá', href: '/admin/coupons', icon: Ticket },
     { name: 'Khách hàng', href: '/admin/users', icon: Users },
     { name: 'Xếp hạng & Thống kê', href: '/admin/reports', icon: BarChart3 },
+    { name: 'Banner', href: '/admin/banners', icon: ImageIcon },
 ];
 
 interface AdminSidebarProps {

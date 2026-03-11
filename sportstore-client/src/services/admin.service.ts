@@ -209,6 +209,33 @@ export const adminService = {
     adminDeleteBrand: async (id: number): Promise<ApiResponse<any>> => {
         return apiClient.delete(`/admin/brands/${id}`);
     },
+
+    // Banners
+    getBanners: async (params: any = {}): Promise<PaginatedResponse<any>> => {
+        const queryParams = new URLSearchParams();
+        Object.entries(params).forEach(([key, value]) => {
+            if (value !== undefined && value !== null && value !== '') {
+                queryParams.append(key, String(value));
+            }
+        });
+        const queryString = queryParams.toString();
+        return apiClient.get(`/admin/banners${queryString ? `?${queryString}` : ''}`);
+    },
+    getBanner: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.get(`/admin/banners/${id}`);
+    },
+    createBanner: async (data: any): Promise<ApiResponse<any>> => {
+        return apiClient.post('/admin/banners', data);
+    },
+    updateBanner: async (id: number, data: any): Promise<ApiResponse<any>> => {
+        return apiClient.put(`/admin/banners/${id}`, data);
+    },
+    deleteBanner: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.delete(`/admin/banners/${id}`);
+    },
+    toggleBannerStatus: async (id: number): Promise<ApiResponse<any>> => {
+        return apiClient.patch(`/admin/banners/${id}/status`);
+    },
 };
 
 export const adminKeys = {

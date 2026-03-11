@@ -18,4 +18,20 @@ class Banner extends Model
         'thu_tu',
         'trang_thai',
     ];
+
+    protected $appends = ['url'];
+
+    public function getUrlAttribute(): string
+    {
+        if (!$this->hinh_anh) {
+            return '';
+        }
+
+        if (str_starts_with($this->hinh_anh, 'http')) {
+            return $this->hinh_anh;
+        }
+
+        $path = ltrim(str_replace('/storage/', '', $this->hinh_anh), '/');
+        return asset('storage/' . $path);
+    }
 }
