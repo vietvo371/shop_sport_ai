@@ -14,7 +14,7 @@ Table nguoi_dung {
   mat_khau              varchar(255) [not null, note: 'Mật khẩu đã hash']
   so_dien_thoai         varchar(20)  [null, note: 'Số điện thoại']
   anh_dai_dien          varchar(255) [null, note: 'URL ảnh đại diện']
-  vai_tro               enum('quan_tri','khach_hang') [not null, default: 'khach_hang', note: 'Phân quyền: quản trị viên hoặc khách hàng']
+  vai_tro               enum('quan_tri','khach_hang') [not null, default: 'khach_hang', note: 'Phân quyền (đang chuyển sang hệ thống RBAC động)']
   trang_thai            boolean      [not null, default: true, note: 'true = đang hoạt động']
   xac_thuc_email_luc    timestamp    [null, note: 'Thời điểm xác thực email']
   created_at            timestamp
@@ -369,6 +369,45 @@ Table thong_bao {
   created_at      timestamp
 }
 
+// ─────────────────────────────
+// 14. PHÂN QUYỀN (RBAC)
+// ─────────────────────────────
+
+Table vai_tro {
+  id          bigint       [pk, increment]
+  ten         varchar(100) [unique, not null, note: 'Tên vai trò (Quản trị viên, Nhân viên...)']
+  ma_slug     varchar(100) [unique, not null, note: 'Slug (super_admin, staff...)']
+  created_at  timestamp
+  updated_at  timestamp
+}
+
+Table quyen {
+  id          bigint       [pk, increment]
+  ten         varchar(100) [not null, note: 'Tên quyền (Tạo sản phẩm, Duyệt đánh giá...)']
+  ma_slug     varchar(100) [unique, not null, note: 'Slug (create_product, approve_review...)']
+  nhom        varchar(100) [not null, note: 'Nhóm quyền (san_pham, don_hang...)']
+  created_at  timestamp
+  updated_at  timestamp
+}
+
+Table vai_tro_quyen {
+  vai_tro_id  bigint [not null]
+  quyen_id    bigint [not null]
+
+  indexes {
+    (vai_tro_id, quyen_id) [pk]
+  }
+}
+
+Table nguoi_dung_vai_tro {
+  nguoi_dung_id bigint [not null]
+  vai_tro_id    bigint [not null]
+
+  indexes {
+    (nguoi_dung_id, vai_tro_id) [pk]
+  }
+}
+
 // ═══════════════════════════════════════════
 // QUAN HỆ (FOREIGN KEYS)
 // ═══════════════════════════════════════════
@@ -431,3 +470,9 @@ Ref: hanh_vi_nguoi_dung.san_pham_id        > san_pham.id
 
 // Thông báo
 Ref: thong_bao.nguoi_dung_id               > nguoi_dung.id
+
+// Phân quyền (RBAC)
+Ref: vai_tro_quyen.vai_tro_id             > vai_tro.id
+Ref: vai_tro_quyen.quyen_id               > quyen.id
+Ref: nguoi_dung_vai_tro.nguoi_dung_id     > nguoi_dung.id
+Ref: nguoi_dung_vai_tro.vai_tro_id        > vai_tro.id

@@ -156,3 +156,4 @@ NEXT_PUBLIC_APP_NAME=SportStore
 | `POST /orders` | `order.service.ts` | `/checkout` |
 | `POST /chatbot/message` | `chatbot.service.ts` | `ChatWidget` |
 | `GET /recommendations` | `recommendation.service.ts` | `RecommendedSection` |
+| `GET /admin/roles` | `rbac.service.ts` | `/admin/roles` |

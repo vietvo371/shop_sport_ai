@@ -23,6 +23,7 @@
 | Wishlist | 🟢 DONE | `YeuThichController` | Toggle logic |
 | Coupon | 🟢 DONE | `MaGiamGiaController` | Validation & usage tracking |
 | Notification | 🟢 DONE | `ThongBaoController` | DB notifications |
+| RBAC (Phân quyền) | 🟡 IN PROGRESS | `vai_tro`, `quyen`... | Hệ thống quyền hạn động |
 | AI Chatbot (Gemini) | 🔴 TODO | `ChatbotController` | Proxying to Gemini API |
 | Recommendation | 🔴 TODO | `RecommendationController` | User behavior tracking |
 
@@ -50,3 +51,7 @@
 - Sửa lỗi eager loading ảnh chính cho Đơn hàng.
 - Cập nhật `SanPhamService` hỗ trợ cờ `can_review`, `has_reviewed`.
 - Tối ưu hóa phân trang với `ApiResponse::paginate()`.
+
+### Session 3 — 03/2025 — Notifications & RBAC Planning
+- Triển khai toàn diện hệ thống Thông báo (Notification & Broadcast).
+- Thiết lập kế hoạch và cập nhật tài liệu cho hệ thống Phân quyền động (RBAC) với các bảng Tiếng Việt (`vai_tro`, `quyen`).

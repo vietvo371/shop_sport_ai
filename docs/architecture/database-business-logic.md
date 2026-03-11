@@ -21,6 +21,7 @@
 11. [Mã giảm giá (Coupon)](#11-mã-giảm-giá-coupon)
 12. [Thông báo](#12-thông-báo)
 13. [Banner & Slider](#13-banner--slider)
+14. [Phân quyền (RBAC)](#14-phân-quyền-rbac)
 
 ---
 
@@ -478,3 +479,38 @@ san_pham
 
 banners[]                       (slider trang chủ, quảng cáo)
 ```
+
+---
+
+## 14. Phân quyền (RBAC)
+
+**Bảng liên quan:** `vai_tro`, `quyen`, `vai_tro_quyen`, `nguoi_dung_vai_tro`
+
+### Mục tiêu
+Chuyển đổi từ hệ thống phân quyền cứng (`enum`) sang hệ thống linh hoạt, cho phép quản lý quyền hạn chi tiết cho từng nhân viên.
+
+### Cấu trúc mô hình
+- **`vai_tro` (Roles)**: Nhóm các quyền (ví dụ: Quản lý kho, CSKH).
+- **`quyen` (Permissions)**: Các hành động cụ thể trong hệ thống (ví dụ: `tao_san_pham`, `duyet_don_hang`).
+- **`vai_tro_quyen`**: Thiết lập vai trò nào có những quyền nào.
+- **`nguoi_dung_vai_tro`**: Gán vai trò cho người dùng (một người có thể có nhiều vai trò).
+
+### Luồng kiểm tra quyền
+```
+User → Đăng nhập → Load danh sách permissions từ các roles của user
+    ↓
+Middleware: CheckPermission('tao_san_pham')
+    ↓
+Kiểm tra trong cache/database xem user có quyền này không
+    ↓
+Cho phép (200) hoặc Từ chối (403)
+```
+
+### Các nhóm quyền dự kiến
+| Nhóm | Quyền ví dụ |
+|------|-------------|
+| Sản phẩm | `xem_sp`, `them_sp`, `sua_sp`, `xoa_sp` |
+| Đơn hàng | `xem_don`, `cap_nhat_don`, `huy_don` |
+| Thông báo | `gui_quang_ba`, `xem_lich_su_tb` |
+| Hệ thống | `quan_ly_user`, `xem_bao_cao`, `cai_dat_he_thong` |
+

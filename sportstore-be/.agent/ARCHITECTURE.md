@@ -123,7 +123,8 @@ GET    /api/v1/recommendations        → recommendations.index
 ```
 Không cần auth:  browse sản phẩm, xem chi tiết, chatbot (guest)
 Cần auth:sanctum: cart, order, wishlist, review, profile
-Cần role=admin:  quản lý sản phẩm, danh mục, đơn hàng, coupon
+Cần vai_tro=admin: toàn quyền quản trị
+Hệ thống RBAC mới: Sử dụng middleware `CheckPermission` để kiểm tra quyền hạn chi tiết (`quyen`) gán qua `vai_tro`.
 ```
 
 ---

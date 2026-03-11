@@ -31,7 +31,8 @@
 | AI Chatbot Widget | 🔴 TODO | `src/components/chatbot/` | Float widget, session |
 | Wishlist `/wishlist` | � DONE | `src/app/(shop)/profile/wishlist/` | - |
 | Recommendation Section | 🔴 TODO | `src/components/recommendation/` | Homepage + Product detail |
-| Admin `/admin` | 🔴 TODO | `src/app/(admin)/admin/` | Product, Order, Coupon CRUD |
+| Admin `/admin` | 🟢 DONE | `src/app/(admin)/admin/` | Product, Order, Coupon CRUD |
+| Phân quyền (RBAC) | 🟡 IN PROGRESS | `src/app/(admin)/admin/roles` | UI Quản lý vai trò & quyền |
 | Profile `/profile` | � DONE | `src/app/(shop)/profile/` | Info + addresses |
 
 ---
@@ -74,3 +75,9 @@
 - Tích hợp gửi Đánh giá (Review) sản phẩm từ trang chi tiết đơn hàng đã giao.
 - Tự động làm mới dữ liệu sau khi gửi đánh giá.
 - Chuẩn hóa header hiển thị thông tin User và link nhanh tới đơn hàng/yêu thích.
+
+### Session 5 — 03/2025 — Notifications & RBAC Planning
+- Hoàn thiện hệ thống Thông báo: Notification Center, Admin Broadcast.
+- Tích hợp Dropdown thông báo vào Header Admin.
+- Tạo trang Chi tiết thông báo cho người dùng (`/profile/notifications`).
+- Lập kế hoạch và cập nhật tài liệu cho hệ thống Phân quyền (RBAC) quản trị.
