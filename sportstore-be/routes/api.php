@@ -103,10 +103,29 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('users', \App\Http\Controllers\Api\Admin\NguoiDungAdminController::class);
 
         // Reports & Statistics
-        Route::get('reports/overview',      [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'overview']);
-        Route::get('reports/revenue-chart', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'revenueChart']);
-        Route::get('reports/top-products',  [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'topProducts']);
-
+        Route::prefix('reports')->group(function () {
+            Route::get('/overview', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'overview']);
+            Route::get('/revenue-chart', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'revenueChart']);
+            Route::get('/top-products', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'topProducts']);
+            
+            // Product specific
+            Route::get('/product-stats', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'productStats']);
+            
+            // Customer specific
+            Route::get('/customer-stats', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'customerStats']);
+            Route::get('/customer-chart', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'customerChart']);
+            Route::get('/top-customers', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'topCustomers']);
+            
+            // Marketing specific
+            Route::get('/marketing-stats', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'marketingStats']);
+            Route::get('/coupon-chart', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'couponChart']);
+            Route::get('/top-coupons', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'topCoupons']);
+            
+            // Chatbot specific
+            Route::get('/chatbot-stats', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'chatbotStats']);
+            Route::get('/chatbot-chart', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'chatbotChart']);
+            Route::get('/recent-chats', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'recentChats']);
+        });
         // Upload
         Route::post('upload', [\App\Http\Controllers\Api\Admin\UploadController::class, 'upload']);
     });
