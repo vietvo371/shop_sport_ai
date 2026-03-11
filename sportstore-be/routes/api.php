@@ -132,5 +132,9 @@ Route::middleware('auth:sanctum')->group(function () {
         // Banners
         Route::apiResource('banners', \App\Http\Controllers\Api\Admin\BannerAdminController::class);
         Route::patch('banners/{banner}/status', [\App\Http\Controllers\Api\Admin\BannerAdminController::class, 'toggleStatus']);
+
+        // Notifications
+        Route::post('notifications/broadcast', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'broadcast']);
+        Route::get('notifications/history', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'history']);
     });
 });

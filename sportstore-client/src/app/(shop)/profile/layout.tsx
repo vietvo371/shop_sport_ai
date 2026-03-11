@@ -4,12 +4,13 @@ import { useAuthStore } from '@/store/auth.store';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { User, Package, MapPin, Heart, LogOut } from 'lucide-react';
+import { User, Package, MapPin, Heart, LogOut, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 
 const navItems = [
     { name: 'Thông tin tài khoản', href: '/profile', icon: User },
+    { name: 'Thông báo của tôi', href: '/profile/notifications', icon: Bell },
     { name: 'Quản lý đơn hàng', href: '/profile/orders', icon: Package },
     { name: 'Sổ địa chỉ', href: '/profile/addresses', icon: MapPin },
     { name: 'Sản phẩm yêu thích', href: '/profile/wishlist', icon: Heart },

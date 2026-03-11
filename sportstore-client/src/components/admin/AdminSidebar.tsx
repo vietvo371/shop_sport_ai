@@ -13,7 +13,8 @@ import {
     Settings,
     Home,
     BarChart3,
-    Image as ImageIcon
+    Image as ImageIcon,
+    Bell as BellIcon
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -27,6 +28,7 @@ const sidebarItems = [
     { name: 'Khách hàng', href: '/admin/users', icon: Users },
     { name: 'Xếp hạng & Thống kê', href: '/admin/reports', icon: BarChart3 },
     { name: 'Banner', href: '/admin/banners', icon: ImageIcon },
+    { name: 'Thông báo', href: '/admin/notifications', icon: BellIcon },
 ];
 
 interface AdminSidebarProps {

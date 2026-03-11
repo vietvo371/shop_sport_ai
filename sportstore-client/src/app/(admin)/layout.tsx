@@ -7,6 +7,7 @@ import { AdminSidebar } from "@/components/admin/AdminSidebar";
 import { Loader2, Menu, Bell, Search, User as UserIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
+import { NotificationCenter } from "@/components/notifications/NotificationCenter";
 
 export default function AdminLayout({
     children,
@@ -76,10 +77,7 @@ export default function AdminLayout({
                         <Button variant="ghost" size="icon" className="hidden sm:flex text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl">
                             <Search className="h-5 w-5" />
                         </Button>
-                        <Button variant="ghost" size="icon" className="text-slate-400 hover:text-primary hover:bg-primary/5 rounded-xl relative">
-                            <Bell className="h-5 w-5" />
-                            <span className="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
-                        </Button>
+                        <NotificationCenter />
 
                         <div className="h-8 w-px bg-slate-200 mx-1 hidden sm:block" />
 

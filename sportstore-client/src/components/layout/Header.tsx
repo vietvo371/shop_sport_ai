@@ -11,6 +11,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetClose } from '@/components/ui/sheet';
 
 import { useCategories } from '@/hooks/useCategory';
+import { NotificationCenter } from '@/components/notifications/NotificationCenter';
 
 export function Header() {
     const { itemCount, openCart } = useCartStore();
@@ -147,51 +148,54 @@ export function Header() {
                         </form>
                         {isMounted && (
                             isAuthenticated ? (
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger asChild>
-                                        <Button variant="ghost" className="relative h-8 w-8 rounded-full border border-slate-200">
-                                            <div className="flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-primary">
-                                                {user?.ho_va_ten?.charAt(0) || 'U'}
+                                <div className="flex items-center gap-2">
+                                    <NotificationCenter />
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger asChild>
+                                            <Button variant="ghost" className="relative h-8 w-8 rounded-full border border-slate-200">
+                                                <div className="flex h-full w-full items-center justify-center rounded-full bg-slate-100 text-sm font-semibold text-primary">
+                                                    {user?.ho_va_ten?.charAt(0) || 'U'}
+                                                </div>
+                                            </Button>
+                                        </DropdownMenuTrigger>
+                                        <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
+                                            <div className="flex flex-col space-y-1 p-2 border-b border-slate-100 mb-1">
+                                                <p className="text-sm font-medium leading-none text-slate-800">{user?.ho_va_ten}</p>
+                                                <p className="text-xs leading-none text-slate-500">{user?.email}</p>
                                             </div>
-                                        </Button>
-                                    </DropdownMenuTrigger>
-                                    <DropdownMenuContent className="w-56 mt-2" align="end" forceMount>
-                                        <div className="flex flex-col space-y-1 p-2 border-b border-slate-100 mb-1">
-                                            <p className="text-sm font-medium leading-none text-slate-800">{user?.ho_va_ten}</p>
-                                            <p className="text-xs leading-none text-slate-500">{user?.email}</p>
-                                        </div>
-                                        {user?.vai_tro === 'quan_tri' && (
-                                            <DropdownMenuItem asChild className="cursor-pointer py-2 text-primary font-semibold">
-                                                <Link href="/admin" className="flex items-center w-full">
-                                                    <LayoutDashboard className="mr-2 h-4 w-4" />
-                                                    <span>Quản trị hệ thống</span>
+                                            {user?.vai_tro === 'quan_tri' && (
+                                                <DropdownMenuItem asChild className="cursor-pointer py-2 text-primary font-semibold">
+                                                    <Link href="/admin" className="flex items-center w-full">
+                                                        <LayoutDashboard className="mr-2 h-4 w-4" />
+                                                        <span>Quản trị hệ thống</span>
+                                                    </Link>
+                                                </DropdownMenuItem>
+                                            )}
+                                            <DropdownMenuItem asChild className="cursor-pointer py-2">
+                                                <Link href="/profile" className="flex items-center w-full">
+                                                    <User className="mr-2 h-4 w-4 text-slate-500" />
+                                                    <span>Tài khoản của tôi</span>
                                                 </Link>
                                             </DropdownMenuItem>
-                                        )}
-                                        <DropdownMenuItem asChild className="cursor-pointer py-2">
-                                            <Link href="/profile" className="flex items-center w-full">
-                                                <User className="mr-2 h-4 w-4 text-slate-500" />
-                                                <span>Tài khoản của tôi</span>
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem asChild className="cursor-pointer py-2">
-                                            <Link href="/profile/orders" className="flex items-center w-full">
-                                                <Package className="mr-2 h-4 w-4 text-slate-500" />
-                                                <span>Đơn mua</span>
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem asChild className="cursor-pointer py-2">
-                                            <Link href="/profile/wishlist" className="flex items-center w-full">
-                                                <Heart className="mr-2 h-4 w-4 text-slate-500" />
-                                                <span>Sản phẩm yêu thích</span>
-                                            </Link>
-                                        </DropdownMenuItem>
-                                        <DropdownMenuItem onClick={logout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
-                                            <LogOut className="mr-2 h-4 w-4" />
-                                            <span>Đăng xuất</span>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
+                                            <DropdownMenuItem asChild className="cursor-pointer py-2">
+                                                <Link href="/profile/orders" className="flex items-center w-full">
+                                                    <Package className="mr-2 h-4 w-4 text-slate-500" />
+                                                    <span>Đơn mua</span>
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem asChild className="cursor-pointer py-2">
+                                                <Link href="/profile/wishlist" className="flex items-center w-full">
+                                                    <Heart className="mr-2 h-4 w-4 text-slate-500" />
+                                                    <span>Sản phẩm yêu thích</span>
+                                                </Link>
+                                            </DropdownMenuItem>
+                                            <DropdownMenuItem onClick={logout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
+                                                <LogOut className="mr-2 h-4 w-4" />
+                                                <span>Đăng xuất</span>
+                                            </DropdownMenuItem>
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </div>
                             ) : (
                                 <Link href="/login">
                                     <Button variant="ghost" size="icon" aria-label="Tài khoản">
