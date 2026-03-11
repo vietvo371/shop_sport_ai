@@ -24,7 +24,12 @@ class NguoiDungAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $query = NguoiDung::latest();
+        // Chèn kiểm tra quyền (Tùy chọn: có thể dùng middleware ở api.php thay thế)
+        if (!$request->user()->hasPermission('xem_user')) {
+            return ApiResponse::error('Bạn không có quyền xem danh sách người dùng.', 403);
+        }
+
+        $query = NguoiDung::with('cacVaiTro')->latest();
 
         if ($request->has('search')) {
             $search = $request->search;
@@ -47,7 +52,13 @@ class NguoiDungAdminController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $user = NguoiDung::withCount(['donHang', 'danhGia', 'yeuThich'])->findOrFail($id);
+        if (!auth()->user()->hasPermission('xem_user')) {
+            return ApiResponse::error('Bạn không có quyền xem thông tin người dùng.', 403);
+        }
+
+        $user = NguoiDung::with(['cacVaiTro', 'cacVaiTro.quyen'])
+            ->withCount(['donHang', 'danhGia', 'yeuThich'])
+            ->findOrFail($id);
         return ApiResponse::success($user, '[Admin] Chi tiết người dùng');
     }
 
@@ -59,19 +70,30 @@ class NguoiDungAdminController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('sua_user')) {
+            return ApiResponse::error('Bạn không có quyền chỉnh sửa người dùng.', 403);
+        }
+
         $user = NguoiDung::findOrFail($id);
         
         $data = $request->validate([
-            'vai_tro'    => 'sometimes|in:khach_hang,quan_tri',
-            'trang_thai' => 'sometimes|boolean',
+            'vai_tro'      => 'sometimes|in:khach_hang,quan_tri', // Backward compatibility
+            'trang_thai'   => 'sometimes|boolean',
+            'vai_tro_ids'  => 'sometimes|array',
+            'vai_tro_ids.*'=> 'exists:vai_tro,id'
         ], [
             'vai_tro.in' => 'Vai trò được chọn không hợp lệ.',
             'trang_thai.boolean' => 'Trạng thái hoạt động không hợp lệ.',
         ]);
 
+        if (isset($data['vai_tro_ids'])) {
+            // Chặn việc tự gỡ quyền admin của chính mình nếu là Super Admin duy nhất (tùy chọn)
+            $user->cacVaiTro()->sync($data['vai_tro_ids']);
+        }
+
         $user->update($data);
 
-        return ApiResponse::success($user, '[Admin] Cập nhật người dùng thành công');
+        return ApiResponse::success($user->load('cacVaiTro'), '[Admin] Cập nhật người dùng thành công');
     }
 
     /**
@@ -79,6 +101,10 @@ class NguoiDungAdminController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('go_bo_user')) {
+            return ApiResponse::error('Bạn không có quyền xóa người dùng.', 403);
+        }
+
         $user = NguoiDung::findOrFail($id);
         
         // Ngăn chặn admin tự xóa chính mình

@@ -14,7 +14,8 @@ import {
     Home,
     BarChart3,
     Image as ImageIcon,
-    Bell as BellIcon
+    Bell as BellIcon,
+    ShieldCheck
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
@@ -26,6 +27,7 @@ const sidebarItems = [
     { name: 'Đánh giá', href: '/admin/reviews', icon: Star },
     { name: 'Mã giảm giá', href: '/admin/coupons', icon: Ticket },
     { name: 'Khách hàng', href: '/admin/users', icon: Users },
+    { name: 'Phân quyền', href: '/admin/roles', icon: ShieldCheck },
     { name: 'Xếp hạng & Thống kê', href: '/admin/reports', icon: BarChart3 },
     { name: 'Banner', href: '/admin/banners', icon: ImageIcon },
     { name: 'Thông báo', href: '/admin/notifications', icon: BellIcon },

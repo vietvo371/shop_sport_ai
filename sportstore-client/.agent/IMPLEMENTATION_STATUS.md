@@ -32,7 +32,7 @@
 | Wishlist `/wishlist` | � DONE | `src/app/(shop)/profile/wishlist/` | - |
 | Recommendation Section | 🔴 TODO | `src/components/recommendation/` | Homepage + Product detail |
 | Admin `/admin` | 🟢 DONE | `src/app/(admin)/admin/` | Product, Order, Coupon CRUD |
-| Phân quyền (RBAC) | 🟡 IN PROGRESS | `src/app/(admin)/admin/roles` | UI Quản lý vai trò & quyền |
+| Phân quyền (RBAC) | 🟢 DONE | `src/app/(admin)/admin/roles` | UI Quản lý vai trò & quyền |
 | Profile `/profile` | � DONE | `src/app/(shop)/profile/` | Info + addresses |
 
 ---
@@ -76,8 +76,7 @@
 - Tự động làm mới dữ liệu sau khi gửi đánh giá.
 - Chuẩn hóa header hiển thị thông tin User và link nhanh tới đơn hàng/yêu thích.
 
-### Session 5 — 03/2025 — Notifications & RBAC Planning
-- Hoàn thiện hệ thống Thông báo: Notification Center, Admin Broadcast.
-- Tích hợp Dropdown thông báo vào Header Admin.
-- Tạo trang Chi tiết thông báo cho người dùng (`/profile/notifications`).
-- Lập kế hoạch và cập nhật tài liệu cho hệ thống Phân quyền (RBAC) quản trị.
+### Session 6 — 03/2025 — RBAC UI & API Protection
+- Triển khai UI Quản lý Vai trò (`RolesPage`) và Gán quyền chi tiết.
+- Cập nhật Sidebar Admin dựa trên quyền hạn thực tế.
+- Sửa lỗi Double-Unwrapping trong `rbac.service.ts` và thiết lập tiêu chuẩn API trong `.agent/`.

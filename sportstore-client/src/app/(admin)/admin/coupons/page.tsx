@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAdminCoupons } from "@/hooks/useAdminCoupons";
 import { CouponTable } from "@/components/admin/CouponTable";
 import { CouponDialog } from "@/components/admin/CouponDialog";
+import { AccessDenied } from "@/components/admin/AccessDenied";
 import {
     Ticket,
     Plus,
@@ -25,10 +26,14 @@ export default function CouponManagementPage() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedCoupon, setSelectedCoupon] = useState<any>(null);
 
-    const { data: response, isLoading } = useAdminCoupons({
+    const { data: response, isLoading, error } = useAdminCoupons({
         page,
         search: search || undefined
     });
+
+    if ((error as any)?.status === 403) {
+        return <AccessDenied moduleName="Quản lý Mã giảm giá" />;
+    }
 
     const coupons = response?.data || [];
     const meta = response?.meta;

@@ -13,7 +13,10 @@
 
 ## Bạn phải KHÔNG BAO GIỜ:
 - Gọi Gemini / Python AI trực tiếp — FE chỉ gọi `sportstore-be`
-- Bọc/Unwrap data nhiều tầng: `apiClient` đã tự động block `AxiosResponse` để trả về payload JSON gốc (`{ success, message, data, meta }`). Trong file `service`, CHỈ `return response`, KHÔNG DÙNG `return response.data` vì sẽ làm mất meta data và gây lỗi undefined. Component/Hooks mới là nơi gọi `.data`!
+- **KHÔNG BAO GIỜ bọc/unwrap data nhiều tầng (Double-Unwrapping)**: 
+  - `apiClient` (axios interceptor) ĐÃ xử lý `response.data`, do đó nó trả về trực tiếp object `ApiResponse` (chứa `success`, `message`, `data`).
+  - Trong `service.ts`: CHỈ `return apiClient.get(...)`. **CẤM** dùng `return response.data` vì nó sẽ trích xuất trường `data` của BE, làm mất `success/message` và gây lỗi logic ở Hook.
+  - Trong `hooks` hoặc `components`: Đây mới là nơi bạn truy cập `rolesQuery.data.data` để lấy payload thực tế.
 - Import component Library không có trong `package.json`
 - Hard-code URL API — chỉ dùng `NEXT_PUBLIC_API_URL` từ env
 - Lưu token vào `localStorage` — chỉ dùng httpOnly cookie qua Sanctum

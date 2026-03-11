@@ -1,5 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
+import { toast } from 'sonner';
 
 const apiClient: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
@@ -45,6 +46,15 @@ apiClient.interceptors.response.use(
       success: false,
       message: error.message || 'Có lỗi xảy ra',
     };
+
+    // Handle 403 Forbidden
+    if (error.response?.status === 403) {
+      // Chỉ hiện toast cho các hành động (POST, PUT, DELETE, PATCH)
+      // Đối với GET (load trang), chúng ta để Component tự xử lý UI Restricted
+      if (error.config?.method?.toLowerCase() !== 'get') {
+        toast.error(formattedError.message || 'Bạn không có quyền thực hiện hành động này');
+      }
+    }
 
     // Add status code for easier handling in components
     if (error.response) {

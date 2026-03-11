@@ -18,6 +18,11 @@ use Carbon\Carbon;
  */
 class ReportAdminController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('quyen:xem_doanh_thu');
+    }
+
     /**
      * Tổng quan thống kê (Overview)
      *

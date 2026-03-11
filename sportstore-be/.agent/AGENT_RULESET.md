@@ -13,7 +13,9 @@
 - Gọi Gemini API trực tiếp từ Controller (phải qua `ChatbotService`)
 - Gọi Python AI Service trực tiếp từ Controller (phải qua `RecommendationService`)
 - Đặt query Eloquent phức tạp vào Controller
-- Trả response raw `response()->json()` — phải dùng `ApiResponse`
+- Trả response raw `response()->json()` — phải dùng `ApiResponse`.
+- **Cấu trúc ApiResponse bắt buộc**: `{ "success": boolean, "message": string, "data": any }`. Với phân trang, dùng `ApiResponse::paginate()` để thêm metadata `meta`.
+- Đảm bảo tính nhất quán: Mọi endpoint Admin và Client đều phải trả về payload theo format này để FE không bị lỗi phân tích dữ liệu.
 - Implement tính năng ngoài SCOPE.md mà không hỏi
 
 ## Nếu không chắc:

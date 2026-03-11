@@ -27,6 +27,9 @@ class NotificationAdminController extends Controller
      */
     public function broadcast(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('gui_quang_ba')) {
+            return ApiResponse::error('Bạn không có quyền gửi thông báo quảng bá.', 403);
+        }
         $validated = $request->validate([
             'tieu_de'      => 'required|string|max:255',
             'noi_dung'     => 'required|string',
@@ -85,6 +88,9 @@ class NotificationAdminController extends Controller
      */
     public function history(): JsonResponse
     {
+        if (!auth()->user()->hasPermission('gui_quang_ba')) {
+            return ApiResponse::error('Bạn không có quyền xem lịch sử thông báo.', 403);
+        }
         $history = ThongBao::with('nguoiDung:id,ho_va_ten,email')
             ->latest()
             ->paginate(20);

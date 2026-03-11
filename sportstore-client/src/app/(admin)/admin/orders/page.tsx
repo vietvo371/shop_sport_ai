@@ -1,6 +1,7 @@
 'use client';
 
 import { useAdminOrders } from "@/hooks/useAdminOrders";
+import { AccessDenied } from "@/components/admin/AccessDenied";
 import { useState, useMemo } from "react";
 import {
     Table,
@@ -60,7 +61,11 @@ export default function AdminOrdersPage() {
         trang_thai: status === 'all' ? undefined : status,
     }), [page, search, status]);
 
-    const { data: response, isLoading } = useAdminOrders(params);
+    const { data: response, isLoading, error } = useAdminOrders(params);
+
+    if ((error as any)?.status === 403) {
+        return <AccessDenied moduleName="Quản lý Đơn hàng" />;
+    }
     const orders = response?.data || [];
     const meta = response?.meta;
 

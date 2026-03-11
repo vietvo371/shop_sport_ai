@@ -20,6 +20,9 @@ class MaGiamGiaAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('ma_giam_gia')) {
+            return ApiResponse::error('Bạn không có quyền truy cập mã giảm giá.', 403);
+        }
         $query = MaGiamGia::query();
 
         if ($request->has('search') && $request->search) {
@@ -44,6 +47,9 @@ class MaGiamGiaAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('ma_giam_gia')) {
+            return ApiResponse::error('Bạn không có quyền tạo mã giảm giá.', 403);
+        }
         $rules = [
             'ma_code'               => 'required|string|max:50|unique:ma_giam_gia',
             'loai_giam'             => 'required|in:phan_tram,so_tien_co_dinh',
@@ -69,9 +75,15 @@ class MaGiamGiaAdminController extends Controller
         $data = $request->validate($rules, $messages);
         return ApiResponse::created(MaGiamGia::create($data), '[Admin] Tạo mã giảm giá thành công');
     }
-    public function show(int $id): JsonResponse { return ApiResponse::success(MaGiamGia::findOrFail($id), '[Admin] Chi tiết mã giảm giá'); }
+    public function show(int $id): JsonResponse { 
+        if (!auth()->user()->hasPermission('ma_giam_gia')) return ApiResponse::error('Bạn không có quyền xem mã giảm giá.', 403);
+        return ApiResponse::success(MaGiamGia::findOrFail($id), '[Admin] Chi tiết mã giảm giá'); 
+    }
     public function update(Request $request, int $id): JsonResponse
     {
+        if (!$request->user()->hasPermission('ma_giam_gia')) {
+            return ApiResponse::error('Bạn không có quyền cập nhật mã giảm giá.', 403);
+        }
         $coupon = MaGiamGia::findOrFail($id);
         
         $rules = [
@@ -99,5 +111,9 @@ class MaGiamGiaAdminController extends Controller
         $coupon->update($data);
         return ApiResponse::success($coupon, '[Admin] Cập nhật mã giảm giá');
     }
-    public function destroy(int $id): JsonResponse { MaGiamGia::findOrFail($id)->delete(); return ApiResponse::deleted('[Admin] Đã xóa mã giảm giá'); }
+    public function destroy(int $id): JsonResponse { 
+        if (!auth()->user()->hasPermission('ma_giam_gia')) return ApiResponse::error('Bạn không có quyền xóa mã giảm giá.', 403);
+        MaGiamGia::findOrFail($id)->delete(); 
+        return ApiResponse::deleted('[Admin] Đã xóa mã giảm giá'); 
+    }
 }

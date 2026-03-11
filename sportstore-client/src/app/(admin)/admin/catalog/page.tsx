@@ -10,6 +10,7 @@ import { BrandTable } from "@/components/admin/catalog/BrandTable";
 import { CategoryDialog } from "@/components/admin/catalog/CategoryDialog";
 import { BrandDialog } from "@/components/admin/catalog/BrandDialog";
 import { useAdminCategories, useAdminBrands } from "@/hooks/useAdminCatalog";
+import { AccessDenied } from "@/components/admin/AccessDenied";
 import { Loader2 } from "lucide-react";
 
 export default function CatalogPage() {
@@ -24,8 +25,12 @@ export default function CatalogPage() {
     const [selectedBrand, setSelectedBrand] = useState<any>(null);
 
     // Data fetching
-    const { data: categoriesResponse, isLoading: catsLoading } = useAdminCategories({ search: searchTerm });
-    const { data: brandsResponse, isLoading: brandsLoading } = useAdminBrands({ search: searchTerm });
+    const { data: categoriesResponse, isLoading: catsLoading, error: catsError } = useAdminCategories({ search: searchTerm });
+    const { data: brandsResponse, isLoading: brandsLoading, error: brandsError } = useAdminBrands({ search: searchTerm });
+
+    if ((catsError as any)?.status === 403 || (brandsError as any)?.status === 403) {
+        return <AccessDenied moduleName="Quản lý Catalog" />;
+    }
 
     const categories = categoriesResponse?.data || [];
     const brands = brandsResponse?.data || [];

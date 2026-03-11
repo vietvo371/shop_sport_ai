@@ -136,5 +136,13 @@ Route::middleware('auth:sanctum')->group(function () {
         // Notifications
         Route::post('notifications/broadcast', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'broadcast']);
         Route::get('notifications/history', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'history']);
+
+        // RBAC Management
+        Route::get('roles',               [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'index']);
+        Route::post('roles',              [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'store']);
+        Route::get('roles/{id}',          [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'show']);
+        Route::put('roles/{id}',          [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'update']);
+        Route::delete('roles/{id}',       [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'destroy']);
+        Route::get('permissions',         [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'permissions']);
     });
 });

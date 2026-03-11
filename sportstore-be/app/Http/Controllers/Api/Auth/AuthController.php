@@ -108,7 +108,7 @@ class AuthController extends Controller
      */
     public function me(Request $request): JsonResponse
     {
-        return ApiResponse::success($request->user()->load('diaChi'), 'Thông tin tài khoản');
+        return ApiResponse::success($request->user()->load(['diaChi', 'cacVaiTro.quyen']), 'Thông tin tài khoản');
     }
 
     /**

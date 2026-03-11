@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useAdminUsers } from "@/hooks/useAdminUsers";
 import { UserTable } from "@/components/admin/UserTable";
 import { UserEditDialog } from "@/components/admin/UserEditDialog";
+import { AccessDenied } from "@/components/admin/AccessDenied";
 import {
     Users,
     Search,
@@ -32,11 +33,15 @@ export default function UserManagementPage() {
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<any>(null);
 
-    const { data: response, isLoading } = useAdminUsers({
+    const { data: response, isLoading, error } = useAdminUsers({
         page,
         search: search || undefined,
         vai_tro: roleFilter === "all" ? undefined : roleFilter
     });
+
+    if ((error as any)?.status === 403) {
+        return <AccessDenied moduleName="Quản lý Người dùng" />;
+    }
 
     const users = response?.data || [];
     const meta = response?.meta;

@@ -23,6 +23,7 @@ class AuthService
         ]);
 
         $token = $user->createToken('sportstore')->plainTextToken;
+        $user->load(['cacVaiTro.quyen']);
 
         return ['user' => $user, 'token' => $token];
     }
@@ -46,6 +47,7 @@ class AuthService
         $user->tokens()->delete();
 
         $token = $user->createToken('sportstore')->plainTextToken;
+        $user->load(['cacVaiTro.quyen']);
 
         return ['user' => $user, 'token' => $token];
     }

@@ -8,12 +8,13 @@
 ## Modules
 
 | Module | Status | Files | Ghi chú |
-|--------|--------|-------|---------|
+|----------------|-------|---------|
 | Setup & Config | 🟢 DONE | `.env`, `config/`, `composer.json` | Laravel 11, Sanctum, CORS |
 | ApiResponse Helper | 🟢 DONE | `app/Http/Helpers/ApiResponse.php` | Standardized JSON structure |
 | Auth | 🟢 DONE | `AuthController`, `NguoiDung` | Sanctum Bearer tokens |
 | Database Migrations | 🟢 DONE | `database/migrations/` | Full schema (24 tables) |
 | Seeders | 🟢 DONE | `database/seeders/` | Realistic data seeding |
+| API Standardization | 🟢 DONE | Service Layer | Prevention of Double-Unwrapping |
 | Category & Brand | 🟢 DONE | `DanhMucController`, `ThuongHieuController` | - |
 | Product | 🟢 DONE | `SanPhamController`, `SanPhamService` | Slug-based, variants, prices |
 | Cart | 🟢 DONE | `GioHangController`, `GioHangService` | User-based cart management |
@@ -23,7 +24,7 @@
 | Wishlist | 🟢 DONE | `YeuThichController` | Toggle logic |
 | Coupon | 🟢 DONE | `MaGiamGiaController` | Validation & usage tracking |
 | Notification | 🟢 DONE | `ThongBaoController` | DB notifications |
-| RBAC (Phân quyền) | 🟡 IN PROGRESS | `vai_tro`, `quyen`... | Hệ thống quyền hạn động |
+| RBAC (Phân quyền) | 🟢 DONE | `VaiTro`, `Quyen`, `HasPermissions` | Hệ thống quyền hạn động |
 | AI Chatbot (Gemini) | 🔴 TODO | `ChatbotController` | Proxying to Gemini API |
 | Recommendation | 🔴 TODO | `RecommendationController` | User behavior tracking |
 
@@ -52,6 +53,7 @@
 - Cập nhật `SanPhamService` hỗ trợ cờ `can_review`, `has_reviewed`.
 - Tối ưu hóa phân trang với `ApiResponse::paginate()`.
 
-### Session 3 — 03/2025 — Notifications & RBAC Planning
-- Triển khai toàn diện hệ thống Thông báo (Notification & Broadcast).
-- Thiết lập kế hoạch và cập nhật tài liệu cho hệ thống Phân quyền động (RBAC) với các bảng Tiếng Việt (`vai_tro`, `quyen`).
+### Session 4 — 03/2025 — RBAC Implementation & Standardization
+- Hoàn thiện hệ thống Phân quyền động (RBAC) với các bảng Tiếng Việt.
+- Tích hợp kiểm tra quyền chi tiết (Granular Permissions) vào toàn bộ Admin Controllers.
+- Chuẩn hóa quy trình giao tiếp API: Codify `ApiResponse` và ngăn chặn lỗi Double-Unwrapping.

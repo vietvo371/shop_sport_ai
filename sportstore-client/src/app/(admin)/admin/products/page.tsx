@@ -2,6 +2,7 @@
 
 import { useAdminProducts, useAdminMetadata } from "@/hooks/useAdmin";
 import { adminService, adminKeys } from "@/services/admin.service";
+import { AccessDenied } from "@/components/admin/AccessDenied";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -82,7 +83,11 @@ export default function AdminProductsPage() {
         sap_xep: sortBy
     }), [page, search, categoryId, brandId, status, sortBy]);
 
-    const { data: response, isLoading } = useAdminProducts(params);
+    const { data: response, isLoading, error } = useAdminProducts(params);
+
+    if ((error as any)?.status === 403) {
+        return <AccessDenied moduleName="Quản lý Sản phẩm" />;
+    }
     const queryClient = useQueryClient();
 
     const deleteMutation = useMutation({

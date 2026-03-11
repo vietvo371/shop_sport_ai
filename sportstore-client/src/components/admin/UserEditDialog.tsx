@@ -29,12 +29,16 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { useUpdateUser } from "@/hooks/useAdminUsers";
+import { useAdminRoles } from "@/hooks/useAdminRoles";
 import { Loader2, ShieldCheck, UserCog, Ban, CheckCircle2 } from "lucide-react";
 import { useEffect } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
 const userSchema = z.object({
-    vai_tro: z.enum(["khach_hang", "quan_tri"]),
+    vai_tro: z.string(),
     trang_thai: z.boolean(),
+    vai_tro_ids: z.array(z.number()),
 });
 
 interface UserEditDialogProps {
@@ -44,6 +48,7 @@ interface UserEditDialogProps {
 }
 
 export function UserEditDialog({ open, onOpenChange, user }: UserEditDialogProps) {
+    const { roles, isLoadingRoles } = useAdminRoles();
     const updateUser = useUpdateUser();
 
     const form = useForm<z.infer<typeof userSchema>>({
@@ -51,6 +56,7 @@ export function UserEditDialog({ open, onOpenChange, user }: UserEditDialogProps
         defaultValues: {
             vai_tro: "khach_hang",
             trang_thai: true,
+            vai_tro_ids: [],
         },
     });
 
@@ -59,6 +65,7 @@ export function UserEditDialog({ open, onOpenChange, user }: UserEditDialogProps
             form.reset({
                 vai_tro: user.vai_tro,
                 trang_thai: user.trang_thai,
+                vai_tro_ids: user.cac_vai_tro?.map((r: any) => r.id) || [],
             });
         }
     }, [user, open, form]);
@@ -118,11 +125,53 @@ export function UserEditDialog({ open, onOpenChange, user }: UserEditDialogProps
                                     )}
                                 />
 
+                                <div className="space-y-4 pt-4 border-t">
+                                    <Label className="text-sm font-semibold flex items-center gap-2">
+                                        <ShieldCheck className="w-4 h-4 text-primary" />
+                                        Gán vai trò chi tiết
+                                    </Label>
+                                    {isLoadingRoles ? (
+                                        <div className="flex justify-center py-4">
+                                            <Loader2 className="w-4 h-4 animate-spin" />
+                                        </div>
+                                    ) : (
+                                        <div className="grid grid-cols-2 gap-3">
+                                            {roles.map((role) => (
+                                                <FormField
+                                                    key={role.id}
+                                                    control={form.control}
+                                                    name="vai_tro_ids"
+                                                    render={({ field }) => (
+                                                        <FormItem className="flex flex-row items-start space-x-3 space-y-0 rounded-md border p-3 hover:bg-slate-50 transition-colors">
+                                                            <FormControl>
+                                                                <Checkbox
+                                                                    checked={field.value?.includes(role.id)}
+                                                                    onCheckedChange={(checked) => {
+                                                                        return checked
+                                                                            ? field.onChange([...field.value, role.id])
+                                                                            : field.onChange(field.value?.filter((value: number) => value !== role.id));
+                                                                    }}
+                                                                />
+                                                            </FormControl>
+                                                            <div className="space-y-1 leading-none">
+                                                                <FormLabel className="text-xs font-bold cursor-pointer">
+                                                                    {role.ten}
+                                                                </FormLabel>
+                                                                <p className="text-[10px] text-muted-foreground">{role.ma_slug}</p>
+                                                            </div>
+                                                        </FormItem>
+                                                    )}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+
                                 <FormField
                                     control={form.control}
                                     name="trang_thai"
                                     render={({ field }) => (
-                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+                                        <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4 bg-slate-50/50">
                                             <div className="space-y-0.5">
                                                 <FormLabel className="text-base">
                                                     Trạng thái hoạt động

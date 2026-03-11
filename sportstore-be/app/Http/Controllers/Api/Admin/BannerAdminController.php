@@ -24,6 +24,9 @@ class BannerAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('quan_ly_banner')) {
+            return ApiResponse::error('Bạn không có quyền xem banner.', 403);
+        }
         $query = Banner::query();
 
         if ($request->has('search')) {
@@ -52,6 +55,9 @@ class BannerAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('quan_ly_banner')) {
+            return ApiResponse::error('Bạn không có quyền thêm banner.', 403);
+        }
         $validated = $request->validate([
             'tieu_de'    => 'required|string|max:255',
             'hinh_anh'   => 'required|string',
@@ -73,6 +79,9 @@ class BannerAdminController extends Controller
      */
     public function show(string $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_banner')) {
+            return ApiResponse::error('Bạn không có quyền xem chi tiết banner.', 403);
+        }
         $banner = Banner::find($id);
 
         if (!$banner) {
@@ -87,6 +96,9 @@ class BannerAdminController extends Controller
      */
     public function update(Request $request, string $id): JsonResponse
     {
+        if (!$request->user()->hasPermission('quan_ly_banner')) {
+            return ApiResponse::error('Bạn không có quyền cập nhật banner.', 403);
+        }
         $banner = Banner::find($id);
 
         if (!$banner) {
@@ -114,6 +126,9 @@ class BannerAdminController extends Controller
      */
     public function destroy(string $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_banner')) {
+            return ApiResponse::error('Bạn không có quyền xóa banner.', 403);
+        }
         $banner = Banner::find($id);
 
         if (!$banner) {
@@ -130,6 +145,9 @@ class BannerAdminController extends Controller
      */
     public function toggleStatus(string $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_banner')) {
+            return ApiResponse::error('Bạn không có quyền thay đổi trạng thái banner.', 403);
+        }
         $banner = Banner::find($id);
 
         if (!$banner) {

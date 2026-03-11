@@ -25,6 +25,9 @@ class DonHangAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('xem_don')) {
+            return ApiResponse::error('Bạn không có quyền xem danh sách đơn hàng.', 403);
+        }
         $orders = DonHang::with('nguoiDung')
             ->when($request->trang_thai, fn($q) => $q->where('trang_thai', $request->trang_thai))
             ->latest()->paginate(20);
@@ -38,6 +41,9 @@ class DonHangAdminController extends Controller
      */
     public function show(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('xem_don')) {
+            return ApiResponse::error('Bạn không có quyền xem chi tiết đơn hàng.', 403);
+        }
         $order = DonHang::with(['items.sanPham', 'nguoiDung', 'lichSuTrangThai', 'thanhToan'])->findOrFail($id);
         return ApiResponse::success($order, '[Admin] Chi tiết đơn hàng');
     }
@@ -51,6 +57,9 @@ class DonHangAdminController extends Controller
      */
     public function updateStatus(Request $request, int $id): JsonResponse
     {
+        if (!$request->user()->hasPermission('cap_nhat_don')) {
+            return ApiResponse::error('Bạn không có quyền cập nhật trạng thái đơn hàng.', 403);
+        }
         $data = $request->validate([
             'trang_thai' => 'required|in:cho_xac_nhan,da_xac_nhan,dang_xu_ly,dang_giao,da_giao,da_huy,hoan_tra',
             'ghi_chu'    => 'nullable|string|max:500',

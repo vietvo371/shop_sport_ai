@@ -25,6 +25,9 @@ class SanPhamAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('xem_sp')) {
+            return ApiResponse::error('Bạn không có quyền xem danh sách sản phẩm.', 403);
+        }
         return ApiResponse::paginate($this->service->adminIndex($request->all()), '[Admin] Danh sách sản phẩm');
     }
 
@@ -43,6 +46,9 @@ class SanPhamAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!$request->user()->hasPermission('them_sp')) {
+            return ApiResponse::error('Bạn không có quyền thêm sản phẩm.', 403);
+        }
         $data = $request->validate([
             'ten_san_pham'   => 'required|string|min:5|max:200',
             'danh_muc_id'    => 'required|integer|exists:danh_muc,id',
@@ -85,12 +91,18 @@ class SanPhamAdminController extends Controller
 
     public function show(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('xem_sp')) {
+            return ApiResponse::error('Bạn không có quyền xem chi tiết sản phẩm.', 403);
+        }
         $product = SanPham::with(['danhMuc', 'thuongHieu', 'bienThe', 'hinhAnh'])->findOrFail($id);
         return ApiResponse::success($product, '[Admin] Chi tiết sản phẩm');
     }
 
     public function update(Request $request, int $id): JsonResponse
     {
+        if (!$request->user()->hasPermission('sua_sp')) {
+            return ApiResponse::error('Bạn không có quyền chỉnh sửa sản phẩm.', 403);
+        }
         $product = SanPham::findOrFail($id);
         $data = $request->validate([
             'ten_san_pham'   => 'sometimes|string|min:5|max:200',
@@ -135,6 +147,9 @@ class SanPhamAdminController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('xoa_sp')) {
+            return ApiResponse::error('Bạn không có quyền xóa sản phẩm.', 403);
+        }
         $this->service->delete(SanPham::findOrFail($id));
         return ApiResponse::deleted('[Admin] Đã xóa sản phẩm');
     }
