@@ -23,6 +23,10 @@ class DanhGiaAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!auth()->user()->hasPermission('duyet_danh_gia')) {
+            return ApiResponse::error('Bạn không có quyền xem danh sách đánh giá.', 403);
+        }
+
         $reviews = DanhGia::with('nguoiDung', 'sanPham')
             ->when($request->da_duyet !== null, fn ($q) => $q->where('da_duyet', $request->boolean('da_duyet')))
             ->latest()->paginate(20);
@@ -38,6 +42,10 @@ class DanhGiaAdminController extends Controller
      */
     public function approve(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('duyet_danh_gia')) {
+            return ApiResponse::error('Bạn không có quyền duyệt đánh giá.', 403);
+        }
+
         $review = DanhGia::findOrFail($id);
         $review->update(['da_duyet' => true]);
 
@@ -55,6 +63,10 @@ class DanhGiaAdminController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('duyet_danh_gia')) {
+            return ApiResponse::error('Bạn không có quyền xóa đánh giá.', 403);
+        }
+
         DanhGia::findOrFail($id)->delete();
         return ApiResponse::deleted('[Admin] Đã xóa đánh giá');
     }

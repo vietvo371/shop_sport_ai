@@ -24,6 +24,10 @@ class DashboardAdminController extends Controller
      */
     public function index(): JsonResponse
     {
+        if (!auth()->user()->hasPermission('xem_dashboard')) {
+            return ApiResponse::error('Bạn không có quyền xem bảng điều khiển.', 403);
+        }
+
         $orderStats = DonHang::where('trang_thai', '!=', 'da_huy')
             ->selectRaw('COUNT(*) as total_orders, SUM(tong_tien) as total_revenue')
             ->first();

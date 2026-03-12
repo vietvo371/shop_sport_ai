@@ -21,6 +21,10 @@ class DanhMucAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền quản lý danh mục.', 403);
+        }
+
         $query = DanhMuc::with('danhMucCon')->whereNull('danh_muc_cha_id');
         
         if ($request->has('search') && $request->search != '') {
@@ -39,6 +43,10 @@ class DanhMucAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền tạo danh mục.', 403);
+        }
+
         $data = $request->validate([
             'ten' => 'required|string|max:100', 
             'danh_muc_cha_id' => 'nullable|integer|exists:danh_muc,id'
@@ -60,6 +68,10 @@ class DanhMucAdminController extends Controller
 
     public function update(Request $request, int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền cập nhật danh mục.', 403);
+        }
+
         $category = DanhMuc::findOrFail($id);
         $data = $request->validate([
             'ten' => 'sometimes|string|max:100', 
@@ -80,6 +92,10 @@ class DanhMucAdminController extends Controller
 
     public function destroy(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền xóa danh mục.', 403);
+        }
+
         DanhMuc::findOrFail($id)->delete();
         return ApiResponse::deleted('[Admin] Đã xóa danh mục');
     }

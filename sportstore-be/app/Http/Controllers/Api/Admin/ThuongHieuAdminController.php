@@ -21,6 +21,10 @@ class ThuongHieuAdminController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền quản lý thương hiệu.', 403);
+        }
+
         $query = ThuongHieu::query();
         
         if ($request->has('search') && $request->search != '') {
@@ -39,6 +43,10 @@ class ThuongHieuAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền tạo thương hiệu.', 403);
+        }
+
         $data = $request->validate([
             'ten' => 'required|string|max:100', 
             'mo_ta' => 'nullable|string'
@@ -55,6 +63,10 @@ class ThuongHieuAdminController extends Controller
     public function show(int $id): JsonResponse { return ApiResponse::success(ThuongHieu::findOrFail($id), '[Admin] Chi tiết thương hiệu'); }
     public function update(Request $request, int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền cập nhật thương hiệu.', 403);
+        }
+
         $b = ThuongHieu::findOrFail($id);
         $data = $request->validate([
             'ten' => 'sometimes|string|max:100', 
@@ -74,6 +86,10 @@ class ThuongHieuAdminController extends Controller
     }
     public function destroy(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('quan_ly_catalog')) {
+            return ApiResponse::error('Bạn không có quyền xóa thương hiệu.', 403);
+        }
+
         ThuongHieu::findOrFail($id)->delete();
         return ApiResponse::deleted('[Admin] Đã xóa thương hiệu');
     }

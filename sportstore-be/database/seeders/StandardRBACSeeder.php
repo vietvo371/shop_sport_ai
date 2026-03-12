@@ -39,7 +39,8 @@ class StandardRBACSeeder extends Seeder
             // Nhóm Báo cáo
             ['ten' => 'Xem báo cáo doanh thu', 'ma_slug' => 'xem_doanh_thu', 'nhom' => 'Báo cáo'],
             
-            // Nhóm Hệ thống (Sửa lỗi mapping ở đây)
+            // Nhóm Hệ thống
+            ['ten' => 'Xem bảng điều khiển', 'ma_slug' => 'xem_dashboard', 'nhom' => 'Hệ thống'],
             ['ten' => 'Xem danh sách người dùng', 'ma_slug' => 'xem_user', 'nhom' => 'Hệ thống'],
             ['ten' => 'Sửa thông tin người dùng', 'ma_slug' => 'sua_user', 'nhom' => 'Hệ thống'],
             ['ten' => 'Xóa người dùng', 'ma_slug' => 'go_bo_user', 'nhom' => 'Hệ thống'],
@@ -84,11 +85,31 @@ class StandardRBACSeeder extends Seeder
             $adminUser->cacVaiTro()->syncWithoutDetaching([$superAdmin->id]);
         }
 
-        // 6. Gán quyền cho các vai trò khác (Ví dụ)
+        // 6. Gán quyền cho các vai trò khác
+        
+        // Manager: Gần như toàn quyền trừ Phân quyền & Cài đặt hệ thống
+        $manager = VaiTro::where('ma_slug', 'manager')->first();
+        if ($manager) {
+            $managerPerms = Quyen::whereNotIn('ma_slug', ['phan_quyen', 'cai_dat_he_thong', 'go_bo_user'])->pluck('id');
+            $manager->quyen()->sync($managerPerms);
+        }
+
+        // Staff: Chỉ xử lý Sản phẩm và Đơn hàng
+        $staff = VaiTro::where('ma_slug', 'staff')->first();
+        if ($staff) {
+            $staffPerms = Quyen::whereIn('nhom', ['Sản phẩm', 'Đơn hàng', 'Catalog'])
+                ->orWhere('ma_slug', 'xem_dashboard')
+                ->pluck('id');
+            $staff->quyen()->sync($staffPerms);
+        }
+
+        // Marketer: Banner, Coupon, Quảng bá và Báo cáo
         $marketer = VaiTro::where('ma_slug', 'marketer')->first();
         if ($marketer) {
-            $marketingPerms = Quyen::whereIn('ma_slug', ['quan_ly_banner', 'gui_quang_ba', 'ma_giam_gia', 'xem_sp'])->pluck('id');
-            $marketer->quyen()->sync($marketingPerms);
+            $marketerPerms = Quyen::whereIn('nhom', ['Marketing', 'Báo cáo'])
+                ->orWhereIn('ma_slug', ['xem_dashboard', 'xem_sp'])
+                ->pluck('id');
+            $marketer->quyen()->sync($marketerPerms);
         }
     }
 }

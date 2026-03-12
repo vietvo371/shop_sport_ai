@@ -18,6 +18,10 @@ class RoleAdminController extends Controller
      */
     public function index(): JsonResponse
     {
+        if (!auth()->user()->hasPermission('phan_quyen')) {
+            return ApiResponse::error('Bạn không có quyền quản lý vai trò.', 403);
+        }
+
         $roles = VaiTro::with('quyen')->get();
         return ApiResponse::success($roles, 'Lấy danh sách vai trò thành công');
     }
@@ -41,6 +45,10 @@ class RoleAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        if (!auth()->user()->hasPermission('phan_quyen')) {
+            return ApiResponse::error('Bạn không có quyền tạo vai trò mới.', 403);
+        }
+
         $data = $request->validate([
             'ten'       => 'required|string|max:100|unique:vai_tro,ten',
             'ma_slug'   => 'nullable|string|max:100|unique:vai_tro,ma_slug',
@@ -82,6 +90,10 @@ class RoleAdminController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('phan_quyen')) {
+            return ApiResponse::error('Bạn không có quyền chỉnh sửa vai trò.', 403);
+        }
+
         $role = VaiTro::find($id);
         if (!$role) {
             return ApiResponse::notFound('Vai trò không tồn tại');
@@ -130,6 +142,10 @@ class RoleAdminController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
+        if (!auth()->user()->hasPermission('phan_quyen')) {
+            return ApiResponse::error('Bạn không có quyền xóa vai trò.', 403);
+        }
+
         $role = VaiTro::find($id);
         if (!$role) {
             return ApiResponse::notFound('Vai trò không tồn tại');
