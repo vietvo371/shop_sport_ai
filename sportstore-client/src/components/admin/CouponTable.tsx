@@ -70,7 +70,7 @@ export function CouponTable({ coupons, onEdit }: CouponTableProps) {
             );
         }
 
-        if (coupon.gioi_han_su_dung && coupon.so_luong_da_dung >= coupon.gioi_han_su_dung) {
+        if (coupon.gioi_han_su_dung && coupon.da_su_dung >= coupon.gioi_han_su_dung) {
             return (
                 <Badge variant="secondary" className="bg-rose-100 text-rose-700 hover:bg-rose-100">
                     Hết lượt
@@ -143,11 +143,11 @@ export function CouponTable({ coupons, onEdit }: CouponTableProps) {
                                         <div className="w-24 h-2 bg-slate-100 rounded-full overflow-hidden border border-slate-200/50">
                                             <div
                                                 className="h-full bg-primary rounded-full"
-                                                style={{ width: `${Math.min(100, (coupon.so_luong_da_dung / (coupon.gioi_han_su_dung || 100)) * 100)}%` }}
+                                                style={{ width: `${Math.min(100, (coupon.da_su_dung / (coupon.gioi_han_su_dung || 100)) * 100)}%` }}
                                             />
                                         </div>
                                         <span className="text-[10px] font-black text-slate-700">
-                                            {coupon.so_luong_da_dung} / {coupon.gioi_han_su_dung || '∞'}
+                                            {coupon.da_su_dung} / {coupon.gioi_han_su_dung || '∞'}
                                         </span>
                                     </div>
                                 </TableCell>
