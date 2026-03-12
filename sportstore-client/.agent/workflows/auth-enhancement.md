@@ -82,28 +82,22 @@ sportstore_guest_cart
 
 ---
 
-## Phase 3: Email Verification Badge (TODO)
+## Phase 3: Email Verification Badge
 
-### Việc cần làm
+### Files đã tạo
 
-- Component `EmailVerifyBanner` trong user layout:
+- `src/components/auth/EmailVerifyBanner.tsx`: Banner nhắc nhở kèm nút "Gửi lại link".
+- `src/app/layout.tsx`: Đã tích hợp `<EmailVerifyBanner />` ngay trên `<main>`.
 
-```tsx
-{!user.xac_thuc_email_luc && (
-    <div className="bg-amber-50 border-b border-amber-200 py-2 px-4 text-sm text-amber-700 flex items-center gap-2">
-        <Mail className="h-4 w-4" />
-        Email chưa xác thực.
-        <button onClick={resend} className="font-bold underline">Gửi lại</button>
-    </div>
-)}
-```
+### Trạng thái hiển thị
 
-- API: `POST /api/auth/email/resend`
+- Chỉ hiện khi: `isAuthenticated` && `!user.xac_thuc_email_luc`.
+- Tự động ẩn nếu người dùng click "Tắt tạm thời" (dismiss).
 
-### Lưu ý
+### Link xác thực từ Email
 
-- Google OAuth users: `xac_thuc_email_luc` đã được set tự động → KHÔNG hiện banner
-- Email đăng ký thường: `xac_thuc_email_luc = null` → hiện banner
+- Khi click vào link từ email, nó sẽ dẫn về Backend endpoint.
+- TODO: Có thể tạo một trang frontend trung gian `/verify-email` để hiển thị UI success đẹp hơn trước khi redirect.
 
 ---
 

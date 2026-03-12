@@ -21,6 +21,7 @@ import Providers from "@/lib/queryClient";
 import { TooltipProvider } from "@/components/ui/tooltip";
 
 import { Toaster } from "@/components/ui/sonner";
+import { EmailVerifyBanner } from "@/components/auth/EmailVerifyBanner";
 
 export default function RootLayout({
   children,
@@ -28,12 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
           <TooltipProvider>
+            <EmailVerifyBanner />
             <main className="flex min-h-screen flex-col">{children}</main>
             <Toaster position="top-center" richColors />
           </TooltipProvider>

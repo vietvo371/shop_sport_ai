@@ -47,8 +47,13 @@ export const authService = {
         return response.data.url;
     },
 
-    loginWithGoogle: async (code: string): Promise<AuthResponse> => {
-        const response: any = await apiClient.post('/auth/google/callback', { code });
-        return response.data;
+    loginWithGoogle: async (code: string) => {
+        const res = await apiClient.post('/auth/google/callback', { code });
+        return res.data;
     },
+
+    resendVerificationEmail: async () => {
+        const res = await apiClient.post('/auth/email/resend');
+        return res.data;
+    }
 };
