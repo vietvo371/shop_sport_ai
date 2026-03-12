@@ -111,5 +111,23 @@ class StandardRBACSeeder extends Seeder
                 ->pluck('id');
             $marketer->quyen()->sync($marketerPerms);
         }
+
+        // 7. Gán RBAC role cho các nhân viên được tạo trong NguoiDungSeeder
+        $staffMapping = [
+            'manager@sportstore.vn'  => 'manager',
+            'staff@sportstore.vn'    => 'staff',
+            'marketer@sportstore.vn' => 'marketer',
+            'staff2@sportstore.vn'   => 'staff',
+        ];
+
+        foreach ($staffMapping as $email => $roleSlug) {
+            $user = \App\Models\NguoiDung::where('email', $email)->first();
+            $role = VaiTro::where('ma_slug', $roleSlug)->first();
+            if ($user && $role) {
+                $user->cacVaiTro()->syncWithoutDetaching([$role->id]);
+            }
+        }
+
+        $this->command->info('✅ StandardRBACSeeder: Phân quyền RBAC hoàn tất (super_admin, manager, staff, marketer).');
     }
 }

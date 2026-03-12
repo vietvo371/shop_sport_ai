@@ -11,7 +11,7 @@ class NguoiDungSeeder extends Seeder
 {
     public function run(): void
     {
-        // 1. Tạo Admin
+        // 1. Tạo Super Admin (Master)
         DB::table('nguoi_dung')->insert([
             'ho_va_ten'     => 'Quản Trị Viên',
             'email'         => 'admin@sportstore.vn',
@@ -24,7 +24,45 @@ class NguoiDungSeeder extends Seeder
             'updated_at'    => now()->subYear(),
         ]);
 
-        // 2. Tạo tập hợp Khách hàng (30 người)
+        // 2. Tạo các nhân viên quản lý
+        // vai_tro = 'quan_tri' để bộ lọc "Nhân viên" tại Admin hoạt động đúng
+        $staffAccounts = [
+            [
+                'ho_va_ten'     => 'Nguyễn Quản Lý',
+                'email'         => 'manager@sportstore.vn',
+                'mat_khau'      => Hash::make('Manager@2025'),
+                'so_dien_thoai' => '0912345678',
+            ],
+            [
+                'ho_va_ten'     => 'Trần Nhân Viên',
+                'email'         => 'staff@sportstore.vn',
+                'mat_khau'      => Hash::make('Staff@2025'),
+                'so_dien_thoai' => '0923456789',
+            ],
+            [
+                'ho_va_ten'     => 'Lê Marketing',
+                'email'         => 'marketer@sportstore.vn',
+                'mat_khau'      => Hash::make('Marketer@2025'),
+                'so_dien_thoai' => '0934567890',
+            ],
+            [
+                'ho_va_ten'     => 'Phạm Kho Vận',
+                'email'         => 'staff2@sportstore.vn',
+                'mat_khau'      => Hash::make('Staff@2025'),
+                'so_dien_thoai' => '0945678901',
+            ],
+        ];
+
+        foreach ($staffAccounts as $staff) {
+            DB::table('nguoi_dung')->insert(array_merge($staff, [
+                'vai_tro'    => 'quan_tri', // bắt buộc để filter admin hiển thị đúng
+                'trang_thai' => true,
+                'created_at' => now()->subDays(rand(30, 180)),
+                'updated_at' => now()->subDays(rand(1, 30)),
+            ]));
+        }
+
+        // 3. Tạo tập hợp Khách hàng (30 người)
         $ho = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Phan', 'Vũ', 'Đặng', 'Bùi', 'Đỗ'];
         $dem = ['Văn', 'Thị', 'Minh', 'Anh', 'Đức', 'Quang', 'Hồng', 'Ngọc', 'Tuấn', 'Thanh'];
         $ten = ['An', 'Bình', 'Chi', 'Dũng', 'Em', 'Hạnh', 'Khánh', 'Linh', 'Nam', 'Oanh', 'Phúc', 'Quân', 'Sơn', 'Trang', 'Việt'];
@@ -50,20 +88,20 @@ class NguoiDungSeeder extends Seeder
             // 80% có địa chỉ
             if (rand(1, 10) <= 8) {
                 DB::table('dia_chi')->insert([
-                    'nguoi_dung_id' => $userId,
-                    'ho_va_ten' => $fullName,
-                    'so_dien_thoai' => '09' . rand(10000000, 99999999),
-                    'tinh_thanh' => 'Hà Nội',
-                    'quan_huyen' => 'Cầu Giấy',
-                    'phuong_xa' => 'Dịch Vọng',
+                    'nguoi_dung_id'  => $userId,
+                    'ho_va_ten'      => $fullName,
+                    'so_dien_thoai'  => '09' . rand(10000000, 99999999),
+                    'tinh_thanh'     => 'Hà Nội',
+                    'quan_huyen'     => 'Cầu Giấy',
+                    'phuong_xa'      => 'Dịch Vọng',
                     'dia_chi_cu_the' => rand(1, 500) . ' Đường Cầu Giấy',
-                    'la_mac_dinh' => true,
-                    'created_at' => $createdAt,
-                    'updated_at' => $createdAt,
+                    'la_mac_dinh'    => true,
+                    'created_at'     => $createdAt,
+                    'updated_at'     => $createdAt,
                 ]);
             }
         }
 
-        $this->command->info('✅ NguoiDungSeeder: Đã tạo 1 admin và 30 khách hàng đa dạng.');
+        $this->command->info('✅ NguoiDungSeeder: 1 super admin, 4 nhân viên (quan_tri), 30 khách hàng.');
     }
 }
