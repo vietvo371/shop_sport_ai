@@ -57,3 +57,8 @@
 - Hoàn thiện hệ thống Phân quyền động (RBAC) với các bảng Tiếng Việt.
 - Tích hợp kiểm tra quyền chi tiết (Granular Permissions) vào toàn bộ Admin Controllers.
 - Chuẩn hóa quy trình giao tiếp API: Codify `ApiResponse` và ngăn chặn lỗi Double-Unwrapping.
+### Session 7 — 03/2025 — Master Protection & Cleanup
+- Revert các thay đổi RBAC phức tạp (xóa `id_vai_tro`) để quay về trạng thái ổn định.
+- Thêm cột `is_master` vào bảng `nguoi_dung` để bảo vệ tài khoản Super Admin.
+- Triển khai cơ chế bảo mật chặn xóa/sửa tài khoản Master ở cả BE và FE.
+- Cập nhật toàn bộ tài liệu dự án và database docs.

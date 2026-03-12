@@ -112,7 +112,7 @@ sportstore-be/
 **Nghiệp vụ:** `../docs/architecture/database-business-logic.md`
 
 **Tên bảng (tiếng Việt snake_case):**
-- `nguoi_dung`, `token_truy_cap`
+- `nguoi_dung` (có cờ `is_master` bảo vệ), `token_truy_cap`
 - `san_pham`, `danh_muc`, `thuong_hieu`, `bien_the_san_pham`, `hinh_anh_san_pham`
 - `dia_chi`, `gio_hang`, `gio_hang_san_pham`
 - `don_hang`, `chi_tiet_don_hang`, `lich_su_trang_thai_don`, `thanh_toan`
@@ -130,7 +130,9 @@ sportstore-be/
 - Sanctum: `auth:sanctum` middleware cho routes cần auth
 - Admin check: Middleware kiểm tra `nguoi_dung.vai_tro = 'quan_tri'`
 - **Gemini API Key** chỉ ở `.env` phía backend — không expose ra frontend
+- Master Protection: Tài khoản có `is_master = true` không thể bị xóa hoặc chỉnh sửa quyền hạn/trạng thái qua Admin API thông thường. Bảo vệ bởi Eloquent `deleting` hook.
 - Mass assignment: dùng `$fillable` hoặc `$guarded` trên mọi Model
+- **QUAN TRỌNG:** `is_master` chỉ được set qua Seeder hoặc DB direct, không bao giờ expose qua `register` hoặc `update` user thông thường.
 
 ---
 

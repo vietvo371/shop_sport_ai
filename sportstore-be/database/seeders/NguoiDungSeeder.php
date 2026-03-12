@@ -18,6 +18,7 @@ class NguoiDungSeeder extends Seeder
                 'mat_khau'      => Hash::make('Admin@2025'),
                 'so_dien_thoai' => '0901234567',
                 'vai_tro'       => 'quan_tri',
+                'is_master'     => true,
                 'trang_thai'    => true,
             ],
             // Test users

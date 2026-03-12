@@ -22,6 +22,7 @@ class NguoiDung extends Authenticatable
         'mat_khau',
         'so_dien_thoai',
         'anh_dai_dien',
+        'is_master',
         'vai_tro',
         'trang_thai',
     ];
@@ -29,6 +30,7 @@ class NguoiDung extends Authenticatable
     protected $hidden = ['mat_khau'];
 
     protected $casts = [
+        'is_master'          => 'boolean',
         'trang_thai'         => 'boolean',
         'xac_thuc_email_luc' => 'datetime',
     ];
@@ -72,6 +74,20 @@ class NguoiDung extends Authenticatable
     // Helpers
     public function isAdmin(): bool
     {
-        return $this->vai_tro === 'quan_tri';
+        return $this->is_master || $this->vai_tro === 'quan_tri';
+    }
+
+    /**
+     * Ngăn chặn xóa tài khoản master
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($user) {
+            if ($user->is_master) {
+                throw new \Exception('Không thể xóa tài khoản Master của hệ thống.');
+            }
+        });
     }
 }

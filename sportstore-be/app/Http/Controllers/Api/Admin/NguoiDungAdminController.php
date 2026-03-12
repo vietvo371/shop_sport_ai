@@ -107,6 +107,11 @@ class NguoiDungAdminController extends Controller
 
         $user = NguoiDung::findOrFail($id);
         
+        // Ngăn chặn xóa tài khoản master
+        if ($user->is_master) {
+            return ApiResponse::error('Không thể xóa tài khoản Master của hệ thống', 403);
+        }
+
         // Ngăn chặn admin tự xóa chính mình
         if ($user->id === auth()->id()) {
             return ApiResponse::error('Bạn không thể tự xóa tài khoản của chính mình', 403);
