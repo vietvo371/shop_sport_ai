@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->string('mat_khau');
             $table->string('so_dien_thoai', 20)->nullable();
             $table->string('anh_dai_dien')->nullable();
+            $table->boolean('is_master')->default(false);
             $table->enum('vai_tro', ['quan_tri', 'khach_hang'])->default('khach_hang');
             $table->boolean('trang_thai')->default(true);
             $table->timestamp('xac_thuc_email_luc')->nullable();
