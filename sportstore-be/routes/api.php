@@ -15,6 +15,12 @@ Route::prefix('auth')->group(function () {
     // Google OAuth
     Route::get('google/redirect',  [\App\Http\Controllers\Api\Auth\GoogleAuthController::class, 'redirectUrl']);
     Route::post('google/callback', [\App\Http\Controllers\Api\Auth\GoogleAuthController::class, 'handleCallback']);
+
+    // Xác thực email
+    Route::get('email/verify/{id}/{hash}', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'verify'])
+        ->name('verification.verify'); // Không dùng signed để user click từ frontend dễ hơn (nếu cần bảo mật cao hơn có thể thêm sau)
+    
+    Route::middleware('auth:sanctum')->post('email/resend', [\App\Http\Controllers\Api\Auth\EmailVerificationController::class, 'resend']);
 });
 
 // Catalog — public browse

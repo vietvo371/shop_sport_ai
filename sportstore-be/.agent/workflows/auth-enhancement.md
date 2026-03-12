@@ -84,36 +84,28 @@ Route::post('cart/merge', [GioHangController::class, 'mergeGuestCart']);
 
 ---
 
-## Phase 3: Email Verification (TODO)
+## Phase 3: Email Verification & Notification System
 
-### Việc cần làm
+### Files đã tạo
 
-```php
-// 1. NguoiDung model implement MustVerifyEmail
-class NguoiDung extends Authenticatable implements MustVerifyEmail {}
+- `app/Http/Controllers/Api/Auth/EmailVerificationController.php`: xử lý xác thực link & resend.
+- `app/Services/NotificationService.php`: Master service gửi thông báo DB + Email.
+- `app/Mail/ThongBaoMail.php`: Master Mailable tái sử dụng.
+- `resources/views/emails/thong-bao.blade.php`: Email template chuẩn Premium.
 
-// 2. AuthService::register() gửi email
-$user->sendEmailVerificationNotification();
+### Cấu hình Model NguoiDung
 
-// 3. Controller xử lý verify link
-Route::get('auth/email/verify/{id}/{hash}', ...)
-    ->middleware('signed');
-```
+- Implement `MustVerifyEmail`.
+- Ghi đè `hasVerifiedEmail()`, `markEmailAsVerified()` để khớp với cột `xac_thuc_email_luc`.
 
-### Mail config (.env hiện tại)
+### Hook gửi mail
 
-```
-MAIL_MAILER=smtp
-MAIL_HOST=smtp.gmail.com
-MAIL_PORT=587
-MAIL_USERNAME="vietvo371@gmail.com"
-MAIL_PASSWORD="<16-char app password>"
-MAIL_ENCRYPTION=tls
-```
+- `AuthService::register()`: Tự động gọi `$user->sendEmailVerificationNotification()`.
+- `DonHangService`: Thay thế `ThongBao::create()` bằng `$this->notificationService->send()`.
 
 ---
 
-## Sau khi sửa migration
+## Sau khi sửa migration / Schema
 
 ```bash
 php artisan migrate:fresh --seed

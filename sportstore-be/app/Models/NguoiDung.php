@@ -6,13 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Traits\HasPermissions;
+use Illuminate\Notifications\Notifiable;
 
-class NguoiDung extends Authenticatable
+class NguoiDung extends Authenticatable implements MustVerifyEmail
 {
-    use HasApiTokens, HasPermissions;
+    use HasApiTokens, HasPermissions, Notifiable;
 
     protected $table = 'nguoi_dung';
 
@@ -77,6 +79,34 @@ class NguoiDung extends Authenticatable
     public function isAdmin(): bool
     {
         return $this->is_master || $this->vai_tro === 'quan_tri';
+    }
+
+    /**
+     * Ghi đè phương thức Laravel mặc định để dùng đúng tên cột DB
+     */
+    public function hasVerifiedEmail(): bool
+    {
+        return ! is_null($this->xac_thuc_email_luc);
+    }
+
+    public function markEmailAsVerified(): bool
+    {
+        return $this->forceFill([
+            'xac_thuc_email_luc' => $this->freshTimestamp(),
+        ])->save();
+    }
+
+    public function getEmailForVerification(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Ghi đè để gửi mail tiếng Việt
+     */
+    public function sendEmailVerificationNotification(): void
+    {
+        $this->notify(new \App\Notifications\XacThucEmailNotification);
     }
 
     /**

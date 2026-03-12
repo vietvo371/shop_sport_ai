@@ -31,8 +31,6 @@
         
         /* Information Cards */
         .info-card { background: #fdfdfd; border: 1px solid #f1f5f9; border-radius: 20px; padding: 24px; margin-bottom: 32px; }
-        .info-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f1f5f9; }
-        .info-row:last-child { border-bottom: none; }
         .info-label { font-size: 13px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
         .info-value { font-size: 15px; color: #0f172a; font-weight: 700; }
         
@@ -73,12 +71,18 @@
 
             @if(!empty($duLieuThem))
             <div class="info-card">
-                @foreach($duLieuThem as $label => $value)
-                <div class="info-row">
-                    <span class="info-label">{{ $label }}</span>
-                    <span class="info-value">{{ $value }}</span>
-                </div>
-                @endforeach
+                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                    @foreach($duLieuThem as $label => $value)
+                    <tr>
+                        <td align="left" style="padding: 12px 0; border-bottom: 1px solid #f1f5f9; vertical-align: middle;">
+                            <span class="info-label">{{ $label }}</span>
+                        </td>
+                        <td align="right" style="padding: 12px 0; border-bottom: 1px solid #f1f5f9; vertical-align: middle;">
+                            <span class="info-value">{{ $value }}</span>
+                        </td>
+                    </tr>
+                    @endforeach
+                </table>
             </div>
             @endif
 

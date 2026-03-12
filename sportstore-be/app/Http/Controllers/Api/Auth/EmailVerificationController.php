@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Helpers\ApiResponse;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /**
  * @group 1. Xác thực & Tài khoản
@@ -34,20 +34,35 @@ class EmailVerificationController extends Controller
     /**
      * Xử lý click vào link xác thực từ email.
      * 
-     * Link này được Laravel tự động sinh ra kèm mã hash và chữ ký bảo mật.
      * @urlParam id int required ID người dùng.
      * @urlParam hash string required Mã hash xác thực.
      */
-    public function verify(EmailVerificationRequest $request): JsonResponse
+    public function verify(Request $request, $id, $hash): RedirectResponse
     {
-        if ($request->user()->hasVerifiedEmail()) {
-            return ApiResponse::success(null, 'Email đã được xác thực thành công.');
+        $frontendUrl = rtrim(config('app.frontend_url', 'http://localhost:3000'), '/');
+
+        // 1. Kiểm tra chữ ký hợp lệ (signed url)
+        if (! $request->hasValidSignature()) {
+            return redirect($frontendUrl . '/verify-email?status=expired');
         }
 
-        if ($request->user()->markEmailAsVerified()) {
-            // Có thể bắn event UserVerified tại đây nếu cần
+        $user = \App\Models\NguoiDung::find($id);
+
+        if (! $user) {
+            return redirect($frontendUrl . '/verify-email?status=error');
         }
 
-        return ApiResponse::success(null, 'Xác thực email thành công! Chào mừng bạn.');
+        // 2. Kiểm tra hash khớp với email
+        if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
+            return redirect($frontendUrl . '/verify-email?status=error');
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect($frontendUrl . '/verify-email?status=already_verified');
+        }
+
+        $user->markEmailAsVerified();
+
+        return redirect($frontendUrl . '/verify-email?status=success');
     }
 }

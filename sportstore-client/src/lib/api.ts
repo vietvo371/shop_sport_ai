@@ -14,7 +14,19 @@ const apiClient: AxiosInstance = axios.create({
 // Interceptor for Request
 apiClient.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const token = Cookies.get('token');
+    // Đọc token từ Zustand persist store (nguồn chính) hoặc fallback sang Cookie
+    let token: string | null = null;
+    try {
+      const stored = localStorage.getItem('auth-storage');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        token = parsed?.state?.token ?? null;
+      }
+    } catch {}
+    // Fallback: đọc từ Cookie (dùng khi SSR hoặc localStorage không khả dụng)
+    if (!token) {
+      token = Cookies.get('token') ?? null;
+    }
     if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }

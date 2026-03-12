@@ -25,6 +25,9 @@ class AuthService
         $token = $user->createToken('sportstore')->plainTextToken;
         $user->load(['cacVaiTro.quyen']);
 
+        // Gửi email xác thực
+        $user->sendEmailVerificationNotification();
+
         return ['user' => $user, 'token' => $token];
     }
 
