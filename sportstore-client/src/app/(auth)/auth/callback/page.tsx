@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { authService } from '@/services/auth.service';
 import { useAuthStore } from '@/store/auth.store';
 import { Loader2, CheckCircle, XCircle } from 'lucide-react';
 
-export default function GoogleCallbackPage() {
+// Component tách riêng vì useSearchParams() bắt buộc cần Suspense
+function GoogleCallbackContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const setAuth = useAuthStore((state) => state.setAuth);
@@ -26,8 +27,7 @@ export default function GoogleCallbackPage() {
                 const data = await authService.loginWithGoogle(code);
                 setAuth(data.user, data.token);
                 setStatus('success');
-                
-                // Redirect sau khi login thành công
+
                 setTimeout(() => {
                     if (data.user.vai_tro === 'quan_tri') {
                         router.push('/admin');
@@ -90,5 +90,21 @@ export default function GoogleCallbackPage() {
                 )}
             </div>
         </div>
+    );
+}
+
+// Bắt buộc wrap Suspense vì useSearchParams() cần nó trong Next.js App Router
+export default function GoogleCallbackPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen flex items-center justify-center bg-slate-50">
+                <div className="bg-white rounded-3xl shadow-xl p-12 flex flex-col items-center gap-4">
+                    <Loader2 className="h-10 w-10 text-blue-500 animate-spin" />
+                    <p className="text-slate-500 text-sm font-medium">Đang tải...</p>
+                </div>
+            </div>
+        }>
+            <GoogleCallbackContent />
+        </Suspense>
     );
 }
