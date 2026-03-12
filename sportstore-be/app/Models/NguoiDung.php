@@ -22,9 +22,11 @@ class NguoiDung extends Authenticatable
         'mat_khau',
         'so_dien_thoai',
         'anh_dai_dien',
+        'google_id',
         'is_master',
         'vai_tro',
         'trang_thai',
+        'xac_thuc_email_luc',
     ];
 
     protected $hidden = ['mat_khau'];

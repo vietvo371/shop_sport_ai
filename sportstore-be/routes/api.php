@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('auth')->group(function () {
     Route::post('register', [\App\Http\Controllers\Api\Auth\AuthController::class, 'register']);
     Route::post('login',    [\App\Http\Controllers\Api\Auth\AuthController::class, 'login']);
+
+    // Google OAuth
+    Route::get('google/redirect',  [\App\Http\Controllers\Api\Auth\GoogleAuthController::class, 'redirectUrl']);
+    Route::post('google/callback', [\App\Http\Controllers\Api\Auth\GoogleAuthController::class, 'handleCallback']);
 });
 
 // Catalog — public browse
@@ -58,6 +62,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('cart/items/{id}',   [\App\Http\Controllers\Api\GioHangController::class, 'updateItem']);
     Route::delete('cart/items/{id}',[\App\Http\Controllers\Api\GioHangController::class, 'removeItem']);
     Route::delete('cart',           [\App\Http\Controllers\Api\GioHangController::class, 'clear']);
+    Route::post('cart/merge',       [\App\Http\Controllers\Api\GioHangController::class, 'mergeGuestCart']); // hợp nhất giỏ hàng guest
 
     // Mã giảm giá — validate
     Route::post('coupons/validate', [\App\Http\Controllers\Api\MaGiamGiaController::class, 'validate']);
