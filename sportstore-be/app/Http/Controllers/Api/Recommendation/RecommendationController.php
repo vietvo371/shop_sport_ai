@@ -17,7 +17,8 @@ class RecommendationController extends Controller
      */
     public function index(Request $request): JsonResponse
     {
-        $user = $request->user();
+        // Sử dụng auth('sanctum') thay vì $request->user() để hỗ trợ Auth tùy chọn cho public middleware
+        $user = auth('sanctum')->user();
         $aiUrl = config('services.ai_service.url');
 
         try {

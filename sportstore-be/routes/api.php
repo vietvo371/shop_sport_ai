@@ -91,6 +91,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('payments')->group(function () {
         Route::post('create-url', [\App\Http\Controllers\Api\Payment\PaymentController::class, 'createPaymentUrl']);
         Route::get('vnpay-return', [\App\Http\Controllers\Api\Payment\PaymentController::class, 'vnpayReturn']);
+        Route::get('momo-return', [\App\Http\Controllers\Api\Payment\PaymentController::class, 'momoReturn']);
         Route::post('momo-ipn', [\App\Http\Controllers\Api\Payment\PaymentController::class, 'momoIpn']);
     });
 

@@ -8,6 +8,7 @@ use App\Models\DonHang;
 use App\Models\ThanhToan;
 use App\Services\Payment\VNPayService;
 use App\Services\Payment\MoMoService;
+use App\Services\NotificationService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +18,8 @@ class PaymentController extends Controller
 {
     public function __construct(
         private VNPayService $vnpayService,
-        private MoMoService $momoService
+        private MoMoService $momoService,
+        private NotificationService $notificationService
     ) {}
 
     /**
@@ -101,12 +103,44 @@ class PaymentController extends Controller
         $resultCode = $request->resultCode;
         $maDonHang = $request->orderId;
 
+        // Lưu log để dễ debug khi public IPN
+        Log::info('MoMo IPN Hit: ', $request->all());
+
         if ($resultCode == 0) {
             $this->updatePaymentStatus($maDonHang, 'momo', $request->all(), $request->transId);
             return response()->json(['message' => 'Success'], 200);
         }
 
         return response()->json(['message' => 'Failed'], 200);
+    }
+
+    /**
+     * MoMo Return (Client Redirect)
+     * Xác thực khi Client Frontend bị redirect về từ app momo.
+     */
+    public function momoReturn(Request $request): JsonResponse
+    {
+        $isValid = $this->momoService->verifySignature($request->all());
+
+        if (!$isValid) {
+            return ApiResponse::error('Chữ ký xác thực bị giả mạo hoặc không hợp lệ', 400);
+        }
+
+        $resultCode = $request->resultCode;
+        $maDonHang = $request->orderId;
+        
+        // Extract order prefix if orderId matches FORMAT "DHxxxx_17200..."
+        if (str_contains($maDonHang, '_')) {
+            $maDonHang = explode('_', $maDonHang)[0];
+        }
+
+        if ($resultCode == 0) {
+            // Có thể IPN chạy chậm hơn Return do mạng, ta vẫn cập nhật chéo ở đây đề phòng
+            $this->updatePaymentStatus($maDonHang, 'momo', $request->all(), $request->transId);
+            return ApiResponse::success(null, 'Thanh toán MoMo thành công');
+        }
+
+        return ApiResponse::error('Thanh toán MoMo thất bại', 400);
     }
 
     /**
@@ -138,6 +172,26 @@ class PaymentController extends Controller
                     'trang_thai' => 'dang_xu_ly',
                     'ghi_chu'    => "Khách hàng thanh toán qua {$phuongThuc}. Mã GD: {$maGiaoDich}"
                 ]);
+
+                // Gửi thông báo Email + Web hook cho Khách hàng
+                $nguoiDung = $donHang->nguoiDung;
+                if ($nguoiDung) {
+                    $tenPhuongThuc = strtoupper($phuongThuc);
+                    $this->notificationService->send(
+                        user:         $nguoiDung,
+                        loai:         'don_hang',
+                        tieuDe:       "Thanh toán đơn hàng thành công 💳",
+                        noiDung:      "Giao dịch thanh toán qua {$tenPhuongThuc} cho đơn hàng #{$donHang->ma_don_hang} đã được xác nhận thành công. Đơn hàng của bạn sẽ sớm được nhà phân phối SportStore đóng gói và gửi đi.",
+                        duLieuThem:   [
+                            'Mã đơn hàng' => $donHang->ma_don_hang,
+                            'Thanh toán'  => number_format($donHang->tong_tien) . 'đ',
+                            'Ví điện tử'  => $tenPhuongThuc,
+                            'Mã giao dịch' => $maGiaoDich,
+                        ],
+                        hanhDongUrl:  config('app.frontend_url') . '/profile/orders/' . $donHang->ma_don_hang,
+                        hanhDongText: 'Theo dõi đơn hàng',
+                    );
+                }
             }
         });
     }
