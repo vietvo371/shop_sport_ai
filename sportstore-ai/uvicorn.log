@@ -1,0 +1,29 @@
+INFO:     Will watch for changes in these directories: ['/Volumes/MAC_OPTION/DATN/KLTN_94_NGOC/sportstore-ai']
+INFO:     Uvicorn running on http://0.0.0.0:8001 (Press CTRL+C to quit)
+INFO:     Started reloader process [8346] using StatReload
+INFO:     Started server process [8404]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:60879 - "GET /api/v1/recommend/popular HTTP/1.1" 200 OK
+INFO:     127.0.0.1:61205 - "GET /api/v1/recommend/user/2 HTTP/1.1" 200 OK
+WARNING:  StatReload detected changes in 'ml_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [8404]
+INFO:     Started server process [9496]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9496]
+INFO:     Started server process [9514]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [9514]
+INFO:     Stopping reloader process [8346]

@@ -25,8 +25,8 @@
 | Coupon | 🟢 DONE | `MaGiamGiaController` | Validation & usage tracking |
 | Notification | 🟢 DONE | `ThongBaoController` | DB notifications |
 | RBAC (Phân quyền) | 🟢 DONE | `VaiTro`, `Quyen`, `HasPermissions` | Hệ thống quyền hạn động |
-| AI Chatbot (Gemini) | 🔴 TODO | `ChatbotController` | Proxying to Gemini API |
-| Recommendation | 🔴 TODO | `RecommendationController` | User behavior tracking |
+| AI Chatbot (Gemini) | 🟢 DONE | `ChatbotController` | Proxying to Gemini API |
+| Recommendation | 🟢 DONE | `RecommendationController` | User behavior tracking |
 
 ---
 
