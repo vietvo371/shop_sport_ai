@@ -71,6 +71,7 @@ class AuthService
         $update = array_filter([
             'ho_va_ten'     => $data['ho_va_ten'] ?? null,
             'so_dien_thoai' => $data['so_dien_thoai'] ?? null,
+            'anh_dai_dien'  => $data['anh_dai_dien'] ?? null,
         ]);
 
         if (!empty($data['mat_khau_moi'])) {

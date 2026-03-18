@@ -128,6 +128,7 @@ class AuthController extends Controller
         $data = $request->validate([
             'ho_va_ten'     => 'sometimes|string|max:100',
             'so_dien_thoai' => 'sometimes|nullable|string|max:20',
+            'anh_dai_dien'  => 'sometimes|nullable|string|max:500',
             'mat_khau_cu'   => 'required_with:mat_khau_moi|string',
             'mat_khau_moi'  => 'sometimes|string|min:8|confirmed',
             'mat_khau_moi_confirmation' => 'required_with:mat_khau_moi|string|same:mat_khau_moi',
