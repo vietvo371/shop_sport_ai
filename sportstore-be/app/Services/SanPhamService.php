@@ -19,12 +19,27 @@ class SanPhamService
         // Lọc theo danh mục
         if (!empty($filters['danh_muc'])) {
             $danhMuc = $filters['danh_muc'];
-            if (is_numeric($danhMuc)) {
-                $query->where('danh_muc_id', $danhMuc);
+            $cat = is_numeric($danhMuc) 
+                ? \App\Models\DanhMuc::find($danhMuc)
+                : \App\Models\DanhMuc::where('duong_dan', $danhMuc)->first();
+
+            if ($cat) {
+                // Gom ID của Cha và tất cả cá thể Con (Trực hệ 1 cấp)
+                $catIds = [$cat->id];
+                $childIds = \App\Models\DanhMuc::where('danh_muc_cha_id', $cat->id)->pluck('id')->toArray();
+                if (!empty($childIds)) {
+                    $catIds = array_merge($catIds, $childIds);
+                }
+                $query->whereIn('danh_muc_id', $catIds);
             } else {
-                $query->whereHas('danhMuc', function ($q) use ($danhMuc) {
-                    $q->where('duong_dan', $danhMuc);
-                });
+                // Fallback nếu không tìm thấy Model DanhMuc trước khi Query
+                if (is_numeric($danhMuc)) {
+                    $query->where('danh_muc_id', $danhMuc);
+                } else {
+                    $query->whereHas('danhMuc', function ($q) use ($danhMuc) {
+                        $q->where('duong_dan', $danhMuc);
+                    });
+                }
             }
         }
 

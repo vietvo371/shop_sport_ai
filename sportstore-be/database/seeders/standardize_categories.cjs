@@ -15,11 +15,9 @@ function mapCategories(brand, name, currentCats) {
     const combined = nameLower + " " + catsLower;
 
     // 1. Phân loại cấu trúc "danh mục cha"
-    if (combined.includes('bóng đá') || nameLower.includes('striker') || nameLower.includes('veloz') || nameLower.includes('faster') || nameLower.includes('wika') || nameLower.includes('tf') || nameLower.includes('k-pro') || nameLower.includes('tl22')) {
-        parent = "Bóng đá";
-    } else if (combined.includes('pickleball')) {
+    if (combined.includes('pickleball') || nameLower.includes('pickleball') || combined.includes('pickeball') || nameLower.includes('pickeball')) {
         parent = "Pickleball";
-    } else if (combined.includes('cầu lông')) {
+    } else if (combined.includes('cầu lông') || nameLower.includes('cầu lông')) {
         parent = "Cầu lông";
     } else if (combined.includes('bóng chuyền') || nameLower.includes('chuyền')) {
         parent = "Bóng chuyền";
@@ -27,6 +25,8 @@ function mapCategories(brand, name, currentCats) {
         parent = "Bóng bàn";
     } else if (combined.includes('chạy bộ') || combined.includes('running') || combined.includes('runner') || nameLower.includes('pegasus') || nameLower.includes('winflo') || nameLower.includes('zoom')) {
         parent = "Chạy bộ";
+    } else if (combined.includes('bóng đá') || nameLower.includes('striker') || nameLower.includes('veloz') || nameLower.includes('faster') || nameLower.includes('tf') || nameLower.includes('k-pro') || nameLower.includes('tl22')) {
+        parent = "Bóng đá";
     } else if (combined.includes('lifestyle') || combined.includes('thời trang') || combined.includes('polo') || combined.includes('tshirt') || combined.includes('t-shirt') || nameLower.includes('air max') || nameLower.includes(' ls.')) {
         parent = "Thời trang";
     } else if (combined.includes('balo') || combined.includes('túi') || combined.includes('sa bàn') || combined.includes('phụ kiện') || combined.includes('tất') || combined.includes('vớ')) {

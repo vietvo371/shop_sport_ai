@@ -27,14 +27,14 @@ class ThuongHieuSeeder extends Seeder
             [
                 'ten'       => 'Kamito',
                 'duong_dan' => 'kamito',
-                'logo'      => 'https://kamito.vn/images/logo.png',
+                'logo'      => 'https://file.hstatic.net/200000211685/collection/kamito_giay_bong_da_7ff1b85aacb847399de8b9ee269cbac7.png',
                 'mo_ta'     => 'Thương hiệu đỉnh cao Nhật Bản, nổi tiếng với các môn thể thao đa dụng và Pickleball.',
                 'trang_thai'=> true,
             ],
             [
                 'ten'       => 'Kaiwin',
                 'duong_dan' => 'kaiwin',
-                'logo'      => 'https://kaiwin.vn/wp-content/uploads/2022/07/Logo-Kaiwin-Website.png',
+                'logo'      => 'https://cdn1.vieclam24h.vn/images/employer_avatar/2022/10/27/images/166683646644.png',
                 'mo_ta'     => 'Nhà sản xuất trang phục, áo bóng đá, dụng cụ thể thao thiết kế hiện đại.',
                 'trang_thai'=> true,
             ]
@@ -51,7 +51,7 @@ class ThuongHieuSeeder extends Seeder
                 ]
             );
         }
-        
+
         $this->command->info('✅ ThuongHieuSeeder: Đã tạo 4 thương hiệu đại diện cho 4 file Dataset.');
     }
 }

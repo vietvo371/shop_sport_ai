@@ -24,8 +24,8 @@ class SanPhamSeeder extends Seeder
             $brandMap[strtolower($k)] = $v;
         }
 
-        // Lấy Map Danh mục (Name => ID). Danh mục con có thể trùng tên nhưng khác cha, tuy nhiên dữ liệu này các nhãn hàng thường không đụng hàng cực đoan, lấy key theo tên vẫn khá ổn.
-        $cats = DB::table('danh_muc')->get()->keyBy('ten')->toArray();
+        // Lấy Map Danh mục dựa vào duong_dan (Kết hợp Slug Danh mục Cha + Con) để chống ghi đè các nhánh trùng tên như "Áo Polo"
+        $cats = DB::table('danh_muc')->get()->keyBy('duong_dan')->toArray();
 
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         DB::table('san_pham')->truncate();
@@ -65,16 +65,20 @@ class SanPhamSeeder extends Seeder
                     $brandId = array_values($brandMap)[0] ?? 1; // Fallback
                 }
 
-                // 2. Xác định Category ID
+                // 2. Xác định Category ID (Mapping bằng Slug của Danh mục Cha + Con)
                 $catId = null;
                 if (isset($p['categories']) && count($p['categories']) >= 3) {
+                    $parentName = trim($p['categories'][1]);
                     $childName = trim($p['categories'][2]);
-                    if (isset($cats[$childName])) {
-                        $catId = $cats[$childName]->id;
+                    $slug = Str::slug($parentName . ' ' . $childName);
+                    
+                    if (isset($cats[$slug])) {
+                        $catId = $cats[$slug]->id;
                     } else {
-                        $parentName = trim($p['categories'][1]);
-                        if (isset($cats[$parentName])) {
-                            $catId = $cats[$parentName]->id;
+                        // Fallback tìm parent
+                        $parentSlug = Str::slug($parentName);
+                        if (isset($cats[$parentSlug])) {
+                            $catId = $cats[$parentSlug]->id;
                         }
                     }
                 }
