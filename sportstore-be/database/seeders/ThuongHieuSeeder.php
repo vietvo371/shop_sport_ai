@@ -11,24 +11,31 @@ class ThuongHieuSeeder extends Seeder
     {
         $brands = [
             [
-                'ten'       => 'Wika Sports',
-                'duong_dan' => 'wika-sports',
+                'ten'       => 'Nike',
+                'duong_dan' => 'nike',
+                'logo'      => 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
+                'mo_ta'     => 'Thương hiệu thể thao hàng đầu toàn cầu, chuyên giày thể thao, quần áo và phụ kiện.',
+                'trang_thai'=> true,
+            ],
+            [
+                'ten'       => 'Wika',
+                'duong_dan' => 'wika',
                 'logo'      => 'https://wikasports.com/wp-content/uploads/2021/10/wika-sports-logo-1.jpg',
-                'mo_ta'     => 'Thương hiệu thể thao hàng đầu Việt Nam, đồng hành cùng Quang Hải, Hoàng Đức, Công Phượng.',
+                'mo_ta'     => 'Thương hiệu thể thao Việt Nam, nổi bật với giày bóng đá và trang phục bóng đá.',
                 'trang_thai'=> true,
             ],
             [
-                'ten'       => 'MaxxSport',
-                'duong_dan' => 'maxxsport',
-                'logo'      => 'https://maxsportnutrition.com/assets/front/build/img/maxsport-facebook.png',
-                'mo_ta'     => 'Hệ thống siêu thị thể thao chính hãng.',
+                'ten'       => 'Kamito',
+                'duong_dan' => 'kamito',
+                'logo'      => 'https://kamito.vn/images/logo.png',
+                'mo_ta'     => 'Thương hiệu đỉnh cao Nhật Bản, nổi tiếng với các môn thể thao đa dụng và Pickleball.',
                 'trang_thai'=> true,
             ],
             [
-                'ten'       => 'Zocker',
-                'duong_dan' => 'zocker',
-                'logo'      => 'https://cdn.ketnoibongda.vn/media-c/1140-402-100/upload/images/logo-zocker-2023-11-16.png',
-                'mo_ta'     => 'Thương hiệu chuyên về dụng cụ thể thao cao cấp và thiết bị thể dục.',
+                'ten'       => 'Kaiwin',
+                'duong_dan' => 'kaiwin',
+                'logo'      => 'https://kaiwin.vn/wp-content/uploads/2022/07/Logo-Kaiwin-Website.png',
+                'mo_ta'     => 'Nhà sản xuất trang phục, áo bóng đá, dụng cụ thể thao thiết kế hiện đại.',
                 'trang_thai'=> true,
             ]
         ];
@@ -45,6 +52,6 @@ class ThuongHieuSeeder extends Seeder
             );
         }
         
-        $this->command->info('✅ ThuongHieuSeeder: Đã tạo 3 thương hiệu');
+        $this->command->info('✅ ThuongHieuSeeder: Đã tạo 4 thương hiệu đại diện cho 4 file Dataset.');
     }
 }

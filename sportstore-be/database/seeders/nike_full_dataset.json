@@ -1,0 +1,219 @@
+{
+  "banners": [
+    {
+      "title": "Nike Pro Seamless",
+      "image": "https://static.nike.com/a/images/f_auto/dpr_1.0,cs_srgb/h_993,c_limit/5b945286-82de-42b8-9759-1c1fa2d41885/nike-just-do-it.png",
+      "link": "https://www.nike.com/vn/w/training-gear-up-3pn6y"
+    },
+    {
+      "title": "The Green Edit",
+      "image": "https://static.nike.com/a/images/q_auto:eco/t_product_v1/f_auto/dpr_1.0/h_589,c_limit/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/59e7dabe-2741-4c89-a3bd-08f02eee03db/W+NIKE+ASTROGRABBER+LTHR.png",
+      "link": "https://www.nike.com/vn/w/a6d74zbdka"
+    },
+    {
+      "title": "Shop by Sport",
+      "image": "https://static.nike.com/a/images/f_auto/dpr_1.0,cs_srgb/h_697,c_limit/1f6dcd2f-749b-412d-938b-abac8e505a10/nike-just-do-it.png",
+      "link": "https://www.nike.com/vn/w/running-37v7j"
+    }
+  ],
+  "products": [
+    {
+      "id": 437114,
+      "name": "Nike Air Max 95 Big Bubble 'OG'",
+      "price": "4999000",
+      "regular_price": "4999000",
+      "permalink": "https://www.nike.com/vn/t/air-max-95-big-bubble-og-shoes-ixo53b68/HM4740-007",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/64cba124-ae68-49cc-9f2b-5f967d8e2b13/NIKE+AIR+MAX+95+BIG+BUBBLE.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-air-max-95-big-bubble-og",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Air Max 95 Big Bubble 'OG' chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Air Max 95 Big Bubble 'OG'</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 91972,
+      "name": "Nike Air Max 95 Big Bubble",
+      "price": "5279000",
+      "regular_price": "5279000",
+      "permalink": "https://www.nike.com/vn/t/air-max-95-big-bubble-shoes-F5XjyAqw/IB6830-001",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/8c0b2d20-1c91-41ef-b7ad-dd610fc276ee/NIKE+AIR+MAX+95+BIG+BUBBLE+SE.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-air-max-95-big-bubble",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Air Max 95 Big Bubble chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Air Max 95 Big Bubble</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 507998,
+      "name": "Nike Air Max 90",
+      "price": "3829000",
+      "regular_price": "3829000",
+      "permalink": "https://www.nike.com/vn/t/air-max-90-shoes-O8S0fQ8a/IQ0289-010",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-air-max-90",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Air Max 90 chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Air Max 90</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 731939,
+      "name": "Nike Air Max Plus",
+      "price": "5279000",
+      "regular_price": "5279000",
+      "permalink": "https://www.nike.com/vn/t/air-max-plus-shoes-d3HyC463/IQ0288-100",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png"
+      ],
+      "slug": "nike-air-max-plus",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Air Max Plus chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Air Max Plus</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 898977,
+      "name": "Nike Shox TL",
+      "price": "4999000",
+      "regular_price": "4999000",
+      "permalink": "https://www.nike.com/vn/t/shox-tl-shoes-S28Wv8/AV3595-201",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/a452fe9b-d6b7-4033-bf5f-0bd85809d06a/NIKE+SHOX+TL.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-shox-tl",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Shox TL chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Shox TL</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 793824,
+      "name": "Nike Vaporfly 4",
+      "price": "6609000",
+      "regular_price": "6609000",
+      "permalink": "https://www.nike.com/vn/t/vaporfly-4-road-racing-shoes-PTwDtp/HF6414-112",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/9e6d5ac5-4d79-490d-b26c-22704632227a/ZOOMX+VAPORFLY+NEXT%25+4.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-vaporfly-4",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Vaporfly 4 chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Vaporfly 4</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 250945,
+      "name": "Jordan Tiempo Maestro Elite SE",
+      "price": "7759000",
+      "regular_price": "7759000",
+      "permalink": "https://www.nike.com/vn/t/jordan-tiempo-maestro-elite-se-low-top-football-boots-7H7KgQEd/IF4126-600",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_126ab356-44d8-4a06-89b4-fcdcc8df0245,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/d77fb292-34be-4848-897c-f03c3109e2de/TIEMPO+MAESTRO+ELITE+FG+SE.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "jordan-tiempo-maestro-elite-se",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Jordan Tiempo Maestro Elite SE chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Jordan Tiempo Maestro Elite SE</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 496003,
+      "name": "Nike Winflo 12",
+      "price": "3089000",
+      "regular_price": "3089000",
+      "permalink": "https://www.nike.com/vn/t/wio-12-road-running-shoes-oyoVF2mm/HV9272-700",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/1f5946a0-c0e5-4c75-8d43-e3635d8bcb16/NIKE+AIR+WINFLO+12.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-winflo-12",
+      "categories": [
+        "Nike",
+        "Chạy bộ",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Winflo 12 chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Winflo 12</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 915265,
+      "name": "Nike Winflo 12 (Black)",
+      "price": "3089000",
+      "regular_price": "3089000",
+      "permalink": "https://www.nike.com/vn/t/wio-12-road-running-shoes-oyoVF2mm/HV9272-002",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/b84274a5-18c7-4e72-9950-dd8620fe66ae/NIKE+AIR+WINFLO+12.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-winflo-12-black",
+      "categories": [
+        "Nike",
+        "Chạy bộ",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Winflo 12 (Black) chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Winflo 12 (Black)</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 236045,
+      "name": "Nike Winflo 12 (White)",
+      "price": "3089000",
+      "regular_price": "3089000",
+      "permalink": "https://www.nike.com/vn/t/wio-12-road-running-shoes-oyoVF2mm/HV9272-100",
+      "images": [
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/a5ed2be2-8cc0-4398-882c-469f493d778d/NIKE+AIR+WINFLO+12.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/22896731-9ec6-4d95-8b58-97620b3be14f/NIKE+AIR+MAX+90.png",
+        "https://static.nike.com/a/images/t_web_pw_592_v2/f_auto/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/94cef7bd-f891-443a-81fe-48c5d81682ff/NIKE+AIR+MAX+PLUS.png"
+      ],
+      "slug": "nike-winflo-12-white",
+      "categories": [
+        "Nike",
+        "Chạy bộ",
+        "Trang phục - Phụ kiện"
+      ],
+      "short_description": "Giày Nike Winflo 12 (White) chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
+      "description": "<p><strong>Nike Winflo 12 (White)</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    }
+  ]
+}

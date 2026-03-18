@@ -1,0 +1,401 @@
+{
+  "banners": [
+    {
+      "title": "Giày Pickleball",
+      "image": "https://bizweb.dktcdn.net/100/017/070/themes/778721/assets/slider_1.jpg?1762267092687",
+      "link": "https://kaiwinsport.com/giay-pickleball"
+    },
+    {
+      "title": "Giày Balance",
+      "image": "https://bizweb.dktcdn.net/100/017/070/themes/778721/assets/slider_2.jpg?1762267092687",
+      "link": "https://kaiwinsport.com/giay-pickleball?q=collections:4027608%20AND%20product_type.filter_key:(%22Balance%22)&page=1&view=grid"
+    },
+    {
+      "title": "Vợt Pickleball",
+      "image": "https://bizweb.dktcdn.net/100/017/070/themes/778721/assets/slider_5.jpg?1762267092687",
+      "link": "https://kaiwinsport.com/vot-pickleball"
+    }
+  ],
+  "products": [
+    {
+      "id": 6214,
+      "name": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU XANH ĐEN",
+      "slug": "ao-bong-da-kaiwin-mystic-mau-xanh-den",
+      "permalink": "https://kaiwinsport.com/ao-bong-da-kaiwin-mystic-mau-xanh-den",
+      "price": "299000",
+      "regular_price": "299000",
+      "short_description": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU XANH ĐEN",
+      "description": "<div class=\"rte\"><h3>Áo Bóng Đá Kaiwin MYSTIC – Màu Xanh Đen</h3><p><strong>Sức Mạnh Từ Công Nghệ – Đỉnh Phong Từ Phong Cách</strong></p><p>Kaiwin hân hạnh ra mắt <strong>Áo Bóng Đá Kaiwin MYSTIC – Màu Xanh Đen</strong>, phiên bản áo thi đấu cao cấp 2025 kết hợp công nghệ vải đột phá cùng thiết kế mạnh mẽ, hiện đại.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Áo bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-xanh-den.jpg?v=1758993167577",
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-xanh-den-1.jpg?v=1758993170093"
+      ]
+    },
+    {
+      "id": 3053,
+      "name": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU XANH DA",
+      "slug": "ao-bong-da-kaiwin-mystic-mau-xanh-da",
+      "permalink": "https://kaiwinsport.com/ao-bong-da-kaiwin-mystic-mau-xanh-da",
+      "price": "299000",
+      "regular_price": "299000",
+      "short_description": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU XANH DA",
+      "description": "<div class=\"rte\"><h3>Áo Bóng Đá Kaiwin MYSTIC – Màu Xanh Da</h3><p><strong>Sức Mạnh Từ Công Nghệ – Đỉnh Phong Từ Phong Cách</strong></p><p>Sắc Xanh Da trẻ trung – năng động mang lại nguồn năng lượng tích cực.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Áo bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-xanh-da.jpg?v=1758993013817",
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-xanh-da-1.jpg?v=1758993016847"
+      ]
+    },
+    {
+      "id": 11792,
+      "name": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU TRẮNG",
+      "slug": "ao-bong-da-kaiwin-mystic-mau-trang",
+      "permalink": "https://kaiwinsport.com/ao-bong-da-kaiwin-mystic-mau-trang",
+      "price": "299000",
+      "regular_price": "299000",
+      "short_description": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU TRẮNG",
+      "description": "<div class=\"rte\"><h3>Áo Bóng Đá Kaiwin MYSTIC – Màu Trắng</h3><p>Mẫu áo thi đấu cao cấp 2025 với thiết kế tối giản nhưng đầy tinh tế.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Áo bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-trang.jpg?v=1758992701000",
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-trang-1.jpg?v=1758992704177"
+      ]
+    },
+    {
+      "id": 8630,
+      "name": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU ĐỎ",
+      "slug": "ao-bong-da-kaiwin-mystic-mau-do",
+      "permalink": "https://kaiwinsport.com/ao-bong-da-kaiwin-mystic-mau-do",
+      "price": "299000",
+      "regular_price": "299000",
+      "short_description": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU ĐỎ",
+      "description": "<div class=\"rte\"><h3>Áo Bóng Đá Kaiwin MYSTIC – Màu Đỏ</h3><p>Gam màu Đỏ mạnh mẽ tượng trưng cho sự quyết tâm và tinh thần chiến đấu.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Áo bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-do.jpg?v=1758992548770",
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-mau-do-1.jpg?v=1758992552410"
+      ]
+    },
+    {
+      "id": 8171,
+      "name": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU KEM SỮA",
+      "slug": "ao-bong-da-kaiwin-mystic-mau-kem-sua",
+      "permalink": "https://kaiwinsport.com/ao-bong-da-kaiwin-mystic-mau-kem-sua",
+      "price": "299000",
+      "regular_price": "299000",
+      "short_description": "ÁO BÓNG ĐÁ KAIWIN MYSTIC - MÀU KEM SỮA",
+      "description": "<div class=\"rte\"><h3>Áo Bóng Đá Kaiwin MYSTIC – Màu Kem Sữa</h3><p>Thiết kế sang trọng, tông màu Kem Sữa thanh lịch.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Áo bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-kem-sua.jpg?v=1758992364430",
+        "https://bizweb.dktcdn.net/100/017/070/products/a-o-bong-da-mystic-kem-sua-1.jpg?v=1758992365017"
+      ]
+    },
+    {
+      "id": 2757,
+      "name": "VỢT PICKLEBALL KAIWIN DIAMOND VST - MÀU ĐỎ",
+      "slug": "vot-pickleball-kaiwin-diamond-vst-mau-do",
+      "permalink": "https://kaiwinsport.com/vot-pickleball-kaiwin-diamond-vst-mau-do",
+      "price": "4000000",
+      "regular_price": "4000000",
+      "short_description": "VỢT PICKLEBALL KAIWIN DIAMOND VST - MÀU ĐỎ",
+      "description": "<div class=\"rte\"><h3>Vợt Pickleball Kaiwin DIAMOND VST – Màu Đỏ</h3><p>Được thiết kế riêng cho Vũ Sơn Tùng, phiên bản DIAMOND VST mang trong mình tinh thần tự tin.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-diamond-vst.jpg?v=1763775479697",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-diamond-vst-1.jpg?v=1763775480190"
+      ]
+    },
+    {
+      "id": 8222,
+      "name": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU XANH COBAN",
+      "slug": "vot-pickleball-kaiwin-diamond-gen-2-mau-xanh-coban",
+      "permalink": "https://kaiwinsport.com/vot-pickleball-kaiwin-diamond-gen-2-mau-xanh-coban",
+      "price": "3750000",
+      "regular_price": "3750000",
+      "short_description": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU XANH COBAN",
+      "description": "<div class=\"rte\"><p>Vợt Pickleball Kaiwin Diamond Gen 2 là mẫu vợt cao cấp mới nhất của Kaiwin.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-xanh-co-ban.jpg?v=1761880360107",
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-xanh-co-ban4.jpg?v=1761880360107"
+      ]
+    },
+    {
+      "id": 8324,
+      "name": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU XÁM",
+      "slug": "vot-pickleball-kaiwin-diamond-gen-2-mau-xam",
+      "permalink": "https://kaiwinsport.com/vot-pickleball-kaiwin-diamond-gen-2-mau-xam",
+      "price": "3750000",
+      "regular_price": "3750000",
+      "short_description": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU XÁM",
+      "description": "<div class=\"rte\"><p>Lựa chọn hoàn hảo cho những trận đấu chuyên nghiệp hoặc bán chuyên.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-xam.jpg?v=1761880338327",
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-xam4.jpg?v=1761880338327"
+      ]
+    },
+    {
+      "id": 5316,
+      "name": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU ĐỎ",
+      "slug": "vot-pickleball-kaiwin-diamond-gen-2-mau-do",
+      "permalink": "https://kaiwinsport.com/vot-pickleball-kaiwin-diamond-gen-2-mau-do",
+      "price": "3750000",
+      "regular_price": "3750000",
+      "short_description": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU ĐỎ",
+      "description": "<div class=\"rte\"><p>Thiết kế dành riêng cho người chơi yêu thích sức mạnh và kiểm soát bóng tối đa.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-do.jpg?v=1761880328420",
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-do5.jpg?v=1761880328420"
+      ]
+    },
+    {
+      "id": 3066,
+      "name": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU HỒNG",
+      "slug": "vot-pickleball-kaiwin-diamond-gen-2-mau-hong",
+      "permalink": "https://kaiwinsport.com/vot-pickleball-kaiwin-diamond-gen-2-mau-hong",
+      "price": "3750000",
+      "regular_price": "3750000",
+      "short_description": "VỢT PICKLEBALL KAIWIN DIAMOND GEN 2 - MÀU HỒNG",
+      "description": "<div class=\"rte\"><p>Âm thanh đặc trưng mang đến cảm giác phấn khích trong từng cú đánh.</p></div>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-hong.jpg?v=1761880317280",
+        "https://bizweb.dktcdn.net/100/017/070/products/vo-t-pickleball-diamond-gen2-hong3.jpg?v=1761880317280"
+      ]
+    },
+    {
+      "id": 2001,
+      "name": "Giày Bóng Đá Kaiwin Veloz - Màu Đỏ",
+      "slug": "giay-bong-da-kaiwin-veloz-mau-do",
+      "permalink": "https://kaiwinsport.com/giay-bong-da-kaiwin-veloz-mau-do",
+      "price": "379000",
+      "regular_price": "379000",
+      "short_description": "Giày bóng đá chuyên dụng cho sân cỏ nhân tạo với chất liệu da PU cao cấp.",
+      "description": "<p>Giày Bóng Đá Kaiwin Veloz mang đến sự linh hoạt và bám sân tối đa nhờ thiết kế đế đinh TF đặc biệt. Chất liệu da PU siêu bền và êm ái giúp cầu thủ kiểm soát bóng tốt hơn trong mọi điều kiện thời tiết.</p>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Giày bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-bong-da-veloz-mau-do.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-bong-da-veloz-mau-do-1.jpg"
+      ]
+    },
+    {
+      "id": 2002,
+      "name": "Giày Bóng Đá Kaiwin Tiến Linh TL22 Pro - Màu Xanh Ngọc",
+      "slug": "giay-bong-da-kaiwin-tien-linh-tl22-pro-mau-xanh-ngoc",
+      "permalink": "https://kaiwinsport.com/giay-bong-da-kaiwin-tien-linh-tl22-pro-mau-xanh-ngoc",
+      "price": "669000",
+      "regular_price": "669000",
+      "short_description": "Phiên bản giày bóng đá cao cấp đồng hành cùng tuyển thủ Tiến Linh.",
+      "description": "<p>Dòng giày TL22 Pro được thiết kế riêng với các công nghệ hỗ trợ bứt tốc và bảo vệ cổ chân, phù hợp cho lối chơi tấn công mạnh mẽ.</p>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Giày bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/tl22-pro-xanh.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/tl22-pro-xanh-4.jpg"
+      ]
+    },
+    {
+      "id": 2003,
+      "name": "Giày Bóng Đá Kaiwin Faster - Màu Trắng",
+      "slug": "giay-bong-da-faster-mau-trang",
+      "permalink": "https://kaiwinsport.com/giay-bong-da-faster-mau-trang",
+      "price": "299000",
+      "regular_price": "299000",
+      "short_description": "Giày bóng đá giá rẻ nhưng vẫn đảm bảo độ bền và cảm giác bóng tốt.",
+      "description": "<p>Kaiwin Faster là sự lựa chọn tối ưu cho những cầu thủ phong trào với mức giá cực kỳ cạnh tranh, thiết kế trẻ trung và bắt mắt.</p>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Giày bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/faster-trang.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/faster-trang-1.jpg"
+      ]
+    },
+    {
+      "id": 2004,
+      "name": "Bóng Thi Đấu Kaiwin K-Pro",
+      "slug": "bong-thi-dau-kaiwin-k-pro",
+      "permalink": "https://kaiwinsport.com/bong-thi-dau-kaiwin-k-pro",
+      "price": "199000",
+      "regular_price": "199000",
+      "short_description": "Bóng Pickleball 40 lỗ tiêu chuẩn USAPA chất lượng cao.",
+      "description": "<p>Quả bóng Pickleball K-Pro được làm từ vật liệu bền bỉ, độ nảy ổn định, phù hợp cho cả tập luyện và thi đấu chuyên nghiệp.</p>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Quả bóng đá"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/bong-kaiwin-kpro-6-qua.jpg?v=1756978444933",
+        "https://bizweb.dktcdn.net/100/017/070/products/bong-kaiwin-kpro-4-qua.jpg?v=1756978446363"
+      ]
+    },
+    {
+      "id": 2005,
+      "name": "Túi đựng giày Kaiwin KW 201 - Xanh ngọc",
+      "slug": "tui-dung-giay-kaiwin-kw-201-xanh-ngoc",
+      "permalink": "https://kaiwinsport.com/tui-dung-giay-kaiwin-kw-201-xanh-ngoc",
+      "price": "95000",
+      "regular_price": "95000",
+      "short_description": "Túi đựng giày tiện lợi, phong cách thể thao.",
+      "description": "<p>Túi đựng giày Kaiwin giúp bạn bảo quản giày sạch sẽ, gọn gàng khi di chuyển đến sân tập. Thiết kế ngăn chứa rộng rãi, khóa kéo chắc chắn.</p>",
+      "categories": [
+        "Kaiwin",
+        "Phụ kiện",
+        "Giày thể thao"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/tui-dung-giay-kaiwin-kw-201-xanh-ngoc.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/tui-dung-giay-kaiwin-kw-201-xanh-ngoc.jpg"
+      ]
+    },
+    {
+      "id": 2006,
+      "name": "Sa bàn chiến thuật bóng đá KAIWIN bằng da",
+      "slug": "sa-ban-chien-thuat-bong-da-kaiwin-bang-da",
+      "permalink": "https://kaiwinsport.com/sa-ban-chien-thuat-bong-da-kaiwin-bang-da",
+      "price": "204000",
+      "regular_price": "204000",
+      "short_description": "Công cụ hỗ trợ đắc lực cho các huấn luyện viên và đội bóng.",
+      "description": "<p>Sa bàn chiến thuật bằng da cao cấp, đi kèm bộ quân cờ nam châm và bút viết, giúp truyền đạt chiến thuật một cách trực quan và hiệu quả.</p>",
+      "categories": [
+        "Kaiwin",
+        "Bóng đá",
+        "Sa bàn chiến thuật"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/sa-ban-chien-thuat-bong-da-kaiwin-bang-da.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/sa-ban-chien-thuat-bong-da-kaiwin-bang-da.jpg"
+      ]
+    },
+    {
+      "id": 2007,
+      "name": "Balo Thể Thao Kaiwin Technology - Màu Đỏ",
+      "slug": "balo-the-thao-kaiwin-technology-mau-do",
+      "permalink": "https://kaiwinsport.com/balo-the-thao-kaiwin-technology-mau-do",
+      "price": "358000",
+      "regular_price": "358000",
+      "short_description": "Balo thể thao đa năng với ngăn chứa giày riêng biệt.",
+      "description": "<p>Balo Kaiwin Technology được thiết kế với nhiều ngăn thông minh, chất liệu chống thấm nước nhẹ, mang lại sự tiện ích tối đa cho người dùng.</p>",
+      "categories": [
+        "Kaiwin",
+        "Phụ kiện",
+        "Balo - Túi thể thao"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/balo-technology-do2.jpg?v=1755613598240",
+        "https://bizweb.dktcdn.net/100/017/070/products/balo-technology-do1.jpg?v=1755613603403"
+      ]
+    },
+    {
+      "id": 2008,
+      "name": "Giày Thể Thao Pickleball Kaiwin Future - Màu Xanh Đen",
+      "slug": "giay-the-thao-pickleball-kaiwin-future-mau-xanh-den",
+      "permalink": "https://kaiwinsport.com/giay-the-thao-pickleball-kaiwin-future-mau-xanh-den",
+      "price": "699000",
+      "regular_price": "699000",
+      "short_description": "Giày chuyên dụng cho bộ môn Pickleball đang thịnh hành.",
+      "description": "<p>Kaiwin Future mang lại sự thăng bằng và ổn định vượt trội trong các pha di chuyển ngang và đổi hướng liên tục trên sân Pickleball.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Giày Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-diamond-mau-xanh-den.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-diamond-mau-xanh-den2.jpg"
+      ]
+    },
+    {
+      "id": 2009,
+      "name": "Giày Thể Thao Pickleball Kaiwin Area - Màu Đỏ",
+      "slug": "giay-the-thao-pickleball-kaiwin-area-mau-do",
+      "permalink": "https://kaiwinsport.com/giay-the-thao-pickleball-kaiwin-area-mau-do",
+      "price": "1599000",
+      "regular_price": "1599000",
+      "short_description": "Giày Pickleball cao cấp dành cho vận động viên chuyên nghiệp.",
+      "description": "<p>Dòng giày Area là phân khúc cao cấp nhất của Kaiwin, tích hợp các công nghệ giảm chấn tiên tiến nhất, giúp bảo vệ tối đa đôi chân.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Giày Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-balance-mau-do.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-balance-mau-do-1.jpg"
+      ]
+    },
+    {
+      "id": 2010,
+      "name": "Balo Pickelball Kaiwin Diamond - Màu Hồng",
+      "slug": "balo-pickelball-kaiwin-diamond-mau-hong",
+      "permalink": "https://kaiwinsport.com/balo-pickelball-kaiwin-diamond-mau-hong",
+      "price": "1899000",
+      "regular_price": "1899000",
+      "short_description": "Balo cao cấp thiết kế riêng cho bộ môn Pickleball.",
+      "description": "<p>Balo Kaiwin Diamond với ngăn chứa vợt chuyên dụng và đệm lưng thoáng khí, là phụ kiện không thể thiếu cho những người đam mê Pickleball.</p>",
+      "categories": [
+        "Kaiwin",
+        "Phụ kiện",
+        "Balo - Túi thể thao"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-balance-mau-hong.jpg",
+        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/giay-balance-mau-hong-2.jpg"
+      ]
+    }
+  ]
+}

@@ -10,45 +10,75 @@ class DanhMucSeeder extends Seeder
 {
     public function run(): void
     {
-        $jsonPath = database_path('seeders/wika_full_dataset.json');
-        if (!file_exists($jsonPath)) {
-            $this->command->error("Không tìm thấy file wika_full_dataset.json");
-            return;
-        }
+        $files = [
+            'nike_full_dataset.json',
+            'wika_full_dataset.json',
+            'kaiwin_full_dataset.json',
+            'kamito_full_dataset.json'
+        ];
 
-        $json = file_get_contents($jsonPath);
-        $data = json_decode($json, true);
+        $parents = [];
+        $children = [];
 
-        if (!isset($data['products'])) {
-            $this->command->info('Không có dữ liệu products trong JSON.');
-            return;
-        }
+        foreach ($files as $file) {
+            $jsonPath = database_path("seeders/{$file}");
+            if (!file_exists($jsonPath)) continue;
 
-        $uniqueCategories = [];
-        foreach ($data['products'] as $product) {
-            if (isset($product['categories']) && is_array($product['categories'])) {
-                foreach ($product['categories'] as $catName) {
-                    $uniqueCategories[$catName] = true;
+            $data = json_decode(file_get_contents($jsonPath), true);
+            if (!isset($data['products'])) continue;
+
+            foreach ($data['products'] as $product) {
+                if (isset($product['categories']) && count($product['categories']) >= 3) {
+                    // Cấu trúc chung: [0] Brand, [1] Parent Category, [2] Child Category
+                    $parentName = trim($product['categories'][1]);
+                    $childName = trim($product['categories'][2]);
+
+                    $parents[$parentName] = true;
+                    $children[$parentName][$childName] = true;
                 }
             }
         }
 
-        $now = now();
-        $count = 0;
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        DB::table('danh_muc')->truncate();
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        foreach (array_keys($uniqueCategories) as $idx => $catName) {
-            DB::table('danh_muc')->insert([
-                'ten'             => $catName,
-                'duong_dan'       => Str::slug($catName),
+        $now = now();
+        $countCha = 0;
+        $countCon = 0;
+        $thuTu = 1;
+        
+        foreach ($parents as $pName => $_) {
+            // Thêm danh mục cha
+            $parentId = DB::table('danh_muc')->insertGetId([
+                'ten'             => $pName,
+                'duong_dan'       => Str::slug($pName),
                 'danh_muc_cha_id' => null,
-                'thu_tu'          => $idx,
+                'thu_tu'          => $thuTu++,
                 'trang_thai'      => true,
                 'created_at'      => $now,
                 'updated_at'      => $now,
             ]);
-            $count++;
+            $countCha++;
+
+            // Thêm mảng danh mục con thuộc cha này
+            if (isset($children[$pName])) {
+                $thuTuCon = 1;
+                foreach ($children[$pName] as $cName => $__) {
+                    DB::table('danh_muc')->insert([
+                        'ten'             => $cName,
+                        'duong_dan'       => Str::slug($pName . ' ' . $cName), // Gộp cha-con vô slug đảm bảo không bị UNIQUE trúng
+                        'danh_muc_cha_id' => $parentId,
+                        'thu_tu'          => $thuTuCon++,
+                        'trang_thai'      => true,
+                        'created_at'      => $now,
+                        'updated_at'      => $now,
+                    ]);
+                    $countCon++;
+                }
+            }
         }
 
-        $this->command->info("✅ DanhMucSeeder: Đã tạo {$count} danh mục gốc từ JSON");
+        $this->command->info("✅ DanhMucSeeder: Đã tạo Cấu trúc chuẩn với {$countCha} Danh mục Cấp 1, {$countCon} Danh mục Cấp 2.");
     }
 }
