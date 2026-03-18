@@ -48,15 +48,24 @@ class DanhMucAdminController extends Controller
         }
 
         $data = $request->validate([
-            'ten' => 'required|string|max:100', 
-            'danh_muc_cha_id' => 'nullable|integer|exists:danh_muc,id'
+            'ten'             => 'required|string|max:100',
+            'danh_muc_cha_id' => 'nullable|integer|exists:danh_muc,id',
+            'trang_thai'      => 'boolean',
+            'thu_tu'          => 'nullable|integer|min:0',
         ]);
-        
-        $data['duong_dan'] = Str::slug($data['ten']);
-        
-        if (DanhMuc::where('duong_dan', $data['duong_dan'])->exists()) {
-            return ApiResponse::error('Tên danh mục này tạo ra đường dẫn đã tồn tại, vui lòng chọn tên khác.', 422);
+
+        // Slug gộp cha-con giống Seeder để tránh collision (cùng tên con ở nhiều cha khác nhau)
+        $baseSlug = isset($data['danh_muc_cha_id'])
+            ? Str::slug(DanhMuc::findOrFail($data['danh_muc_cha_id'])->ten . ' ' . $data['ten'])
+            : Str::slug($data['ten']);
+
+        // Đảm bảo unique bằng cách thêm suffix số
+        $slug = $baseSlug;
+        $counter = 1;
+        while (DanhMuc::where('duong_dan', $slug)->exists()) {
+            $slug = $baseSlug . '-' . $counter++;
         }
+        $data['duong_dan'] = $slug;
 
         return ApiResponse::created(DanhMuc::create($data), '[Admin] Đã tạo danh mục');
     }
@@ -74,20 +83,31 @@ class DanhMucAdminController extends Controller
 
         $category = DanhMuc::findOrFail($id);
         $data = $request->validate([
-            'ten' => 'sometimes|string|max:100', 
-            'trang_thai' => 'boolean',
-            'danh_muc_cha_id' => 'nullable|integer|exists:danh_muc,id'
+            'ten'             => 'sometimes|string|max:100',
+            'trang_thai'      => 'boolean',
+            'danh_muc_cha_id' => 'nullable|integer|exists:danh_muc,id',
+            'thu_tu'          => 'nullable|integer|min:0',
         ]);
 
-        if (isset($data['ten']) && $data['ten'] !== $category->ten) {
-            $data['duong_dan'] = Str::slug($data['ten']);
-            if (DanhMuc::where('duong_dan', $data['duong_dan'])->where('id', '!=', $id)->exists()) {
-                return ApiResponse::error('Tên danh mục này tạo ra đường dẫn đã tồn tại, vui lòng chọn tên khác.', 422);
+        // Tái tính slug nếu tên hoặc danh mục cha thay đổi
+        $newTen       = $data['ten'] ?? $category->ten;
+        $newParentId  = array_key_exists('danh_muc_cha_id', $data) ? $data['danh_muc_cha_id'] : $category->danh_muc_cha_id;
+
+        if ($newTen !== $category->ten || $newParentId !== $category->danh_muc_cha_id) {
+            $baseSlug = $newParentId
+                ? Str::slug(DanhMuc::findOrFail($newParentId)->ten . ' ' . $newTen)
+                : Str::slug($newTen);
+
+            $slug = $baseSlug;
+            $counter = 1;
+            while (DanhMuc::where('duong_dan', $slug)->where('id', '!=', $id)->exists()) {
+                $slug = $baseSlug . '-' . $counter++;
             }
+            $data['duong_dan'] = $slug;
         }
 
         $category->update($data);
-        return ApiResponse::success($category, '[Admin] Cập nhật danh mục');
+        return ApiResponse::success($category->fresh(), '[Admin] Cập nhật danh mục');
     }
 
     public function destroy(int $id): JsonResponse

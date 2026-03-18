@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Http\Exceptions\PostTooLargeException;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 use App\Http\Helpers\ApiResponse;
@@ -32,6 +33,13 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->render(function (ValidationException $e, Request $request) {
             if ($request->expectsJson() || $request->is('api/*')) {
                 return ApiResponse::validationError($e->errors(), 'Dữ liệu không hợp lệ');
+            }
+        });
+
+        // Trả JSON 413 khi file upload vượt giới hạn PHP post_max_size
+        $exceptions->render(function (PostTooLargeException $e, Request $request) {
+            if ($request->expectsJson() || $request->is('api/*')) {
+                return ApiResponse::error('Kích thước file vượt quá giới hạn cho phép (tối đa 2MB)', 413);
             }
         });
     })->create();
