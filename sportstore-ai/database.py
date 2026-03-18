@@ -3,10 +3,8 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from dotenv import load_dotenv
 
-# Load env variables từ file .env của Laravel BE
-# Đường dẫn tươn đối: ../sportstore-be/.env
-dotenv_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'sportstore-be', '.env')
-load_dotenv(dotenv_path)
+# Load env variables từ file .env nội bộ
+load_dotenv()
 
 DB_HOST = os.getenv("DB_HOST", "127.0.0.1")
 DB_PORT = os.getenv("DB_PORT", "3306")

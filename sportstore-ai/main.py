@@ -2,6 +2,7 @@ import uvicorn
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 
 # Import Database & ML Logic
 from database import get_db
@@ -21,6 +22,28 @@ app.add_middleware(
 @app.get("/")
 def read_root():
     return {"status": "ok", "message": "SportStore ML Service is running normally on port 8001"}
+
+@app.get("/api/v1/health")
+def health_check():
+    return {"status": "healthy", "service": "sportstore-ai"}
+
+@app.get("/api/v1/test-db")
+def test_db_connection(db: Session = Depends(get_db)):
+    """
+    Thực hiện query đơn giản để kiểm tra kết nối Database MySQL
+    """
+    log.info("Nhận Request API: GET /api/v1/test-db")
+    try:
+        # Thực hiện SELECT 1 để kiểm tra ping tới MySQL
+        db.execute(text("SELECT 1"))
+        return {
+            "success": True,
+            "message": "Kết nối Database MySQL thành công!",
+            "database": "sportstore_be"
+        }
+    except Exception as e:
+        log.error(f"Lỗi kết nối DB: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Không thể kết nối Database: {str(e)}")
 
 @app.get("/api/v1/recommend/popular")
 def get_popular_recommendations(db: Session = Depends(get_db)):

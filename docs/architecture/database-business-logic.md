@@ -117,32 +117,36 @@ san_pham: Giày Nike Air Max (gia_goc = 2.500.000đ)
 
 ### Mục đích
 
-Bảng này là **nguồn dữ liệu đầu vào** cho Python ML Service để train mô hình đề xuất sản phẩm cá nhân hóa.
+Bảng này là **nguồn dữ liệu đầu vào** cho Python ML Service để xây dựng mô hình đề xuất sản phẩm cá nhân hóa dựa trên hành vi thực tế của người dùng.
 
-### Các hành vi được ghi nhận
+### Các hành vi và Trọng số (Behavior Weights)
 
-| `hanh_vi` | Khi nào ghi | Trọng số ML |
-|-----------|-------------|-------------|
-| `xem` | User mở trang chi tiết sản phẩm | Thấp |
-| `click` | User click vào thẻ sản phẩm | Thấp |
-| `them_gio_hang` | User thêm vào giỏ hàng | Trung bình |
-| `yeu_thich` | User nhấn nút yêu thích | Trung bình |
-| `mua_hang` | Đặt hàng thành công | Cao |
+Hệ thống quy đổi mỗi hành vi thành một điểm số (score) để tính toán mức độ quan tâm của User đối với Item:
 
-### Xử lý khách vãng lai
+| `hanh_vi` | Khi nào ghi | Trọng số (Score) |
+|-----------|-------------|------------------|
+| `mua_hang` | Thanh toán đơn hàng thành công | **5.0** |
+| `them_gio_hang` | Thêm sản phẩm vào giỏ | **4.0** |
+| `yeu_thich` | Nhấn nút yêu thích (Wishlist) | **3.0** |
+| `click` | Click vào thẻ sản phẩm ở danh sách | **2.0** |
+| `xem` | Truy cập trang chi tiết sản phẩm | **1.0** |
 
-- User **chưa đăng nhập**: `nguoi_dung_id = null`, dùng `ma_phien` (session cookie)
-- Khi user **đăng nhập sau**: có thể migrate hành vi từ session sang `nguoi_dung_id`
+### Thuật toán Recommendation
 
-### Python ML Service đọc dữ liệu
+Python ML Service sử dụng thuật toán **Item-Based Collaborative Filtering** với các bước:
+1. **Ma trận User-Item:** Xây dựng ma trận phân tán (sparse matrix) chứa tổng điểm tương tác của từng User cho từng Sản phẩm.
+2. **Cosine Similarity:** Tính toán độ tương đồng giữa các sản phẩm dựa trên tập người dùng đã tương tác với chúng. Hai sản phẩm có "véc-tơ hành vi" càng giống nhau thì độ tương đồng càng cao.
+3. **Dự báo (Rating Prediction):** Với một User cụ thể, hệ thống tìm các sản phẩm họ chưa xem nhưng có độ tương đồng cao nhất với những sản phẩm họ đã từng thích/mua.
 
-```
-hanh_vi_nguoi_dung
-    → Collaborative Filtering: người dùng tương tự mua gì?
-    → Content-Based: sản phẩm có đặc điểm tương tự?
-    → Hybrid: kết hợp cả hai
-    → Trả về danh sách san_pham_id gợi ý
-```
+### Xử lý Cold-Start & Fallback (Cực kỳ quan trọng)
+
+| Tình huống | Giải pháp xử lý |
+|------------|-----------------|
+| **Khách vãng lai** | Sử dụng `ma_phien` (Session ID). Trả về **Popular Items** (Sản phẩm phổ biến nhất toàn sàn). |
+| **User mới (Cold-start)** | User chưa có hành vi → Trả về **Popular Items**. |
+| **User đã xem hết SP** | Nếu không còn sản phẩm mới để gợi ý → Trộn thêm các sản phẩm phổ biến chưa tương tác. |
+
+> **Cách tính Popular Items:** Tính tổng điểm (weight) của tất cả hành vi trên toàn bộ hệ thống (bao gồm cả khách vãng lai) cho từng sản phẩm và lấy Top N sản phẩm có tổng điểm cao nhất.
 
 ---
 
