@@ -63,6 +63,41 @@ class NguoiDungAdminController extends Controller
     }
 
     /**
+     * Thêm mới người dùng (Admin)
+     */
+    public function store(Request $request): JsonResponse
+    {
+        if (!auth()->user()->hasPermission('them_user')) {
+            return ApiResponse::error('Bạn không có quyền thêm mới người dùng.', 403);
+        }
+
+        $data = $request->validate([
+            'ho_va_ten'    => 'required|string|max:255',
+            'email'        => 'required|email|unique:nguoi_dung,email',
+            'mat_khau'     => 'required|string|min:6',
+            'so_dien_thoai'=> 'nullable|string|max:20',
+            'vai_tro'      => 'required|in:khach_hang,quan_tri',
+            'trang_thai'   => 'sometimes|boolean',
+            'vai_tro_ids'  => 'sometimes|array',
+            'vai_tro_ids.*'=> 'exists:vai_tro,id'
+        ], [
+            'email.unique' => 'Email này đã được sử dụng.',
+            'mat_khau.min' => 'Mật khẩu phải có ít nhất 6 ký tự.',
+        ]);
+
+        $data['mat_khau'] = bcrypt($data['mat_khau']);
+        $data['xac_thuc_email_luc'] = now(); // Mặc định xác thực luôn khi admin tạo
+
+        $user = NguoiDung::create($data);
+
+        if (isset($data['vai_tro_ids'])) {
+            $user->cacVaiTro()->sync($data['vai_tro_ids']);
+        }
+
+        return ApiResponse::success($user->load('cacVaiTro'), '[Admin] Thêm mới người dùng thành công', 201);
+    }
+
+    /**
      * Cập nhật thông tin/trạng thái người dùng (Admin)
      *
      * @bodyParam vai_tro string Vai trò (khach_hang, quan_tri).

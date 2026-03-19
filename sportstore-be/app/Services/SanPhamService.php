@@ -55,12 +55,12 @@ class SanPhamService
             }
         }
 
-        // Lọc theo giá
-        if (!empty($filters['gia_min'])) {
-            $query->where('gia_goc', '>=', $filters['gia_min']);
+        // Lọc theo giá (Sử dụng giá hiển thị: gia_khuyen_mai ?? gia_goc)
+        if (isset($filters['gia_min']) && $filters['gia_min'] !== '') {
+            $query->whereRaw('COALESCE(gia_khuyen_mai, gia_goc) >= ?', [$filters['gia_min']]);
         }
-        if (!empty($filters['gia_max'])) {
-            $query->where('gia_goc', '<=', $filters['gia_max']);
+        if (isset($filters['gia_max']) && $filters['gia_max'] !== '') {
+            $query->whereRaw('COALESCE(gia_khuyen_mai, gia_goc) <= ?', [$filters['gia_max']]);
         }
 
         // Tìm kiếm
@@ -76,8 +76,8 @@ class SanPhamService
         // Sắp xếp
         $sapXep = $filters['sap_xep'] ?? 'moi_nhat';
         match ($sapXep) {
-            'gia_tang'    => $query->orderBy('gia_goc', 'asc'),
-            'gia_giam'    => $query->orderBy('gia_goc', 'desc'),
+            'gia_tang'    => $query->orderByRaw('COALESCE(gia_khuyen_mai, gia_goc) asc'),
+            'gia_giam'    => $query->orderByRaw('COALESCE(gia_khuyen_mai, gia_goc) desc'),
             'ban_chay'    => $query->orderBy('da_ban', 'desc'),
             'danh_gia'    => $query->orderBy('diem_danh_gia', 'desc'),
             default       => $query->latest(),
@@ -190,8 +190,8 @@ class SanPhamService
         // Sắp xếp
         $sapXep = $filters['sap_xep'] ?? 'moi_nhat';
         match ($sapXep) {
-            'gia_tang' => $query->orderBy('gia_goc', 'asc'),
-            'gia_giam' => $query->orderBy('gia_goc', 'desc'),
+            'gia_tang' => $query->orderByRaw('COALESCE(gia_khuyen_mai, gia_goc) asc'),
+            'gia_giam' => $query->orderByRaw('COALESCE(gia_khuyen_mai, gia_goc) desc'),
             'ban_chay' => $query->orderBy('da_ban', 'desc'),
             'ton_kho'  => $query->orderBy('so_luong_ton_kho', 'asc'),
             default    => $query->latest(),
