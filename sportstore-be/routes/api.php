@@ -39,6 +39,7 @@ Route::get('chatbot/history',   [\App\Http\Controllers\Api\Chatbot\ChatbotContro
 
 // Recommendations — public (sẽ trả kết quả generic nếu không có user)
 Route::get('recommendations',   [\App\Http\Controllers\Api\Recommendation\RecommendationController::class, 'index']);
+Route::get('recommendations/{productId}/related', [\App\Http\Controllers\Api\Recommendation\RecommendationController::class, 'relatedProducts']);
 Route::post('behaviors',        [\App\Http\Controllers\Api\Recommendation\RecommendationController::class, 'recordBehavior']);
 
 // ─────────────────────────────────────────────────────────────
@@ -96,28 +97,41 @@ Route::middleware('auth:sanctum')->group(function () {
     // ─── ADMIN ONLY ───────────────────────────────────────
     Route::prefix('admin')->middleware(\App\Http\Middleware\AdminMiddleware::class)->group(function () {
 
-        Route::get('dashboard', [\App\Http\Controllers\Api\Admin\DashboardAdminController::class, 'index']);
+        Route::get('dashboard', [\App\Http\Controllers\Api\Admin\DashboardAdminController::class, 'index'])
+            ->middleware('quyen:xem_dashboard');
 
         // Products CRUD
-        Route::apiResource('products',   \App\Http\Controllers\Api\Admin\SanPhamAdminController::class);
-        Route::apiResource('categories', \App\Http\Controllers\Api\Admin\DanhMucAdminController::class);
-        Route::apiResource('brands',     \App\Http\Controllers\Api\Admin\ThuongHieuAdminController::class);
+        Route::apiResource('products', \App\Http\Controllers\Api\Admin\SanPhamAdminController::class)
+            ->middleware('quyen:xem_sp');
+
+        // Catalog (Categories & Brands)
+        Route::apiResource('categories', \App\Http\Controllers\Api\Admin\DanhMucAdminController::class)
+            ->middleware('quyen:quan_ly_catalog');
+        Route::apiResource('brands', \App\Http\Controllers\Api\Admin\ThuongHieuAdminController::class)
+            ->middleware('quyen:quan_ly_catalog');
 
         // Orders management
-        Route::get('orders',                    [\App\Http\Controllers\Api\Admin\DonHangAdminController::class, 'index']);
-        Route::get('orders/{id}',               [\App\Http\Controllers\Api\Admin\DonHangAdminController::class, 'show']);
-        Route::put('orders/{id}/status',        [\App\Http\Controllers\Api\Admin\DonHangAdminController::class, 'updateStatus']);
+        Route::middleware('quyen:xem_don')->group(function () {
+            Route::get('orders',                    [\App\Http\Controllers\Api\Admin\DonHangAdminController::class, 'index']);
+            Route::get('orders/{id}',               [\App\Http\Controllers\Api\Admin\DonHangAdminController::class, 'show']);
+            Route::put('orders/{id}/status',        [\App\Http\Controllers\Api\Admin\DonHangAdminController::class, 'updateStatus'])
+                ->middleware('quyen:cap_nhat_don');
+        });
 
         // Coupons CRUD
-        Route::apiResource('coupons', \App\Http\Controllers\Api\Admin\MaGiamGiaAdminController::class);
+        Route::apiResource('coupons', \App\Http\Controllers\Api\Admin\MaGiamGiaAdminController::class)
+            ->middleware('quyen:ma_giam_gia');
 
         // Reviews moderation
-        Route::get('reviews',              [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'index']);
-        Route::put('reviews/{id}/approve', [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'approve']);
-        Route::delete('reviews/{id}',      [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'destroy']);
+        Route::middleware('quyen:duyet_danh_gia')->group(function () {
+            Route::get('reviews',              [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'index']);
+            Route::put('reviews/{id}/approve', [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'approve']);
+            Route::delete('reviews/{id}',      [\App\Http\Controllers\Api\Admin\DanhGiaAdminController::class, 'destroy']);
+        });
 
         // Users management
-        Route::apiResource('users', \App\Http\Controllers\Api\Admin\NguoiDungAdminController::class);
+        Route::apiResource('users', \App\Http\Controllers\Api\Admin\NguoiDungAdminController::class)
+            ->middleware('quyen:xem_user');
 
         // Reports & Statistics
         Route::prefix('reports')->middleware('quyen:xem_doanh_thu')->group(function () {
@@ -143,23 +157,30 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/chatbot-chart', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'chatbotChart']);
             Route::get('/recent-chats', [\App\Http\Controllers\Api\Admin\ReportAdminController::class, 'recentChats']);
         });
+
         // Upload
         Route::post('upload', [\App\Http\Controllers\Api\Admin\UploadController::class, 'upload']);
 
         // Banners
-        Route::apiResource('banners', \App\Http\Controllers\Api\Admin\BannerAdminController::class);
-        Route::patch('banners/{banner}/status', [\App\Http\Controllers\Api\Admin\BannerAdminController::class, 'toggleStatus']);
+        Route::apiResource('banners', \App\Http\Controllers\Api\Admin\BannerAdminController::class)
+            ->middleware('quyen:quan_ly_banner');
+        Route::patch('banners/{banner}/status', [\App\Http\Controllers\Api\Admin\BannerAdminController::class, 'toggleStatus'])
+            ->middleware('quyen:quan_ly_banner');
 
         // Notifications
-        Route::post('notifications/broadcast', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'broadcast']);
-        Route::get('notifications/history', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'history']);
+        Route::middleware('quyen:gui_quang_ba')->group(function () {
+            Route::post('notifications/broadcast', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'broadcast']);
+            Route::get('notifications/history', [\App\Http\Controllers\Api\Admin\NotificationAdminController::class, 'history']);
+        });
 
         // RBAC Management
-        Route::get('roles',               [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'index']);
-        Route::post('roles',              [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'store']);
-        Route::get('roles/{id}',          [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'show']);
-        Route::put('roles/{id}',          [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'update']);
-        Route::delete('roles/{id}',       [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'destroy']);
-        Route::get('permissions',         [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'permissions']);
+        Route::middleware('quyen:phan_quyen')->group(function () {
+            Route::get('roles',               [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'index']);
+            Route::post('roles',              [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'store']);
+            Route::get('roles/{id}',          [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'show']);
+            Route::put('roles/{id}',          [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'update']);
+            Route::delete('roles/{id}',       [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'destroy']);
+            Route::get('permissions',         [\App\Http\Controllers\Api\Admin\RoleAdminController::class, 'permissions']);
+        });
     });
 });

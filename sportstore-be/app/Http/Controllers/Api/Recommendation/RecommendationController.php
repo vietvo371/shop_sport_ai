@@ -51,6 +51,48 @@ class RecommendationController extends Controller
     }
 
     /**
+     * Lấy sản phẩm tương tự (cho trang chi tiết sản phẩm).
+     */
+    public function relatedProducts(int $productId): JsonResponse
+    {
+        $aiUrl = config('services.ai_service.url');
+
+        try {
+            $response = Http::timeout(3)->get("{$aiUrl}/api/v1/recommend/item/{$productId}");
+
+            if ($response->successful()) {
+                $ids = $response->json('data', []);
+                $products = SanPham::with(['anhChinh', 'danhMuc'])
+                    ->whereIn('id', $ids)
+                    ->where('trang_thai', true)
+                    ->get();
+                return ApiResponse::success($products, 'Sản phẩm tương tự');
+            }
+        } catch (\Throwable $e) {
+            // AI service không khả dụng → fallback
+        }
+
+        // Fallback: sản phẩm cùng danh mục hoặc thương hiệu
+        $product = SanPham::find($productId);
+        if (!$product) {
+            return ApiResponse::success([], 'Không tìm thấy sản phẩm gốc');
+        }
+
+        $fallback = SanPham::with(['anhChinh', 'danhMuc'])
+            ->where('trang_thai', true)
+            ->where('id', '!=', $productId)
+            ->where(function ($q) use ($product) {
+                $q->where('danh_muc_id', $product->danh_muc_id)
+                  ->orWhere('thuong_hieu_id', $product->thuong_hieu_id);
+            })
+            ->orderBy('da_ban', 'desc')
+            ->take(12)
+            ->get();
+
+        return ApiResponse::success($fallback, 'Sản phẩm liên quan');
+    }
+
+    /**
      * Ghi nhận hành vi người dùng cho ML.
      */
     public function recordBehavior(Request $request): JsonResponse

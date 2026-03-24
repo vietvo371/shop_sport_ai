@@ -147,3 +147,67 @@ def get_item_based_recommendations(user_id: int, db: Session, top_n: int = 8) ->
     log_ai("RESULT", f"Gợi ý hoàn tất cho User {user_id}: {recommended_item_ids}")            
     return recommended_item_ids
 
+
+def get_similar_items(product_id: int, db: Session, top_n: int = 8) -> list:
+    """
+    Item-to-Item Similarity: Tìm các sản phẩm tương tự với product_id dựa trên
+    cosine similarity từ ma trận item-item (built from user behavior data).
+    Fallback: lấy sản phẩm cùng danh mục hoặc thương hiệu.
+    """
+    df_raw = fetch_behavior_data(db)
+    
+    if not df_raw.empty:
+        df = process_behavior_scores(df_raw)
+        
+        # Kiểm tra product_id có trong dữ liệu tương tác không
+        if product_id in df['san_pham_id'].values:
+            log_ai("SIMILAR", f"Tính Item-Item Similarity cho sản phẩm {product_id}")
+            
+            # 1. Tạo User-Item Matrix
+            user_item_matrix = df.pivot(index='nguoi_dung_id', columns='san_pham_id', values='score').fillna(0)
+            
+            # 2. Tính Item-Item Cosine Similarity
+            item_similarity = cosine_similarity(user_item_matrix.T)
+            item_sim_df = pd.DataFrame(item_similarity, index=user_item_matrix.columns, columns=user_item_matrix.columns)
+            
+            # 3. Lấy top N sản phẩm tương tự nhất (loại bỏ chính nó)
+            similar_scores = item_sim_df[product_id].drop(product_id, errors='ignore').sort_values(ascending=False)
+            similar_ids = similar_scores.head(top_n).index.tolist()
+            
+            if len(similar_ids) >= top_n // 2:
+                log_ai("RESULT", f"Sản phẩm tương tự với {product_id}: {similar_ids}")
+                return similar_ids
+            
+            # Nếu không đủ, bổ sung từ fallback
+            log_ai("FILL", f"Chỉ tìm được {len(similar_ids)} items tương tự, bổ sung từ DB")
+            fallback_ids = _get_category_fallback(product_id, db, top_n * 2)
+            for fid in fallback_ids:
+                if fid not in similar_ids and fid != product_id:
+                    similar_ids.append(fid)
+                if len(similar_ids) >= top_n:
+                    break
+            return similar_ids
+    
+    # Fallback: lấy sản phẩm cùng danh mục / thương hiệu
+    log_ai("FALLBACK", f"Không có dữ liệu tương tác cho sản phẩm {product_id}. Dùng Category fallback.")
+    return _get_category_fallback(product_id, db, top_n)
+
+
+def _get_category_fallback(product_id: int, db: Session, top_n: int = 8) -> list:
+    """
+    Fallback: Lấy sản phẩm cùng danh_muc_id hoặc thuong_hieu_id, ưu tiên bán chạy.
+    """
+    query = f"""
+        SELECT sp2.id
+        FROM san_pham sp1
+        JOIN san_pham sp2 ON (sp2.danh_muc_id = sp1.danh_muc_id OR sp2.thuong_hieu_id = sp1.thuong_hieu_id)
+        WHERE sp1.id = {product_id}
+          AND sp2.id != {product_id}
+          AND sp2.trang_thai = 1
+        ORDER BY sp2.da_ban DESC
+        LIMIT {top_n}
+    """
+    result_df = pd.read_sql_query(query, db.bind)
+    ids = result_df['id'].tolist() if not result_df.empty else []
+    log_ai("CATEGORY-FALLBACK", f"Sản phẩm cùng danh mục/thương hiệu với {product_id}: {ids}")
+    return ids

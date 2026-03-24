@@ -81,5 +81,25 @@ def get_personalized_recommendations(user_id: int, db: Session = Depends(get_db)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/api/v1/recommend/item/{product_id}")
+def get_similar_item_recommendations(product_id: int, db: Session = Depends(get_db)):
+    """
+    Lấy danh sách sản phẩm tương tự dựa trên Item-Item Cosine Similarity.
+    Dùng cho trang chi tiết sản phẩm.
+    """
+    log.info(f"Nhận Request API: GET /api/v1/recommend/item/{product_id}")
+    if product_id <= 0:
+        raise HTTPException(status_code=400, detail="product_id không hợp lệ")
+    
+    try:
+        similar_ids = ml_engine.get_similar_items(product_id=product_id, db=db, top_n=12)
+        return {
+            "success": True,
+            "message": f"Sản phẩm tương tự với item {product_id}",
+            "data": similar_ids
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
