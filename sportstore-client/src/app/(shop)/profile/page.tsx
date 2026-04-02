@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, Save, KeyRound } from 'lucide-react';
+import { Loader2, Save, KeyRound, Eye, EyeOff } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 interface ProfileForm {
@@ -25,6 +25,11 @@ export default function ProfilePage() {
     const updateUser = useAuthStore((state) => state.updateUser);
     const [isLoading, setIsLoading] = useState(false);
     const [isPasswordMode, setIsPasswordMode] = useState(false);
+
+    // Password visibility states
+    const [showOldPassword, setShowOldPassword] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
     const {
         register,
@@ -100,7 +105,10 @@ export default function ProfilePage() {
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="p-6">
-                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                    <form onSubmit={handleSubmit(onSubmit)} autoComplete="off" className="space-y-6">
+                        {/* Honeypot at the beginning of the form */}
+                        <input type="text" name="email" style={{ position: 'absolute', opacity: 0, height: 0, width: 0, zIndex: -1, pointerEvents: 'none' }} autoComplete="username" />
+                        <input type="password" name="password" style={{ position: 'absolute', opacity: 0, height: 0, width: 0, zIndex: -1, pointerEvents: 'none' }} autoComplete="current-password" />
 
                         {/* Static Email */}
                         <div className="space-y-2">
@@ -116,7 +124,16 @@ export default function ProfilePage() {
                                 <Label htmlFor="ho_va_ten">Họ và Tên <span className="text-red-500">*</span></Label>
                                 <Input
                                     id="ho_va_ten"
-                                    {...register('ho_va_ten', { required: 'Vui lòng nhập họ và tên' })}
+                                    autoComplete="name"
+                                    readOnly
+                                    onFocus={(e) => e.target.removeAttribute('readonly')}
+                                    {...register('ho_va_ten', {
+                                        required: 'Vui lòng nhập họ và tên',
+                                        pattern: {
+                                            value: /^[\p{L}]+(?:\s+[\p{L}]+)+$/u,
+                                            message: 'Vui lòng nhập đầy đủ cả họ và tên (ít nhất 2 từ)'
+                                        }
+                                    })}
                                     className="focus:ring-primary/20"
                                 />
                                 {errors.ho_va_ten && <p className="text-sm text-red-500">{errors.ho_va_ten.message}</p>}
@@ -126,6 +143,9 @@ export default function ProfilePage() {
                                 <Label htmlFor="so_dien_thoai">Số điện thoại</Label>
                                 <Input
                                     id="so_dien_thoai"
+                                    autoComplete="tel"
+                                    readOnly
+                                    onFocus={(e) => e.target.removeAttribute('readonly')}
                                     {...register('so_dien_thoai', {
                                         pattern: { value: /(84|0[3|5|7|8|9])+([0-9]{8})\b/g, message: 'Số điện thoại không hợp lệ' }
                                     })}
@@ -156,34 +176,71 @@ export default function ProfilePage() {
 
                             {isPasswordMode && (
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4 animate-in fade-in slide-in-from-top-2">
+                                    {/* Honeypot to catch browser autofill */}
+                                    <input type="text" name="email" style={{ position: 'absolute', opacity: 0, height: 0, width: 0, zIndex: -1, pointerEvents: 'none' }} autoComplete="username" />
+                                    <input type="password" name="password" style={{ position: 'absolute', opacity: 0, height: 0, width: 0, zIndex: -1, pointerEvents: 'none' }} autoComplete="current-password" />
+
                                     <div className="space-y-2 md:col-span-2">
                                         <Label htmlFor="mat_khau_cu">Mật khẩu hiện tại</Label>
-                                        <Input
-                                            id="mat_khau_cu"
-                                            type="password"
-                                            {...register('mat_khau_cu', { required: isPasswordMode ? 'Vui lòng nhập mật khẩu hiện tại' : false })}
-                                        />
+                                        <div className="relative group/pass">
+                                            <Input
+                                                id="mat_khau_cu"
+                                                type={showOldPassword ? 'text' : 'password'}
+                                                autoComplete="current-password"
+                                                className="pr-12"
+                                                {...register('mat_khau_cu', { required: isPasswordMode ? 'Vui lòng nhập mật khẩu hiện tại' : false })}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowOldPassword(!showOldPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-all outline-none"
+                                            >
+                                                {showOldPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                            </button>
+                                        </div>
                                         {errors.mat_khau_cu && <p className="text-sm text-red-500">{errors.mat_khau_cu.message}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="mat_khau_moi">Mật khẩu mới</Label>
-                                        <Input
-                                            id="mat_khau_moi"
-                                            type="password"
-                                            {...register('mat_khau_moi', {
-                                                required: isPasswordMode ? 'Vui lòng nhập mật khẩu mới' : false,
-                                                minLength: { value: 8, message: 'Ít nhất 8 ký tự' }
-                                            })}
-                                        />
+                                        <div className="relative group/pass">
+                                            <Input
+                                                id="mat_khau_moi"
+                                                type={showNewPassword ? 'text' : 'password'}
+                                                autoComplete="new-password"
+                                                className="pr-12"
+                                                {...register('mat_khau_moi', {
+                                                    required: isPasswordMode ? 'Vui lòng nhập mật khẩu mới' : false,
+                                                    minLength: { value: 8, message: 'Ít nhất 8 ký tự' }
+                                                })}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-all outline-none"
+                                            >
+                                                {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                            </button>
+                                        </div>
                                         {errors.mat_khau_moi && <p className="text-sm text-red-500">{errors.mat_khau_moi.message}</p>}
                                     </div>
                                     <div className="space-y-2">
                                         <Label htmlFor="mat_khau_moi_confirmation">Xác nhận mật khẩu mới</Label>
-                                        <Input
-                                            id="mat_khau_moi_confirmation"
-                                            type="password"
-                                            {...register('mat_khau_moi_confirmation', { required: isPasswordMode ? 'Vui lòng xác nhận mật khẩu' : false })}
-                                        />
+                                        <div className="relative group/pass">
+                                            <Input
+                                                id="mat_khau_moi_confirmation"
+                                                type={showConfirmPassword ? 'text' : 'password'}
+                                                autoComplete="new-password"
+                                                className="pr-12"
+                                                {...register('mat_khau_moi_confirmation', { required: isPasswordMode ? 'Vui lòng xác nhận mật khẩu' : false })}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl hover:bg-slate-50 text-slate-400 hover:text-slate-900 transition-all outline-none"
+                                            >
+                                                {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
                             )}

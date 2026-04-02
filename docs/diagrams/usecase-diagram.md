@@ -27,6 +27,7 @@ graph LR
             UC4["Xem chi tiết sản phẩm"]
             UC5["Xem danh mục sản phẩm"]
             UC6["Xem thương hiệu"]
+            UC36["Tra cứu bảng size"]
         end
 
         subgraph UC_AUTH["🔐 Xác thực"]
@@ -77,6 +78,7 @@ graph LR
             UC33["Duyệt / từ chối đánh giá"]
             UC34["Quản lý Banner / Slider"]
             UC35["Broadcast thông báo khuyến mãi"]
+            UC37["CRUD Bảng size"]
         end
 
     end
@@ -93,6 +95,7 @@ graph LR
     GUEST --> UC24
     GUEST --> UC25
     GUEST --> UC27
+    GUEST --> UC36
 
     %% ===== CUSTOMER CONNECTIONS =====
     CUSTOMER --> UC2
@@ -118,6 +121,7 @@ graph LR
     CUSTOMER --> UC25
     CUSTOMER --> UC26
     CUSTOMER --> UC27
+    CUSTOMER --> UC36
 
     %% ===== ADMIN CONNECTIONS =====
     ADMIN --> UC28
@@ -129,6 +133,7 @@ graph LR
     ADMIN --> UC34
     ADMIN --> UC35
     ADMIN --> UC15
+    ADMIN --> UC37
 
     %% ===== EXTERNAL SYSTEMS =====
     UC25 --> GEMINI
@@ -180,6 +185,7 @@ graph LR
 | UC24 | Xem đánh giá sản phẩm |
 | UC25 | Chat với AI Chatbot |
 | UC27 | Tracking hành vi người dùng |
+| UC36 | Tra cứu bảng size |
 
 ### 🛒 Khách hàng (Customer) — kế thừa Guest + thêm
 
@@ -201,6 +207,7 @@ graph LR
 | UC22 | Xem danh sách yêu thích |
 | UC23 | Viết đánh giá sản phẩm |
 | UC26 | Nhận gợi ý sản phẩm (Recommendation) |
+| UC36 | Tra cứu bảng size |
 
 ### 🛡️ Quản trị viên (Admin)
 
@@ -215,6 +222,7 @@ graph LR
 | UC33 | Duyệt / từ chối đánh giá sản phẩm |
 | UC34 | Quản lý Banner / Slider trang chủ |
 | UC35 | Broadcast thông báo khuyến mãi |
+| UC37 | CRUD Bảng size (quy tắc tra cứu) |
 
 ---
 

@@ -34,13 +34,14 @@ class AuthController extends Controller
     public function register(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'ho_va_ten'            => 'required|string|max:100',
+            'ho_va_ten'            => ['required', 'string', 'max:100', 'regex:/^[\p{L}]+(?:\s+[\p{L}]+)+$/u'],
             'email'                => 'required|email|unique:nguoi_dung,email',
             'mat_khau'             => 'required|string|min:8|confirmed',
             'mat_khau_confirmation'=> 'required_with:mat_khau|string|same:mat_khau',
             'so_dien_thoai'        => 'nullable|string|max:20',
         ], [
             'ho_va_ten.required'   => 'Vui lòng nhập họ và tên.',
+            'ho_va_ten.regex'      => 'Vui lòng nhập đầy đủ họ và tên (ít nhất 2 từ).',
             'email.required'       => 'Vui lòng nhập email.',
             'email.unique'         => 'Email này đã được sử dụng.',
             'mat_khau.min'         => 'Mật khẩu phải ít nhất 8 ký tự.',
@@ -126,12 +127,14 @@ class AuthController extends Controller
     public function update(Request $request): JsonResponse
     {
         $data = $request->validate([
-            'ho_va_ten'     => 'sometimes|string|max:100',
+            'ho_va_ten'     => ['sometimes', 'string', 'max:100', 'regex:/^[\p{L}]+(?:\s+[\p{L}]+)+$/u'],
             'so_dien_thoai' => 'sometimes|nullable|string|max:20',
             'anh_dai_dien'  => 'sometimes|nullable|string|max:500',
             'mat_khau_cu'   => 'required_with:mat_khau_moi|string',
             'mat_khau_moi'  => 'sometimes|string|min:8|confirmed',
             'mat_khau_moi_confirmation' => 'required_with:mat_khau_moi|string|same:mat_khau_moi',
+        ], [
+            'ho_va_ten.regex' => 'Vui lòng nhập đầy đủ họ và tên (ít nhất 2 từ).',
         ]);
 
         $user = $this->authService->updateProfile($request->user(), $data);

@@ -156,6 +156,91 @@ endpoints:
   -
     custom: []
     httpMethods:
+      - GET
+    uri: api/v1/auth/google/redirect
+    metadata:
+      custom: []
+      groupName: '1. Đăng ký & Đăng nhập'
+      groupDescription: ''
+      subgroup: 'Google OAuth'
+      subgroupDescription: ''
+      title: 'Lấy URL đăng nhập Google'
+      description: 'Trả về URL để client redirect đến màn hình chọn tài khoản Google.'
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 200
+        content: '{"success":true,"message":"Google OAuth URL","data":{"url":"https:\/\/accounts.google.com\/o\/oauth2\/auth?client_id=944810457078-ocg3087k2s9pjj5im1g1jpgdtfd57dlq.apps.googleusercontent.com&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fauth%2Fcallback&scope=openid+profile+email&response_type=code"}}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/auth/google/callback
+    metadata:
+      custom: []
+      groupName: '1. Đăng ký & Đăng nhập'
+      groupDescription: ''
+      subgroup: 'Google OAuth'
+      subgroupDescription: ''
+      title: 'Xử lý callback từ Google'
+      description: |-
+        Nhận authorization code từ client, exchange lấy Google profile,
+        tìm hoặc tạo user, trả về token.
+      authenticated: false
+      deprecated: false
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      code:
+        custom: []
+        name: code
+        description: 'Authorization code từ Google.'
+        required: true
+        example: 4/0AX4XfWh...
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      code: 4/0AX4XfWh...
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
       - POST
     uri: api/v1/auth/logout
     metadata:
@@ -287,6 +372,17 @@ endpoints:
         exampleWasSpecified: true
         nullable: true
         deprecated: false
+      anh_dai_dien:
+        custom: []
+        name: anh_dai_dien
+        description: 'Must not be greater than 500 characters.'
+        required: false
+        example: 'y'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        deprecated: false
       mat_khau_cu:
         custom: []
         name: mat_khau_cu
@@ -323,6 +419,7 @@ endpoints:
     cleanBodyParameters:
       ho_va_ten: 'Nguyễn Văn B'
       so_dien_thoai: '0912345678'
+      anh_dai_dien: 'y'
       mat_khau_cu: password123
       mat_khau_moi: newpassword456
       mat_khau_moi_confirmation: newpassword456

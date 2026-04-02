@@ -18,6 +18,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ProductReviews } from '@/components/product/ProductReviews';
 import { RecommendationSection } from '@/components/recommendation/RecommendationSection';
 import { useBehaviorTracking } from '@/hooks/useBehaviorTracking';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { SizeGuide } from '@/components/product/SizeGuide';
 
 export default function ProductDetailClient({ params }: { params: Promise<{ slug: string }> }) {
     const { slug } = use(params);
@@ -25,6 +27,7 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
     const [selectedVariant, setSelectedVariant] = useState<any>(null);
     const [quantity, setQuantity] = useState(1);
     const [activeImage, setActiveImage] = useState<string>('/placeholder.png');
+    const [isDescExpanded, setIsDescExpanded] = useState(false);
 
     const { openCart } = useCartStore();
     const { addToCart, isAdding } = useCart();
@@ -95,9 +98,19 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
 
     // Use variant price if selected, otherwise product price
     const currentPrice = selectedVariant?.gia_rieng || product.gia_khuyen_mai || product.gia_goc;
-    const isOutOfStock = selectedVariant 
-        ? selectedVariant.ton_kho <= 0 
-        : product.so_luong_ton_kho <= 0;
+    
+    const maxStock = selectedVariant ? selectedVariant.ton_kho : product.so_luong_ton_kho;
+    const isOutOfStock = maxStock <= 0;
+
+    // Determine product type (loai) for size chart
+    const getProductType = () => {
+        const categoryName = product?.danh_muc?.ten?.toLowerCase() || '';
+        if (categoryName.includes('giày') || categoryName.includes('dép')) return 'giay' as const;
+        if (categoryName.includes('quần')) return 'quan' as const;
+        return 'ao' as const; // Default to 'ao'
+    };
+
+    const productType = getProductType();
 
     const handleAddToCart = async () => {
         if (product.bien_the && product.bien_the.length > 0 && !selectedVariant) {
@@ -201,7 +214,26 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
                         <div className="mb-8">
                             <div className="flex justify-between items-center mb-4">
                                 <span className="font-medium text-slate-900">Chọn kích cỡ:</span>
-                                <span className="text-sm text-primary cursor-pointer hover:underline">Hướng dẫn chọn size</span>
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <span className="text-sm font-semibold text-red-600 cursor-pointer hover:underline underline-offset-4 transition-all hover:text-red-700 active:scale-95">Hướng dẫn chọn size</span>
+                                    </DialogTrigger>
+                                    <DialogContent className="max-w-xl bg-white p-0 overflow-hidden outline-none border-none shadow-2xl rounded-3xl">
+                                        <DialogHeader className="p-8 pb-2 space-y-2">
+                                            <DialogTitle className="text-3xl font-extrabold text-slate-900 tracking-tight">Tìm size phù hợp nhất</DialogTitle>
+                                            <DialogDescription className="text-slate-500 text-base">
+                                                Gợi ý chính xác dựa trên thông số từ hệ thống SportStore.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        
+                                        <div className="pb-4">
+                                            <SizeGuide 
+                                                loai={productType} 
+                                                thuong_hieu_id={product.thuong_hieu_id} 
+                                            />
+                                        </div>
+                                    </DialogContent>
+                                </Dialog>
                             </div>
                             <div className="flex flex-wrap gap-3">
                                 {product.bien_the.map((variant: any) => {
@@ -231,31 +263,28 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
                                     );
                                 })}
                             </div>
-                            {selectedVariant && (
-                                <p className="mt-3 text-sm font-medium">
-                                    {selectedVariant.ton_kho > 0 ? (
-                                        <span className="text-emerald-600">Còn {selectedVariant.ton_kho} sản phẩm trong kho</span>
-                                    ) : (
-                                        <span className="text-rose-500 font-bold uppercase tracking-tight">Hết hàng</span>
-                                    )}
-                                </p>
-                            )}
+
                         </div>
                     )}
 
                     {/* Add to Cart Actions */}
                     <div className="flex gap-4 mt-auto">
-                        <div className="flex items-center border rounded-lg h-14">
+                        <div className={`flex items-center border rounded-lg h-14 ${isOutOfStock ? 'opacity-50 bg-slate-50' : ''}`}>
                             <button
                                 onClick={() => setQuantity(q => Math.max(1, q - 1))}
-                                className="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                                disabled={isOutOfStock || quantity <= 1}
+                                className="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 focus:outline-none disabled:opacity-50 transition-colors"
                             >
                                 -
                             </button>
-                            <span className="w-12 text-center font-medium">{quantity}</span>
+                            <span className="w-12 text-center font-medium">{isOutOfStock ? 0 : quantity}</span>
                             <button
-                                onClick={() => setQuantity(q => q + 1)}
-                                className="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 transition-colors"
+                                onClick={() => {
+                                    if (quantity < maxStock) setQuantity(q => q + 1);
+                                    else toast.error(`Xin lỗi, chỉ còn ${maxStock} sản phẩm trong kho`);
+                                }}
+                                disabled={isOutOfStock || quantity >= maxStock}
+                                className="w-12 h-full flex items-center justify-center text-slate-500 hover:text-slate-900 focus:outline-none disabled:opacity-50 transition-colors"
                             >
                                 +
                             </button>
@@ -264,7 +293,7 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
                         <Button
                             size="lg"
                             variant="outline"
-                            className="flex-1 h-14 text-base gap-2 border-primary text-primary hover:bg-primary/5"
+                            className="flex-1 h-14 text-base font-semibold gap-2 border-red-500/40 text-red-600 hover:bg-red-50 hover:text-red-700 hover:border-red-600 transition-all rounded-xl"
                             onClick={handleAddToCart}
                             disabled={isAdding || isOutOfStock}
                         >
@@ -274,7 +303,7 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
 
                         <Button
                             size="lg"
-                            className="flex-1 h-14 text-base shadow-lg shadow-primary/20"
+                            className="flex-1 h-14 text-base font-bold bg-red-600 text-white hover:bg-red-700 shadow-xl shadow-red-600/30 hover:-translate-y-0.5 active:translate-y-0 transition-all rounded-xl border-0"
                             onClick={async () => {
                                 // 1. Check size/variant
                                 if ((product.bien_the?.length ?? 0) > 0 && !selectedVariant) {
@@ -347,10 +376,34 @@ export default function ProductDetailClient({ params }: { params: Promise<{ slug
 
                     <TabsContent value="description" className="mt-4 outline-none">
                         {product.mo_ta_day_du ? (
-                            <div
-                                className="prose prose-slate max-w-none prose-img:rounded-2xl prose-headings:font-bold prose-a:text-primary"
-                                dangerouslySetInnerHTML={{ __html: product.mo_ta_day_du }}
-                            />
+                            <div className="relative">
+                                <div
+                                    className={`prose prose-slate max-w-none prose-img:rounded-2xl prose-headings:font-bold prose-a:text-primary transition-all duration-500 ${isDescExpanded ? 'max-h-[5000px]' : 'max-h-[300px] overflow-hidden'}`}
+                                    dangerouslySetInnerHTML={{ __html: product.mo_ta_day_du }}
+                                />
+                                {!isDescExpanded && (
+                                    <div className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-white via-white/80 to-transparent flex items-end justify-center pb-2">
+                                        <Button
+                                            variant="outline"
+                                            className="px-8 bg-white/90 border-slate-200 shadow-[0_-10px_40px_rgba(255,255,255,1)] text-slate-700 font-semibold rounded-full hover:bg-slate-50 hover:text-red-600 transition-all z-10"
+                                            onClick={() => setIsDescExpanded(true)}
+                                        >
+                                            Xem thêm nội dung
+                                        </Button>
+                                    </div>
+                                )}
+                                {isDescExpanded && (
+                                    <div className="flex justify-center mt-6">
+                                        <Button
+                                            variant="ghost"
+                                            className="text-slate-500 hover:text-red-600 font-medium transition-colors"
+                                            onClick={() => setIsDescExpanded(false)}
+                                        >
+                                            Thu gọn nội dung
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
                         ) : (
                             <div className="py-12 text-center bg-slate-50 rounded-2xl border border-dashed">
                                 <p className="text-slate-500 italic">Đang cập nhật thêm thông tin mô tả chi tiết cho sản phẩm này.</p>

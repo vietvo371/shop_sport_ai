@@ -409,6 +409,31 @@ Table nguoi_dung_vai_tro {
   }
 }
 
+// ─────────────────────────────
+// 15. BẢNG SIZE (SIZE CHART)
+// ─────────────────────────────
+
+Table bang_size {
+  id                  bigint       [pk, increment]
+  thuong_hieu_id       bigint       [null, note: 'null = bảng size chung']
+  loai                enum('ao','quan','giay') [not null, note: 'Phân loại cho áo, quần hoặc giày']
+  ten_size            varchar(20)  [not null, note: 'S, M, L, 40, 41...']
+  chieu_cao_min       float        [null, note: 'Chiều cao tối thiểu (cm)']
+  chieu_cao_max       float        [null, note: 'Chiều cao tối đa (cm)']
+  can_nang_min        float        [null, note: 'Cân nặng tối thiểu (kg)']
+  can_nang_max        float        [null, note: 'Cân nặng tối đa (kg)']
+  chieu_dai_chan_min  float        [null, note: 'Dài bàn chân tối thiểu (mm)']
+  chieu_dai_chan_max  float        [null, note: 'Dài bàn chân tối đa (mm)']
+  mo_ta               text         [null]
+  created_at          timestamp
+  updated_at          timestamp
+
+  indexes {
+    thuong_hieu_id
+    loai
+  }
+}
+
 // ═══════════════════════════════════════════
 // QUAN HỆ (FOREIGN KEYS)
 // ═══════════════════════════════════════════
@@ -477,3 +502,6 @@ Ref: vai_tro_quyen.vai_tro_id             > vai_tro.id
 Ref: vai_tro_quyen.quyen_id               > quyen.id
 Ref: nguoi_dung_vai_tro.nguoi_dung_id     > nguoi_dung.id
 Ref: nguoi_dung_vai_tro.vai_tro_id        > vai_tro.id
+
+// Bảng size
+Ref: bang_size.thuong_hieu_id              > thuong_hieu.id

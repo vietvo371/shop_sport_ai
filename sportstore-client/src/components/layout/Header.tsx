@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { ShoppingCart, User, Search, Menu, LogOut, Package, Heart, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import { Sheet, SheetContent, SheetTrigger, SheetTitle, SheetDescription, SheetC
 
 import { useCategories } from '@/hooks/useCategory';
 import { NotificationCenter } from '@/components/notifications/NotificationCenter';
+import { toast } from 'sonner';
 
 export function Header() {
     const { itemCount, openCart } = useCartStore();
@@ -26,6 +28,12 @@ export function Header() {
         if (searchQuery.trim()) {
             router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
         }
+    };
+
+    const handleLogout = () => {
+        logout();
+        toast.success('Đăng xuất thành công!');
+        router.push('/login');
     };
 
     useEffect(() => {
@@ -57,7 +65,7 @@ export function Header() {
                                             </Link>
                                         </SheetClose>
 
-                                        {user?.vai_tro === 'quan_tri' && (
+                                        {(user?.vai_tro === 'quan_tri' || user?.cac_vai_tro?.some((r: any) => r.ma_slug !== 'customer')) && (
                                             <SheetClose asChild>
                                                 <Link href="/admin" className="px-6 py-3 text-base font-bold text-primary border-b hover:bg-slate-50 transition-colors">
                                                     Quản trị hệ thống
@@ -76,7 +84,7 @@ export function Header() {
                                                             <span>{cat.ten}</span>
                                                         </Link>
                                                     </SheetClose>
-                                                    
+
                                                     {/* Nhánh danh mục con */}
                                                     {cat.danh_muc_con && cat.danh_muc_con.length > 0 && (
                                                         <div className="flex flex-col bg-slate-50/30 pb-2">
@@ -111,10 +119,10 @@ export function Header() {
 
                     {/* Logo */}
                     <div className="flex justify-center md:justify-start">
-                        <Link href="/" className="flex items-center gap-2">
-                            <span className="text-xl font-bold tracking-tighter sm:text-2xl text-primary">
-                                SPORTSTORE
-                            </span>
+                        <Link href="/" className="flex items-center group">
+                            <div className="relative w-28 h-13 md:w-32 md:h-15 overflow-hidden transition-transform group-hover:scale-105">
+                                <Image src="/sportstore-logo.png" alt="SportStore Logo" fill className="object-contain" sizes="(max-width: 768px) 128px, 144px" priority />
+                            </div>
                         </Link>
                     </div>
 
@@ -204,8 +212,13 @@ export function Header() {
                                             <div className="flex flex-col space-y-1 p-2 border-b border-slate-100 mb-1">
                                                 <p className="text-sm font-medium leading-none text-slate-800">{user?.ho_va_ten}</p>
                                                 <p className="text-xs leading-none text-slate-500">{user?.email}</p>
+                                                {(user?.cac_vai_tro?.filter((r: any) => r.ma_slug !== 'customer')?.length ?? 0) > 0 && (
+                                                    <p className="text-[10px] font-semibold text-primary mt-1">
+                                                        {user?.cac_vai_tro?.filter((r: any) => r.ma_slug !== 'customer')?.map((r: any) => r.ten).join(', ')}
+                                                    </p>
+                                                )}
                                             </div>
-                                            {user?.vai_tro === 'quan_tri' ? (
+                                            {(user?.vai_tro === 'quan_tri' || user?.cac_vai_tro?.some((r: any) => r.ma_slug !== 'customer')) ? (
                                                 <>
                                                     <DropdownMenuItem asChild className="cursor-pointer py-2 text-primary font-semibold">
                                                         <Link href="/admin" className="flex items-center w-full">
@@ -213,7 +226,7 @@ export function Header() {
                                                             <span>Quản trị hệ thống</span>
                                                         </Link>
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem onClick={logout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
+                                                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
                                                         <LogOut className="mr-2 h-4 w-4" />
                                                         <span>Đăng xuất</span>
                                                     </DropdownMenuItem>
@@ -238,7 +251,7 @@ export function Header() {
                                                             <span>Sản phẩm yêu thích</span>
                                                         </Link>
                                                     </DropdownMenuItem>
-                                                    <DropdownMenuItem onClick={logout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
+                                                    <DropdownMenuItem onClick={handleLogout} className="cursor-pointer py-2 text-red-600 focus:text-red-600 focus:bg-red-50 mt-1">
                                                         <LogOut className="mr-2 h-4 w-4" />
                                                         <span>Đăng xuất</span>
                                                     </DropdownMenuItem>

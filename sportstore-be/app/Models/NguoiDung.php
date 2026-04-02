@@ -102,11 +102,34 @@ class NguoiDung extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Ghi đè để gửi mail tiếng Việt
+     * Ghi đè để Laravel nhận diện đúng cột mật khẩu (mat_khau)
+     */
+    public function getAuthPassword(): string
+    {
+        return $this->mat_khau;
+    }
+
+    /**
+     * Ghi đè các hàm Remember Token vì bảng nguoi_dung không có các cột này
+     */
+    public function getRememberToken() { return null; }
+    public function setRememberToken($value) {}
+    public function getRememberTokenName() { return ''; }
+
+    /**
+     * Ghi đè để gửi mail xác thực tiếng Việt
      */
     public function sendEmailVerificationNotification(): void
     {
         $this->notify(new \App\Notifications\XacThucEmailNotification);
+    }
+
+    /**
+     * Ghi đè để gửi mail đặt lại mật khẩu tiếng Việt
+     */
+    public function sendPasswordResetNotification($token): void
+    {
+        $this->notify(new \App\Notifications\ResetPasswordNotification($token));
     }
 
     /**

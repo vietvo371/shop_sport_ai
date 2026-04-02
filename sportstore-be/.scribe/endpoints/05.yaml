@@ -1,23 +1,27 @@
-name: '6. Quản trị viên (Admin)'
+name: '3. Giỏ hàng & Thanh toán'
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/admin/products
+    uri: api/v1/cart
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Sản phẩm'
+      subgroup: |-
+        Quản lý Giỏ hàng
+
+        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
+        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
       subgroupDescription: ''
-      title: 'Danh sách sản phẩm (Admin)'
-      description: 'Lấy toàn bộ danh sách sản phẩm phục vụ trang quản trị.'
-      authenticated: true
+      title: 'Lấy thông tin giỏ hàng'
+      description: 'Lấy danh sách sản phẩm, tổng số lượng và số tiền tạm tính hiện có trong giỏ.'
+      authenticated: false
       deprecated: false
     headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -38,10 +42,7 @@ endpoints:
           access-control-allow-origin: '*'
         description: null
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    auth: []
     controller: null
     method: null
     route: null
@@ -49,19 +50,23 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/admin/products
+    uri: api/v1/cart/items
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Sản phẩm'
+      subgroup: |-
+        Quản lý Giỏ hàng
+
+        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
+        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
       subgroupDescription: ''
-      title: 'Tạo sản phẩm mới'
+      title: 'Thêm sản phẩm vào giỏ'
       description: ''
-      authenticated: true
+      authenticated: false
       deprecated: false
     headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -69,21 +74,10 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      ten_san_pham:
+      san_pham_id:
         custom: []
-        name: ten_san_pham
-        description: 'Tên sản phẩm.'
-        required: true
-        example: 'Áo khoác thể thao'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      danh_muc_id:
-        custom: []
-        name: danh_muc_id
-        description: 'ID danh mục.'
+        name: san_pham_id
+        description: 'ID của sản phẩm muốn thêm.'
         required: true
         example: 1
         type: integer
@@ -91,421 +85,10 @@ endpoints:
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      thuong_hieu_id:
+      bien_the_id:
         custom: []
-        name: thuong_hieu_id
-        description: 'ID thương hiệu (nếu có).'
-        required: false
-        example: 2
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      gia_goc:
-        custom: []
-        name: gia_goc
-        description: 'Giá nhập / Giá niêm yết.'
-        required: true
-        example: '500000'
-        type: numeric
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      gia_khuyen_mai:
-        custom: []
-        name: gia_khuyen_mai
-        description: 'Giá bán thực tế sau giảm.'
-        required: false
-        example: '450000'
-        type: numeric
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      mo_ta_ngan:
-        custom: []
-        name: mo_ta_ngan
-        description: 'Mô tả ngắn.'
-        required: false
-        example: 'Áo khoác dù chống nước'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      mo_ta_day_du:
-        custom: []
-        name: mo_ta_day_du
-        description: 'Mô tả chi tiết (HTML).'
-        required: false
-        example: '<p>Chi tiết...</p>'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      trang_thai:
-        custom: []
-        name: trang_thai
-        description: 'Có đang mở bán hay không.'
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      noi_bat:
-        custom: []
-        name: noi_bat
-        description: 'Có đưa lên danh sách nổi bật không.'
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      ten_san_pham: 'Áo khoác thể thao'
-      danh_muc_id: 1
-      thuong_hieu_id: 2
-      gia_goc: '500000'
-      gia_khuyen_mai: '450000'
-      mo_ta_ngan: 'Áo khoác dù chống nước'
-      mo_ta_day_du: '<p>Chi tiết...</p>'
-      trang_thai: true
-      noi_bat: false
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/admin/products/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Sản phẩm'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the product.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-      - PATCH
-    uri: 'api/v1/admin/products/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Sản phẩm'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the product.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      ten_san_pham:
-        custom: []
-        name: ten_san_pham
-        description: 'Must not be greater than 200 characters.'
-        required: false
-        example: b
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      danh_muc_id:
-        custom: []
-        name: danh_muc_id
-        description: 'The <code>id</code> of an existing record in the danh_muc table.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      thuong_hieu_id:
-        custom: []
-        name: thuong_hieu_id
-        description: 'The <code>id</code> of an existing record in the thuong_hieu table.'
-        required: false
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      gia_goc:
-        custom: []
-        name: gia_goc
-        description: 'Must be at least 0.'
-        required: false
-        example: 39
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      gia_khuyen_mai:
-        custom: []
-        name: gia_khuyen_mai
-        description: 'Must be at least 0.'
-        required: false
-        example: 84
-        type: number
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: true
-        deprecated: false
-      trang_thai:
-        custom: []
-        name: trang_thai
-        description: ''
-        required: false
-        example: true
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-      noi_bat:
-        custom: []
-        name: noi_bat
-        description: ''
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanBodyParameters:
-      ten_san_pham: b
-      danh_muc_id: 16
-      thuong_hieu_id: 16
-      gia_goc: 39
-      gia_khuyen_mai: 84
-      trang_thai: true
-      noi_bat: false
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/admin/products/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Sản phẩm'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the product.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/admin/categories
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Danh mục'
-      subgroupDescription: ''
-      title: 'Danh sách danh mục (Admin)'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/admin/categories
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Danh mục'
-      subgroupDescription: ''
-      title: 'Tạo danh mục mới'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      ten:
-        custom: []
-        name: ten
-        description: 'Tên danh mục.'
-        required: true
-        example: 'Giày bóng đá'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      danh_muc_cha_id:
-        custom: []
-        name: danh_muc_cha_id
-        description: 'ID danh mục cha (Nếu là danh mục con).'
+        name: bien_the_id
+        description: 'ID của biến thể (kích thước, màu sắc). Null nếu sản phẩm không có biến thể.'
         required: false
         example: null
         type: integer
@@ -513,72 +96,25 @@ endpoints:
         exampleWasSpecified: true
         nullable: true
         deprecated: false
+      so_luong:
+        custom: []
+        name: so_luong
+        description: 'Số lượng muốn thêm (1-99).'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
     cleanBodyParameters:
-      ten: 'Giày bóng đá'
-      danh_muc_cha_id: null
+      san_pham_id: 1
+      bien_the_id: null
+      so_luong: 1
     fileParameters: []
     responses: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/admin/categories/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Danh mục'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the category.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    auth: []
     controller: null
     method: null
     route: null
@@ -586,47 +122,59 @@ endpoints:
     custom: []
     httpMethods:
       - PUT
-      - PATCH
-    uri: 'api/v1/admin/categories/{id}'
+    uri: 'api/v1/cart/items/{id}'
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Danh mục'
+      subgroup: |-
+        Quản lý Giỏ hàng
+
+        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
+        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
       subgroupDescription: ''
-      title: ''
+      title: 'Cập nhật số lượng sản phẩm'
       description: ''
-      authenticated: true
+      authenticated: false
       deprecated: false
     headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         custom: []
         name: id
-        description: 'The ID of the category.'
+        description: 'ID của item trong giỏ hàng (không phải san_pham_id)'
         required: true
-        example: architecto
-        type: string
+        example: 16
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 16
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
+    bodyParameters:
+      so_luong:
+        custom: []
+        name: so_luong
+        description: 'Số lượng mới muốn cập nhật (1-99).'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      so_luong: 2
     fileParameters: []
     responses: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    auth: []
     controller: null
     method: null
     route: null
@@ -634,35 +182,39 @@ endpoints:
     custom: []
     httpMethods:
       - DELETE
-    uri: 'api/v1/admin/categories/{id}'
+    uri: 'api/v1/cart/items/{id}'
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Danh mục'
+      subgroup: |-
+        Quản lý Giỏ hàng
+
+        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
+        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
       subgroupDescription: ''
-      title: ''
+      title: 'Xóa sản phẩm khỏi giỏ'
       description: ''
-      authenticated: true
+      authenticated: false
       deprecated: false
     headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         custom: []
         name: id
-        description: 'The ID of the category.'
+        description: 'ID của item trong giỏ hàng (không phải san_pham_id)'
         required: true
-        example: architecto
-        type: string
+        example: 16
+        type: integer
         enumValues: []
         exampleWasSpecified: false
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      id: 16
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -670,26 +222,65 @@ endpoints:
     fileParameters: []
     responses: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    auth: []
     controller: null
     method: null
     route: null
   -
     custom: []
     httpMethods:
-      - GET
-    uri: api/v1/admin/brands
+      - DELETE
+    uri: api/v1/cart
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Thương hiệu'
+      subgroup: |-
+        Quản lý Giỏ hàng
+
+        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
+        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
       subgroupDescription: ''
-      title: 'Danh sách thương hiệu (Admin)'
-      description: ''
+      title: 'Xóa toàn bộ giỏ hàng'
+      description: 'Dùng khi người dùng muốn dọn dẹp giỏ hoặc sau khi đặt hàng thành công.'
+      authenticated: false
+      deprecated: false
+    headers:
+      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - POST
+    uri: api/v1/cart/merge
+    metadata:
+      custom: []
+      groupName: '3. Giỏ hàng & Thanh toán'
+      groupDescription: ''
+      subgroup: |-
+        Quản lý Giỏ hàng
+
+        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
+        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
+      subgroupDescription: ''
+      title: 'Hợp nhất giỏ hàng Guest vào tài khoản sau khi đăng nhập.'
+      description: |-
+        Khi user đăng nhập, client gửi danh sách sản phẩm đã thêm khi còn là guest.
+        Backend sẽ merge vào giỏ hàng hiện có của user (tăng số lượng nếu trùng).
       authenticated: true
       deprecated: false
     headers:
@@ -700,19 +291,57 @@ endpoints:
     cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
+    bodyParameters:
+      items:
         custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
+        name: items
+        description: 'Danh sách sản phẩm từ giỏ hàng guest.'
+        required: true
+        example:
+          - architecto
+        type: 'string[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        deprecated: false
+      'items[].san_pham_id':
+        custom: []
+        name: 'items[].san_pham_id'
+        description: 'ID sản phẩm.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      'items[].bien_the_id':
+        custom: []
+        name: 'items[].bien_the_id'
+        description: 'ID biến thể.'
+        required: false
+        example: null
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      'items[].so_luong':
+        custom: []
+        name: 'items[].so_luong'
+        description: 'Số lượng.'
+        required: true
+        example: 2
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanBodyParameters:
+      items:
+        - architecto
+    fileParameters: []
+    responses: []
     responseFields: []
     auth:
       - headers
@@ -725,456 +354,20 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/admin/brands
+    uri: api/v1/coupons/validate
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Thương hiệu'
+      subgroup: 'Mã giảm giá'
       subgroupDescription: ''
-      title: 'Tạo thương hiệu mới'
-      description: ''
-      authenticated: true
+      title: 'Kiểm tra mã giảm giá'
+      description: |-
+        Xác thực mã giảm giá do người dùng nhập trước khi áp dụng vào đơn hàng.
+        Trả về số tiền được giảm nếu mã hợp lệ.
+      authenticated: false
       deprecated: false
     headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      ten:
-        custom: []
-        name: ten
-        description: 'Tên thương hiệu.'
-        required: true
-        example: Nike
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      mo_ta:
-        custom: []
-        name: mo_ta
-        description: 'Mô tả chi tiết.'
-        required: false
-        example: 'Thương hiệu toàn cầu.'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      ten: Nike
-      mo_ta: 'Thương hiệu toàn cầu.'
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/admin/brands/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Thương hiệu'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the brand.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-      - PATCH
-    uri: 'api/v1/admin/brands/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Thương hiệu'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the brand.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/admin/brands/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Thương hiệu'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the brand.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/admin/orders
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Đơn hàng'
-      subgroupDescription: ''
-      title: 'Danh sách đơn hàng (Admin)'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters:
-      trang_thai:
-        custom: []
-        name: trang_thai
-        description: 'Lọc đơn hàng theo trạng thái (cho_xac_nhan, da_giao...).'
-        required: false
-        example: cho_xac_nhan
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      trang_thai: cho_xac_nhan
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: 'api/v1/admin/orders/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Đơn hàng'
-      subgroupDescription: ''
-      title: 'Chi tiết đơn hàng (Admin)'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'ID đơn hàng.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-    uri: 'api/v1/admin/orders/{id}/status'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Đơn hàng'
-      subgroupDescription: ''
-      title: 'Cập nhật trạng thái đơn'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'ID đơn hàng.'
-        required: true
-        example: 1
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      trang_thai:
-        custom: []
-        name: trang_thai
-        description: 'Trạng thái mới (cho_xac_nhan, da_xac_nhan, dang_xu_ly, dang_giao, da_giao, da_huy, hoan_tra).'
-        required: true
-        example: da_xac_nhan
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      ghi_chu:
-        custom: []
-        name: ghi_chu
-        description: 'Ghi chú cập nhật (VD: Đã gọi xác nhận).'
-        required: false
-        example: 'Khách hàng đồng ý giao chiều nay.'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      trang_thai: da_xac_nhan
-      ghi_chu: 'Khách hàng đồng ý giao chiều nay.'
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/admin/coupons
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Mã giảm giá'
-      subgroupDescription: ''
-      title: 'Danh sách mã giảm giá (Admin)'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/admin/coupons
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Mã giảm giá'
-      subgroupDescription: ''
-      title: 'Cấp mã giảm giá mới'
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -1185,95 +378,32 @@ endpoints:
       ma_code:
         custom: []
         name: ma_code
-        description: 'Mã code duy nhất.'
+        description: 'Mã giảm giá người dùng nhập.'
         required: true
-        example: SUMMER25
+        example: SALE2025
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      loai_giam:
+      tam_tinh:
         custom: []
-        name: loai_giam
-        description: 'Loại giảm (phan_tram, so_tien_co_dinh).'
+        name: tam_tinh
+        description: 'Tổng tiền tạm tính của giỏ hàng.'
         required: true
-        example: phan_tram
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      gia_tri:
-        custom: []
-        name: gia_tri
-        description: 'Mức giảm (%, VNĐ).'
-        required: true
-        example: '10'
+        example: '500000'
         type: numeric
         enumValues: []
         exampleWasSpecified: true
         nullable: false
-        deprecated: false
-      gia_tri_don_hang_min:
-        custom: []
-        name: gia_tri_don_hang_min
-        description: 'Đơn thiểu áp dụng.'
-        required: false
-        example: '300000'
-        type: numeric
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      gioi_han_su_dung:
-        custom: []
-        name: gioi_han_su_dung
-        description: 'Tổng lượt dùng tối đa.'
-        required: false
-        example: 100
-        type: integer
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      bat_dau_luc:
-        custom: []
-        name: bat_dau_luc
-        description: 'Thời gian khởi động.'
-        required: false
-        example: '2025-06-01'
-        type: date
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      het_han_luc:
-        custom: []
-        name: het_han_luc
-        description: 'Thời gian kết thúc.'
-        required: false
-        example: '2025-06-30'
-        type: date
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
         deprecated: false
     cleanBodyParameters:
-      ma_code: SUMMER25
-      loai_giam: phan_tram
-      gia_tri: '10'
-      gia_tri_don_hang_min: '300000'
-      gioi_han_su_dung: 100
-      bat_dau_luc: '2025-06-01'
-      het_han_luc: '2025-06-30'
+      ma_code: SALE2025
+      tam_tinh: '500000'
     fileParameters: []
     responses: []
     responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    auth: []
     controller: null
     method: null
     route: null
@@ -1281,166 +411,18 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/admin/coupons/{id}'
+    uri: api/v1/orders
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Mã giảm giá'
+      subgroup: |-
+        Thanh toán & Lịch sử đơn hàng
+
+        Cho phép khách hàng xem lịch sử mua hàng, chi tiết đơn và thực hiện đặt hàng (Checkout).
       subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the coupon.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses:
-      -
-        custom: []
-        status: 401
-        content: '{"message":"Unauthenticated."}'
-        headers:
-          cache-control: 'no-cache, private'
-          content-type: application/json
-          access-control-allow-origin: '*'
-        description: null
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - PUT
-      - PATCH
-    uri: 'api/v1/admin/coupons/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Mã giảm giá'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the coupon.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/admin/coupons/{id}'
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Mã giảm giá'
-      subgroupDescription: ''
-      title: ''
-      description: ''
-      authenticated: true
-      deprecated: false
-    headers:
-      Authorization: 'Bearer {YOUR_AUTH_KEY}'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'The ID of the coupon.'
-        required: true
-        example: architecto
-        type: string
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: architecto
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth:
-      - headers
-      - Authorization
-      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - GET
-    uri: api/v1/admin/reviews
-    metadata:
-      custom: []
-      groupName: '6. Quản trị viên (Admin)'
-      groupDescription: ''
-      subgroup: 'Quản lý Đánh giá'
-      subgroupDescription: ''
-      title: 'Danh sách đánh giá (Admin)'
-      description: ''
+      title: 'Danh sách Đơn hàng'
+      description: 'Lấy danh sách lịch sử đơn hàng của người dùng đang đăng nhập. Có phân trang.'
       authenticated: true
       deprecated: false
     headers:
@@ -1449,20 +431,8 @@ endpoints:
       Accept: application/json
     urlParameters: []
     cleanUrlParameters: []
-    queryParameters:
-      da_duyet:
-        custom: []
-        name: da_duyet
-        description: 'Lọc theo trạng thái duyệt (true/false).'
-        required: false
-        example: false
-        type: boolean
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanQueryParameters:
-      da_duyet: false
+    queryParameters: []
+    cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
@@ -1487,40 +457,79 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - PUT
-    uri: 'api/v1/admin/reviews/{id}/approve'
+      - POST
+    uri: api/v1/orders
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Đánh giá'
+      subgroup: |-
+        Thanh toán & Lịch sử đơn hàng
+
+        Cho phép khách hàng xem lịch sử mua hàng, chi tiết đơn và thực hiện đặt hàng (Checkout).
       subgroupDescription: ''
-      title: 'Duyệt đánh giá'
-      description: 'Admin xác nhận duyệt để đánh giá hiển thị công khai trên ứng dụng. Hệ thống tự tính lại sao trung bình của sản phẩm.'
+      title: 'Đặt hàng (Checkout)'
+      description: 'Tạo đơn hàng mới từ các mặt hàng đang có trong Giỏ. Sau khi thanh toán thành công, giỏ hàng sẽ bị xóa.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters:
-      id:
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      dia_chi_id:
         custom: []
-        name: id
-        description: 'ID đánh giá.'
+        name: dia_chi_id
+        description: 'ID địa chỉ giao hàng của người dùng.'
         required: true
-        example: 1
+        example: 2
         type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanUrlParameters:
-      id: 1
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
+      phuong_thuc_tt:
+        custom: []
+        name: phuong_thuc_tt
+        description: 'Phương thức thanh toán (cod, chuyen_khoan, vnpay, momo).'
+        required: true
+        example: cod
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      ma_coupon:
+        custom: []
+        name: ma_coupon
+        description: 'Mã giảm giá (nếu có áp dụng).'
+        required: false
+        example: SALE2025
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+      ghi_chu:
+        custom: []
+        name: ghi_chu
+        description: 'Ghi chú thêm cho đơn hàng.'
+        required: false
+        example: 'Giao vào giờ hành chính'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: true
+        deprecated: false
+    cleanBodyParameters:
+      dia_chi_id: 2
+      phuong_thuc_tt: cod
+      ma_coupon: SALE2025
+      ghi_chu: 'Giao vào giờ hành chính'
     fileParameters: []
     responses: []
     responseFields: []
@@ -1534,16 +543,19 @@ endpoints:
   -
     custom: []
     httpMethods:
-      - DELETE
-    uri: 'api/v1/admin/reviews/{id}'
+      - GET
+    uri: 'api/v1/orders/{code}'
     metadata:
       custom: []
-      groupName: '6. Quản trị viên (Admin)'
+      groupName: '3. Giỏ hàng & Thanh toán'
       groupDescription: ''
-      subgroup: 'Quản lý Đánh giá'
+      subgroup: |-
+        Thanh toán & Lịch sử đơn hàng
+
+        Cho phép khách hàng xem lịch sử mua hàng, chi tiết đơn và thực hiện đặt hàng (Checkout).
       subgroupDescription: ''
-      title: 'Xóa đánh giá'
-      description: ''
+      title: 'Chi tiết đơn hàng'
+      description: 'Xem chi tiết một đơn hàng thông qua Mã đơn hàng.'
       authenticated: true
       deprecated: false
     headers:
@@ -1551,25 +563,34 @@ endpoints:
       Content-Type: application/json
       Accept: application/json
     urlParameters:
-      id:
+      code:
         custom: []
-        name: id
-        description: 'The ID of the review.'
+        name: code
+        description: 'Mã đơn hàng (VD: DH202503...).'
         required: true
-        example: architecto
+        example: DH202503050001
         type: string
         enumValues: []
-        exampleWasSpecified: false
+        exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanUrlParameters:
-      id: architecto
+      code: DH202503050001
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
     cleanBodyParameters: []
     fileParameters: []
-    responses: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
     responseFields: []
     auth:
       - headers

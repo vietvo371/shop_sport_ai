@@ -22,6 +22,7 @@
 12. [Thông báo](#12-thông-báo)
 13. [Banner & Slider](#13-banner--slider)
 14. [Phân quyền (RBAC)](#14-phân-quyền-rbac)
+25: 15. [Bảng Size (Size Chart)](#15-bảng-size-size-chart)
 
 ---
 
@@ -482,6 +483,10 @@ san_pham
     ├── danh_gia[]              (reviews)
     └── danh_muc (cha → con)
 
+thuong_hieu
+    ├── san_pham[]
+    └── bang_size[]             (quy tắc tra cứu size)
+
 banners[]                       (slider trang chủ, quảng cáo)
 ```
 
@@ -517,5 +522,39 @@ Cho phép (200) hoặc Từ chối (403)
 | Sản phẩm | `xem_sp`, `them_sp`, `sua_sp`, `xoa_sp` |
 | Đơn hàng | `xem_don`, `cap_nhat_don`, `huy_don` |
 | Thông báo | `gui_quang_ba`, `xem_lich_su_tb` |
-| Hệ thống | `quan_ly_user`, `xem_bao_cao`, `cai_dat_he_thong` |
+| Hệ hệ thống | `quan_ly_user`, `xem_bao_cao`, `cai_dat_he_thong` |
+
+---
+
+## 15. Bảng Size (Size Chart)
+526: 
+527: **Bảng liên quan:** `bang_size`, `thuong_hieu`
+528: 
+529: ### Mục tiêu
+530: Cung cấp công cụ tra cứu và gợi ý size tự động cho khách hàng dựa trên thông số cơ thể, giúp giảm tỷ lệ đổi trả hàng do sai kích cỡ.
+531: 
+532: ### Cấu trúc dữ liệu `bang_size`
+533: 
+534: | Cột | Ý nghĩa | Ghi chú |
+535: |-----|---------|---------|
+536: | `thuong_hieu_id` | Liên kết thương hiệu | `null` nếu là quy tắc chung toàn sàn |
+537: | `loai` | Phân loại sản phẩm | `ao`, `quan`, `giay` |
+538: | `ten_size` | Tên size hiển thị | S, M, L, XL, 39, 40, 41... |
+539: | `chieu_cao_min/max` | Khoảng chiều cao (cm) | Dùng cho `ao` và `quan` |
+540: | `can_nang_min/max` | Khoảng cân nặng (kg) | Dùng cho `ao` và `quan` |
+541: | `chieu_dai_chan_min/max`| Khoảng dài chân (mm) | Dùng cho `giay` |
+542: 
+543: ### Thuật toán gợi ý size tự động
+544: 
+545: Khi người dùng nhập thông số (ví dụ: Cao 165cm, Nặng 60kg), hệ thống thực hiện:
+546: 
+547: 1.  **Xác định `loai`:** Dựa trên danh mục của sản phẩm hiện tại.
+2.  **Xác định `thuong_hieu_id`:** Lấy từ sản phẩm.
+3.  **Tra cứu quy tắc (Priority Logic):**
+    - **Ưu tiên 1:** Tìm trong `bang_size` có `thuong_hieu_id` trùng khớp.
+    - **Ưu tiên 2 (Fallback):** Nếu không thấy, tìm trong các quy tắc chung (`thuong_hieu_id IS NULL`).
+4.  **So khớp thông số:**
+    - Đối với **Áo/Quần**: Tìm bản ghi có `chieu_cao_min <= cao <= chieu_cao_max` **VÀ** `can_nang_min <= nang <= can_nang_max`.
+    - Đối với **Giày**: Tìm bản ghi có `chieu_dai_chan_min <= dai <= chieu_dai_chan_max`.
+5.  **Kết quả:** Trả về `ten_size` phù hợp nhất.
 

@@ -12,6 +12,10 @@ Route::prefix('auth')->group(function () {
     Route::post('register', [\App\Http\Controllers\Api\Auth\AuthController::class, 'register']);
     Route::post('login',    [\App\Http\Controllers\Api\Auth\AuthController::class, 'login']);
 
+    // Password Reset
+    Route::post('password/email', [\App\Http\Controllers\Api\Auth\ForgotPasswordController::class, 'sendResetLinkEmail']);
+    Route::post('password/reset', [\App\Http\Controllers\Api\Auth\ResetPasswordController::class, 'reset']);
+
     // Google OAuth
     Route::get('google/redirect',  [\App\Http\Controllers\Api\Auth\GoogleAuthController::class, 'redirectUrl']);
     Route::post('google/callback', [\App\Http\Controllers\Api\Auth\GoogleAuthController::class, 'handleCallback']);
@@ -41,6 +45,9 @@ Route::get('chatbot/history',   [\App\Http\Controllers\Api\Chatbot\ChatbotContro
 Route::get('recommendations',   [\App\Http\Controllers\Api\Recommendation\RecommendationController::class, 'index']);
 Route::get('recommendations/{productId}/related', [\App\Http\Controllers\Api\Recommendation\RecommendationController::class, 'relatedProducts']);
 Route::post('behaviors',        [\App\Http\Controllers\Api\Recommendation\RecommendationController::class, 'recordBehavior']);
+
+// Bảng size — tra cứu kích cỡ
+Route::get('size-charts',       [\App\Http\Controllers\Api\BangSizeController::class, 'index']);
 
 // ─────────────────────────────────────────────────────────────
 // AUTHENTICATED ROUTES — cần Bearer token
@@ -108,6 +115,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResource('categories', \App\Http\Controllers\Api\Admin\DanhMucAdminController::class)
             ->middleware('quyen:quan_ly_catalog');
         Route::apiResource('brands', \App\Http\Controllers\Api\Admin\ThuongHieuAdminController::class)
+            ->middleware('quyen:quan_ly_catalog');
+        Route::apiResource('size-charts', \App\Http\Controllers\Api\Admin\BangSizeAdminController::class)
             ->middleware('quyen:quan_ly_catalog');
 
         // Orders management

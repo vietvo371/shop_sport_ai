@@ -1,27 +1,26 @@
-name: '3. Giỏ hàng & Thanh toán'
+name: '4. Thông tin cá nhân & Địa chỉ'
 description: ''
 endpoints:
   -
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/cart
+    uri: api/v1/addresses
     metadata:
       custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
       groupDescription: ''
       subgroup: |-
-        Quản lý Giỏ hàng
+        Sổ địa chỉ
 
-        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
-        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
+        Quản lý sổ địa chỉ giao hàng của người dùng.
       subgroupDescription: ''
-      title: 'Lấy thông tin giỏ hàng'
-      description: 'Lấy danh sách sản phẩm, tổng số lượng và số tiền tạm tính hiện có trong giỏ.'
-      authenticated: false
+      title: 'Danh sách địa chỉ'
+      description: ''
+      authenticated: true
       deprecated: false
     headers:
-      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -42,7 +41,10 @@ endpoints:
           access-control-allow-origin: '*'
         description: null
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -50,23 +52,22 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/cart/items
+    uri: api/v1/addresses
     metadata:
       custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
       groupDescription: ''
       subgroup: |-
-        Quản lý Giỏ hàng
+        Sổ địa chỉ
 
-        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
-        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
+        Quản lý sổ địa chỉ giao hàng của người dùng.
       subgroupDescription: ''
-      title: 'Thêm sản phẩm vào giỏ'
+      title: 'Thêm địa chỉ mới'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
-      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters: []
@@ -74,47 +75,157 @@ endpoints:
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      san_pham_id:
+      ho_va_ten:
         custom: []
-        name: san_pham_id
-        description: 'ID của sản phẩm muốn thêm.'
+        name: ho_va_ten
+        description: 'Họ và tên người nhận.'
         required: true
-        example: 1
-        type: integer
+        example: 'Nguyễn Văn B'
+        type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      bien_the_id:
+      so_dien_thoai:
         custom: []
-        name: bien_the_id
-        description: 'ID của biến thể (kích thước, màu sắc). Null nếu sản phẩm không có biến thể.'
-        required: false
-        example: null
-        type: integer
+        name: so_dien_thoai
+        description: 'Số điện thoại nhận hàng.'
+        required: true
+        example: '0988777666'
+        type: string
         enumValues: []
         exampleWasSpecified: true
-        nullable: true
+        nullable: false
         deprecated: false
-      so_luong:
+      tinh_thanh:
         custom: []
-        name: so_luong
-        description: 'Số lượng muốn thêm (1-99).'
+        name: tinh_thanh
+        description: 'Tỉnh/Thành phố.'
         required: true
-        example: 1
-        type: integer
+        example: 'Hà Nội'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quan_huyen:
+        custom: []
+        name: quan_huyen
+        description: Quận/Huyện.
+        required: true
+        example: 'Cầu Giấy'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      phuong_xa:
+        custom: []
+        name: phuong_xa
+        description: Phường/Xã.
+        required: true
+        example: 'Dịch Vọng'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      dia_chi_cu_the:
+        custom: []
+        name: dia_chi_cu_the
+        description: 'Số nhà, đường.'
+        required: true
+        example: '123 Xuân Thủy'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      la_mac_dinh:
+        custom: []
+        name: la_mac_dinh
+        description: 'Đặt làm địa chỉ mặc định (true/false).'
+        required: false
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      san_pham_id: 1
-      bien_the_id: null
-      so_luong: 1
+      ho_va_ten: 'Nguyễn Văn B'
+      so_dien_thoai: '0988777666'
+      tinh_thanh: 'Hà Nội'
+      quan_huyen: 'Cầu Giấy'
+      phuong_xa: 'Dịch Vọng'
+      dia_chi_cu_the: '123 Xuân Thủy'
+      la_mac_dinh: true
     fileParameters: []
     responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - GET
+    uri: 'api/v1/addresses/{id}'
+    metadata:
+      custom: []
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
+      groupDescription: ''
+      subgroup: |-
+        Sổ địa chỉ
+
+        Quản lý sổ địa chỉ giao hàng của người dùng.
+      subgroupDescription: ''
+      title: 'Lấy chi tiết một địa chỉ'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID của địa chỉ.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        custom: []
+        status: 401
+        content: '{"message":"Unauthenticated."}'
+        headers:
+          cache-control: 'no-cache, private'
+          content-type: application/json
+          access-control-allow-origin: '*'
+        description: null
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -122,200 +233,184 @@ endpoints:
     custom: []
     httpMethods:
       - PUT
-    uri: 'api/v1/cart/items/{id}'
+      - PATCH
+    uri: 'api/v1/addresses/{id}'
     metadata:
       custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
       groupDescription: ''
       subgroup: |-
-        Quản lý Giỏ hàng
+        Sổ địa chỉ
 
-        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
-        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
+        Quản lý sổ địa chỉ giao hàng của người dùng.
       subgroupDescription: ''
-      title: 'Cập nhật số lượng sản phẩm'
+      title: 'Cập nhật địa chỉ'
       description: ''
-      authenticated: false
+      authenticated: true
       deprecated: false
     headers:
-      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
     urlParameters:
       id:
         custom: []
         name: id
-        description: 'ID của item trong giỏ hàng (không phải san_pham_id)'
+        description: 'ID của địa chỉ cần sửa.'
         required: true
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      id: 16
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      so_luong:
-        custom: []
-        name: so_luong
-        description: 'Số lượng mới muốn cập nhật (1-99).'
-        required: true
-        example: 2
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-    cleanBodyParameters:
-      so_luong: 2
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: 'api/v1/cart/items/{id}'
-    metadata:
-      custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
-      groupDescription: ''
-      subgroup: |-
-        Quản lý Giỏ hàng
-
-        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
-        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
-      subgroupDescription: ''
-      title: 'Xóa sản phẩm khỏi giỏ'
-      description: ''
-      authenticated: false
-      deprecated: false
-    headers:
-      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters:
-      id:
-        custom: []
-        name: id
-        description: 'ID của item trong giỏ hàng (không phải san_pham_id)'
-        required: true
-        example: 16
-        type: integer
-        enumValues: []
-        exampleWasSpecified: false
-        nullable: false
-        deprecated: false
     cleanUrlParameters:
-      id: 16
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - DELETE
-    uri: api/v1/cart
-    metadata:
-      custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
-      groupDescription: ''
-      subgroup: |-
-        Quản lý Giỏ hàng
-
-        Cho phép khách hàng thêm, sửa, xóa sản phẩm trong giỏ hàng.
-        Hỗ trợ cả khách vãng lai (lưu qua Header `X-Session-ID`) và người dùng đã đăng nhập (lưu qua User ID).
-      subgroupDescription: ''
-      title: 'Xóa toàn bộ giỏ hàng'
-      description: 'Dùng khi người dùng muốn dọn dẹp giỏ hoặc sau khi đặt hàng thành công.'
-      authenticated: false
-      deprecated: false
-    headers:
-      X-Session-ID: 'ID phiên làm việc (nếu người dùng chưa đăng nhập)'
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters: []
-    cleanBodyParameters: []
-    fileParameters: []
-    responses: []
-    responseFields: []
-    auth: []
-    controller: null
-    method: null
-    route: null
-  -
-    custom: []
-    httpMethods:
-      - POST
-    uri: api/v1/coupons/validate
-    metadata:
-      custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
-      groupDescription: ''
-      subgroup: 'Mã giảm giá'
-      subgroupDescription: ''
-      title: 'Kiểm tra mã giảm giá'
-      description: |-
-        Xác thực mã giảm giá do người dùng nhập trước khi áp dụng vào đơn hàng.
-        Trả về số tiền được giảm nếu mã hợp lệ.
-      authenticated: false
-      deprecated: false
-    headers:
-      Content-Type: application/json
-      Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
+      id: 1
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters:
-      ma_code:
+      ho_va_ten:
         custom: []
-        name: ma_code
-        description: 'Mã giảm giá người dùng nhập.'
-        required: true
-        example: SALE2025
+        name: ho_va_ten
+        description: 'Họ và tên người nhận.'
+        required: false
+        example: 'Nguyễn Văn B'
         type: string
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      tam_tinh:
+      so_dien_thoai:
         custom: []
-        name: tam_tinh
-        description: 'Tổng tiền tạm tính của giỏ hàng.'
-        required: true
-        example: '500000'
-        type: numeric
+        name: so_dien_thoai
+        description: 'Số điện thoại nhận hàng.'
+        required: false
+        example: '0988777666'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      tinh_thanh:
+        custom: []
+        name: tinh_thanh
+        description: 'Tỉnh/Thành phố.'
+        required: false
+        example: 'Hồ Chí Minh'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      quan_huyen:
+        custom: []
+        name: quan_huyen
+        description: Quận/Huyện.
+        required: false
+        example: 'Quận 1'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      phuong_xa:
+        custom: []
+        name: phuong_xa
+        description: Phường/Xã.
+        required: false
+        example: 'Bến Nghé'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      dia_chi_cu_the:
+        custom: []
+        name: dia_chi_cu_the
+        description: 'Số nhà, đường.'
+        required: false
+        example: 'Tòa nhà Bitexco'
+        type: string
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+      la_mac_dinh:
+        custom: []
+        name: la_mac_dinh
+        description: 'Đặt làm địa chỉ mặc định (true/false).'
+        required: false
+        example: true
+        type: boolean
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
     cleanBodyParameters:
-      ma_code: SALE2025
-      tam_tinh: '500000'
+      ho_va_ten: 'Nguyễn Văn B'
+      so_dien_thoai: '0988777666'
+      tinh_thanh: 'Hồ Chí Minh'
+      quan_huyen: 'Quận 1'
+      phuong_xa: 'Bến Nghé'
+      dia_chi_cu_the: 'Tòa nhà Bitexco'
+      la_mac_dinh: true
     fileParameters: []
     responses: []
     responseFields: []
-    auth: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - DELETE
+    uri: 'api/v1/addresses/{id}'
+    metadata:
+      custom: []
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
+      groupDescription: ''
+      subgroup: |-
+        Sổ địa chỉ
+
+        Quản lý sổ địa chỉ giao hàng của người dùng.
+      subgroupDescription: ''
+      title: 'Xóa địa chỉ'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID của địa chỉ cần xóa.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
     controller: null
     method: null
     route: null
@@ -323,18 +418,15 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: api/v1/orders
+    uri: api/v1/wishlist
     metadata:
       custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
       groupDescription: ''
-      subgroup: |-
-        Thanh toán & Lịch sử đơn hàng
-
-        Cho phép khách hàng xem lịch sử mua hàng, chi tiết đơn và thực hiện đặt hàng (Checkout).
+      subgroup: 'Yêu thích'
       subgroupDescription: ''
-      title: 'Danh sách Đơn hàng'
-      description: 'Lấy danh sách lịch sử đơn hàng của người dùng đang đăng nhập. Có phân trang.'
+      title: 'Danh sách sản phẩm yêu thích'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
@@ -370,78 +462,39 @@ endpoints:
     custom: []
     httpMethods:
       - POST
-    uri: api/v1/orders
+    uri: 'api/v1/wishlist/{productId}'
     metadata:
       custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
       groupDescription: ''
-      subgroup: |-
-        Thanh toán & Lịch sử đơn hàng
-
-        Cho phép khách hàng xem lịch sử mua hàng, chi tiết đơn và thực hiện đặt hàng (Checkout).
+      subgroup: 'Yêu thích'
       subgroupDescription: ''
-      title: 'Đặt hàng (Checkout)'
-      description: 'Tạo đơn hàng mới từ các mặt hàng đang có trong Giỏ. Sau khi thanh toán thành công, giỏ hàng sẽ bị xóa.'
+      title: 'Thêm/Xóa yêu thích'
+      description: 'Tự động thêm sản phẩm vào danh sách yêu thích nếu chưa có, hoặc xóa khỏi danh sách nếu đã tồn tại.'
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters: []
-    cleanUrlParameters: []
-    queryParameters: []
-    cleanQueryParameters: []
-    bodyParameters:
-      dia_chi_id:
+    urlParameters:
+      productId:
         custom: []
-        name: dia_chi_id
-        description: 'ID địa chỉ giao hàng của người dùng.'
+        name: productId
+        description: 'ID sản phẩm.'
         required: true
-        example: 2
+        example: 1
         type: integer
         enumValues: []
         exampleWasSpecified: true
         nullable: false
         deprecated: false
-      phuong_thuc_tt:
-        custom: []
-        name: phuong_thuc_tt
-        description: 'Phương thức thanh toán (cod, chuyen_khoan, vnpay, momo).'
-        required: true
-        example: cod
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-      ma_coupon:
-        custom: []
-        name: ma_coupon
-        description: 'Mã giảm giá (nếu có áp dụng).'
-        required: false
-        example: SALE2025
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-      ghi_chu:
-        custom: []
-        name: ghi_chu
-        description: 'Ghi chú thêm cho đơn hàng.'
-        required: false
-        example: 'Giao vào giờ hành chính'
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: true
-        deprecated: false
-    cleanBodyParameters:
-      dia_chi_id: 2
-      phuong_thuc_tt: cod
-      ma_coupon: SALE2025
-      ghi_chu: 'Giao vào giờ hành chính'
+    cleanUrlParameters:
+      productId: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
     fileParameters: []
     responses: []
     responseFields: []
@@ -456,38 +509,26 @@ endpoints:
     custom: []
     httpMethods:
       - GET
-    uri: 'api/v1/orders/{code}'
+    uri: api/v1/notifications
     metadata:
       custom: []
-      groupName: '3. Giỏ hàng & Thanh toán'
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
       groupDescription: ''
       subgroup: |-
-        Thanh toán & Lịch sử đơn hàng
+        Quản lý Thông báo
 
-        Cho phép khách hàng xem lịch sử mua hàng, chi tiết đơn và thực hiện đặt hàng (Checkout).
+        Kiểm tra các thông báo (đơn hàng, khuyến mãi, hệ thống...) dành riêng cho người dùng.
       subgroupDescription: ''
-      title: 'Chi tiết đơn hàng'
-      description: 'Xem chi tiết một đơn hàng thông qua Mã đơn hàng.'
+      title: 'Lấy danh sách thông báo'
+      description: ''
       authenticated: true
       deprecated: false
     headers:
       Authorization: 'Bearer {YOUR_AUTH_KEY}'
       Content-Type: application/json
       Accept: application/json
-    urlParameters:
-      code:
-        custom: []
-        name: code
-        description: 'Mã đơn hàng (VD: DH202503...).'
-        required: true
-        example: DH202503050001
-        type: string
-        enumValues: []
-        exampleWasSpecified: true
-        nullable: false
-        deprecated: false
-    cleanUrlParameters:
-      code: DH202503050001
+    urlParameters: []
+    cleanUrlParameters: []
     queryParameters: []
     cleanQueryParameters: []
     bodyParameters: []
@@ -503,6 +544,94 @@ endpoints:
           content-type: application/json
           access-control-allow-origin: '*'
         description: null
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: 'api/v1/notifications/{id}/read'
+    metadata:
+      custom: []
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
+      groupDescription: ''
+      subgroup: |-
+        Quản lý Thông báo
+
+        Kiểm tra các thông báo (đơn hàng, khuyến mãi, hệ thống...) dành riêng cho người dùng.
+      subgroupDescription: ''
+      title: 'Đánh dấu 1 thông báo là đã đọc'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        custom: []
+        name: id
+        description: 'ID thông báo.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: true
+        nullable: false
+        deprecated: false
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth:
+      - headers
+      - Authorization
+      - 'Bearer 6g43cv8PD1aE5beadkZfhV6'
+    controller: null
+    method: null
+    route: null
+  -
+    custom: []
+    httpMethods:
+      - PUT
+    uri: api/v1/notifications/read-all
+    metadata:
+      custom: []
+      groupName: '4. Thông tin cá nhân & Địa chỉ'
+      groupDescription: ''
+      subgroup: |-
+        Quản lý Thông báo
+
+        Kiểm tra các thông báo (đơn hàng, khuyến mãi, hệ thống...) dành riêng cho người dùng.
+      subgroupDescription: ''
+      title: 'Đánh dấu toàn bộ là đã đọc'
+      description: ''
+      authenticated: true
+      deprecated: false
+    headers:
+      Authorization: 'Bearer {YOUR_AUTH_KEY}'
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses: []
     responseFields: []
     auth:
       - headers
