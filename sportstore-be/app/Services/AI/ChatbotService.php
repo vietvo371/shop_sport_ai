@@ -449,9 +449,12 @@ class ChatbotService
         $url = rtrim(env('FRONTEND_URL', 'http://localhost:3000'), '/');
         return $products->map(function ($p) use ($url) {
             $price = number_format($p->gia_khuyen_mai ?? $p->gia_goc, 0, ',', '.') . '₫';
-            $brand = $p->thuongHieu?->ten ? " ({$p->thuongHieu->ten})" : '';
-            return "- [{$p->ten_san_pham}]({$url}/products/{$p->duong_dan}){$brand} — {$price}";
-        })->join("\n");
+            $brand = $p->thuongHieu?->ten ? " — {$p->thuongHieu->ten}" : '';
+            $img   = $p->anhChinh?->url ?? 'https://via.placeholder.com/150';
+            
+            // Format: ![ProductName](ImageURL) [ProductName](LinkURL) — Brand — Price
+            return "![{$p->ten_san_pham}]({$img})\n[{$p->ten_san_pham}]({$url}/products/{$p->duong_dan}){$brand}\n**Giá: {$price}**";
+        })->join("\n\n---\n\n"); // Ngăn cách các sản phẩm bằng đường kẻ gạch ngang cho đẹp
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -467,18 +470,22 @@ class ChatbotService
                 $type          = match ($a['loai']) { 'giay' => 'Giày', 'ao' => 'Áo', 'quan' => 'Quần', default => ucfirst($a['loai']) };
                 $adviceSection .= "- {$type}: Size **{$a['size']}**\n";
             }
-            $adviceSection .= "\n→ Hãy thông báo size này cho khách một cách TỰ TIN, KHÔNG dùng từ \"có thể\" hay \"khoảng\". Đây là dữ liệu đã được tính toán từ bảng size của shop.";
+            $adviceSection .= "\n→ Hãy thông báo size này cho khách một cách TỰ TIN và LỊCH SỰ. CẦN giải thích vì sao size này phù hợp dựa trên số liệu khách nhập.";
         }
 
         return <<<PROMPT
-Bạn là trợ lý AI của **SportStore** — cửa hàng thể thao trực tuyến.
+Bạn là trợ lý AI chuyên nghiệp của **SportStore**.
 
-QUY TẮC ƯU TIÊN:
-1. **Chào hỏi**: Khi khách chỉ chào → chào lại vui vẻ, hỏi cần hỗ trợ gì. KHÔNG đề cập sản phẩm.
-2. **Tư vấn size**: Nếu có "THÔNG TIN SIZE TỪ HỆ THỐNG" bên dưới → dùng ngay, TỰ TIN xác nhận. KHÔNG tự suy đoán.
-3. **Sản phẩm**: Chỉ giới thiệu sản phẩm trong danh sách đính kèm, kèm link đầy đủ.
-4. **Ngôn ngữ**: Tiếng Việt tự nhiên, thân thiện. Markdown gọn đẹp.
-5. **Trung thực**: Nếu hệ thống không trả về sản phẩm phù hợp → thông báo cho khách, đừng bịa.
+QUY TẮC CẦN TUÂN THỦ NGHIÊM NGẶT:
+1. **Chào hỏi**: Vui vẻ, hỏi thăm khách hàng. KHÔNG đề cập sản phẩm nếu khách chỉ chào.
+2. **Tư vấn size**: Sử dụng ngay "THÔNG TIN SIZE TỪ HỆ THỐNG" kèm theo. Đây là dữ liệu chuẩn, hãy cung cấp cho khách một cách chuyên nghiệp.
+3. **Đề xuất sản phẩm (ĐẶC BIỆT QUAN TRỌNG)**:
+   - **CẤM TỰ BỊA TÊN SẢN PHẨM.** 
+   - Bạn chỉ được quyền sử dụng danh sách sản phẩm ĐÃ CÓ (còn hàng) được cung cấp trong context dưới dây.
+   - Luôn hiển thị đầy đủ: Ảnh sản phẩm, Tên sản phẩm kèm Link, và Giá. 
+   - Trình bày dạng danh sách đẹp mắt.
+4. **Link sản phẩm**: Giữ nguyên link Markdown được cung cấp (ví dụ: [Tên](Link)). Link phải bắt đầu bằng http://localhost:3000...
+5. **Ngôn ngữ**: Tiếng Việt, thân thiện nhưng chuyên nghiệp. Sử dụng các emoji phù hợp.
 {$adviceSection}
 PROMPT;
     }

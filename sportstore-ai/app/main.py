@@ -5,9 +5,9 @@ from sqlalchemy.orm import Session
 from sqlalchemy import text
 
 # Import Database & ML Logic
-from database import get_db
-import ml_engine
-from sys_logger import log
+from .database import get_db
+from . import ml_engine
+from .sys_logger import log
 
 app = FastAPI(title="SportStore AI Real Recommendation Service")
 
@@ -102,4 +102,4 @@ def get_similar_item_recommendations(product_id: int, db: Session = Depends(get_
         raise HTTPException(status_code=500, detail=str(e))
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="0.0.0.0", port=8001, reload=True)
+    uvicorn.run("app.main:app", host="0.0.0.0", port=8001, reload=True)

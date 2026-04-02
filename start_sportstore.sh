@@ -12,6 +12,13 @@ tell application "Terminal"
     do script "cd '$ROOT_DIR/sportstore-be' && echo '🔥 Khởi động Backend Laravel...' && php artisan serve"
 end tell
 EOF
+#  chạy queue
+osascript <<EOF
+tell application "Terminal"
+    activate
+    do script "cd '$ROOT_DIR/sportstore-be' && echo '🔥 Khởi động Backend Laravel...' && php artisan queue:work"
+end tell
+EOF
 
 # 2. Mở tab mới chạy Frontend (NextJS - Port 3000)
 osascript <<EOF
@@ -25,7 +32,7 @@ EOF
 osascript <<EOF
 tell application "Terminal"
     activate
-    do script "cd '$ROOT_DIR/sportstore-ai' && echo '🤖 Khởi động AI Recommendation Engine...' && source venv/bin/activate && uvicorn main:app --host 0.0.0.0 --port 8001 --reload"
+    do script "cd '$ROOT_DIR/sportstore-ai' && echo '🤖 Khởi động AI Recommendation Engine...' && source venv/bin/activate && uvicorn app.main:app --host 0.0.0.0 --port 8001 --reload"
 end tell
 EOF
 

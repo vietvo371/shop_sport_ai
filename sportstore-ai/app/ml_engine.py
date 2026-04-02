@@ -2,7 +2,7 @@ import pandas as pd
 from sqlalchemy.orm import Session
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
-from sys_logger import log_ai, log
+from .sys_logger import log_ai, log
 
 # Định nghĩa trọng số cho các hành vi
 BEHAVIOR_WEIGHTS = {
