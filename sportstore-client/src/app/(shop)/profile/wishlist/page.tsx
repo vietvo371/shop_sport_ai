@@ -1,9 +1,10 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useWishlist } from '@/hooks/useWishlist';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Heart, Trash2, ShoppingCart } from 'lucide-react';
+import { Loader2, Heart, Trash2, ShoppingCart, ArrowLeft } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { formatCurrency } from '@/lib/utils';
@@ -12,6 +13,7 @@ import { toast } from 'sonner';
 export default function WishlistPage() {
     // For simplicity, just load page 1. Can implement pagination if needed.
     const { wishlistData, isLoading, error, toggleWishlist, isToggling } = useWishlist(1);
+    const router = useRouter();
 
     const wishlist = wishlistData?.data || [];
 
@@ -26,6 +28,17 @@ export default function WishlistPage() {
 
     return (
         <div className="space-y-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 pl-0 gap-1.5"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Quay lại
+            </Button>
+
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900">Sản phẩm yêu thích</h1>

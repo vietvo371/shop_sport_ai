@@ -2,11 +2,12 @@
 
 import { useOrder, useOrderHistory } from '@/hooks/useOrder';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, PackageOpen, ChevronRight, CreditCard } from 'lucide-react';
+import { Loader2, PackageOpen, ChevronRight, CreditCard, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
 
 const getStatusColor = (status: string) => {
     switch (status) {
@@ -37,6 +38,7 @@ const getStatusText = (status: string) => {
 export default function OrderHistoryPage() {
     const { data: orderHistory, isLoading: isLoadingHistory } = useOrderHistory(1);
     const { createPaymentUrl, isCreatingPaymentUrl } = useOrder();
+    const router = useRouter();
 
     console.log('--- RAW ORDER HISTORY ---', orderHistory);
 
@@ -54,6 +56,17 @@ export default function OrderHistoryPage() {
 
     return (
         <div className="space-y-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 pl-0 gap-1.5"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Quay lại
+            </Button>
+
             <h1 className="text-2xl font-bold text-slate-900">Quản lý Đơn hàng</h1>
 
             {orders.length === 0 ? (

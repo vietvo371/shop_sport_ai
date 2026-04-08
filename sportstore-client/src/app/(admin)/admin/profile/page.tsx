@@ -253,7 +253,6 @@ export default function AdminProfilePage() {
                                 </label>
                                 <Input
                                     id="ho_va_ten"
-                                    autoComplete="off"
                                     readOnly
                                     onFocus={(e) => e.target.removeAttribute('readonly')}
                                     placeholder="Nguyễn Văn A"
@@ -275,7 +274,6 @@ export default function AdminProfilePage() {
                                 </label>
                                 <Input
                                     id="so_dien_thoai"
-                                    autoComplete="off"
                                     readOnly
                                     onFocus={(e) => e.target.removeAttribute('readonly')}
                                     placeholder="0xxx xxx xxx"

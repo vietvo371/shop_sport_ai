@@ -19,6 +19,7 @@ import { vi } from "date-fns/locale";
 import { useNotifications, useMarkAllRead, useMarkRead } from "@/hooks/useNotifications";
 import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 
 export default function UserNotificationsPage() {
     const [page, setPage] = useState(1);
@@ -42,6 +43,17 @@ export default function UserNotificationsPage() {
 
     return (
         <div className="space-y-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 pl-0 gap-1.5"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Quay lại
+            </Button>
+
             {/* Header Section */}
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>

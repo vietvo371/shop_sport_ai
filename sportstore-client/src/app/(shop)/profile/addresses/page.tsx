@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAddress } from '@/hooks/useAddress';
 import { Address } from '@/types/address.types';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Loader2, Plus, MapPin, Trash2, Edit2, ShieldCheck } from 'lucide-react';
+import { Loader2, Plus, MapPin, Trash2, Edit2, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { AddressFormDialog } from '@/components/profile/AddressFormDialog';
 import {
     AlertDialog,
@@ -23,9 +24,9 @@ export default function AddressesPage() {
     const { addresses, isLoading, error, deleteAddress, isDeleting, updateAddress } = useAddress();
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [editingAddress, setEditingAddress] = useState<Address | null>(null);
-
     const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
     const [deletingId, setDeletingId] = useState<number | null>(null);
+    const router = useRouter();
 
     const handleAddNew = () => {
         setEditingAddress(null);
@@ -82,6 +83,17 @@ export default function AddressesPage() {
 
     return (
         <div className="space-y-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 pl-0 gap-1.5"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Quay lại
+            </Button>
+
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
                     <h1 className="text-2xl font-bold text-slate-900">Sổ địa chỉ</h1>
@@ -134,8 +146,8 @@ export default function AddressesPage() {
                                 <CardTitle className="text-base font-semibold flex items-center pr-16 text-slate-900">
                                     {address.ho_va_ten}
                                 </CardTitle>
-                                <CardDescription className="flex items-center text-slate-600 font-medium">
-                                    {address.so_dien_thoai}
+                                <CardDescription className="flex items-center gap-1 text-slate-600 font-medium">
+                                    <span className="font-sans">{address.so_dien_thoai}</span>
                                 </CardDescription>
                             </CardHeader>
 

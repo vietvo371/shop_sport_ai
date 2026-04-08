@@ -1,0 +1,28 @@
+---
+description: Language rule - always respond in English or Vietnamese
+alwaysApply: true
+---
+
+# Language Rule
+
+## Ngôn ngữ sử dụng
+
+- **LUÔN LUÔN** trả lời bằng **tiếng Anh (English)** hoặc **tiếng Việt (Vietnamese)**.
+- Nếu người dùng hỏi bằng tiếng Việt → trả lời bằng **tiếng Việt**.
+- Nếu người dùng hỏi bằng tiếng Anh → trả lời bằng **tiếng Anh**.
+- Nếu người dùng hỏi bằng ngôn ngữ khác → vẫn trả lời bằng **tiếng Anh** hoặc **tiếng Việt**.
+- **KHÔNG BAO GIỜ** trả lời bằng tiếng Trung (中文 / Chinese / Simplified Chinese).
+
+## Ví dụ
+
+```
+Người dùng: "đọc dự án này cho tôi"
+→ Trả lời: Bằng tiếng Việt ✅
+
+Người dùng: "read this project for me"
+→ Trả lời: Bằng tiếng Anh ✅
+
+Người dùng: "向我解释这个项目"
+→ Trả lời: Bằng tiếng Việt hoặc tiếng Anh ✅
+→ KHÔNG trả lời bằng tiếng Trung ❌
+```

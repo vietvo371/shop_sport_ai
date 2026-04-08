@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '@/store/auth.store';
 import { authService } from '@/services/auth.service';
@@ -9,7 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
-import { Loader2, Save, KeyRound, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Save, KeyRound, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 interface ProfileForm {
@@ -25,6 +26,7 @@ export default function ProfilePage() {
     const updateUser = useAuthStore((state) => state.updateUser);
     const [isLoading, setIsLoading] = useState(false);
     const [isPasswordMode, setIsPasswordMode] = useState(false);
+    const router = useRouter();
 
     // Password visibility states
     const [showOldPassword, setShowOldPassword] = useState(false);
@@ -97,6 +99,17 @@ export default function ProfilePage() {
 
     return (
         <div className="max-w-3xl space-y-6">
+            {/* Back Button */}
+            <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => router.back()}
+                className="text-slate-500 hover:text-slate-900 hover:bg-slate-100 pl-0 gap-1.5"
+            >
+                <ArrowLeft className="h-4 w-4" />
+                Quay lại
+            </Button>
+
             <Card className="border-slate-200/60 shadow-sm overflow-hidden">
                 <CardHeader className="bg-slate-50/50 border-b border-slate-100 pb-4">
                     <CardTitle className="text-xl">Hồ sơ Của Tôi</CardTitle>
@@ -124,7 +137,6 @@ export default function ProfilePage() {
                                 <Label htmlFor="ho_va_ten">Họ và Tên <span className="text-red-500">*</span></Label>
                                 <Input
                                     id="ho_va_ten"
-                                    autoComplete="name"
                                     readOnly
                                     onFocus={(e) => e.target.removeAttribute('readonly')}
                                     {...register('ho_va_ten', {
@@ -143,7 +155,6 @@ export default function ProfilePage() {
                                 <Label htmlFor="so_dien_thoai">Số điện thoại</Label>
                                 <Input
                                     id="so_dien_thoai"
-                                    autoComplete="tel"
                                     readOnly
                                     onFocus={(e) => e.target.removeAttribute('readonly')}
                                     {...register('so_dien_thoai', {
