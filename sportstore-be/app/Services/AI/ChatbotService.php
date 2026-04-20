@@ -23,6 +23,7 @@ class ChatbotService
 {
     private string $apiKey;
     private string $model;
+    private string $frontendUrl;
     private string $apiUrl = 'https://api.groq.com/openai/v1/chat/completions';
 
     /** Intent constants */
@@ -34,8 +35,9 @@ class ChatbotService
 
     public function __construct()
     {
-        $this->apiKey = config('services.groq.key', '');
-        $this->model  = config('services.groq.model', 'llama-3.3-70b-versatile');
+        $this->apiKey      = config('services.groq.key', '');
+        $this->model       = config('services.groq.model', 'llama-3.3-70b-versatile');
+        $this->frontendUrl = rtrim(config('app.frontend_url', env('FRONTEND_URL', 'http://localhost:3000')), '/');
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -96,7 +98,7 @@ class ChatbotService
         $productCtx  = $this->searchRelevantProducts($noiDung, $intent, $sizeAdvice, $brandId);
 
         // 8. Xây dựng Prompt và gọi AI
-        $systemPrompt = $this->buildSystemPrompt($sizeAdvice);
+        $systemPrompt = $this->buildSystemPrompt($sizeAdvice, $this->frontendUrl);
         $messages     = $this->buildMessages($lichSu, $systemPrompt, $productCtx);
 
         try {
@@ -150,7 +152,7 @@ class ChatbotService
         }
 
         // Nhận diện từ khóa giày
-        $shoeWords = ['giày', 'dép', 'sneaker', 'boot', 'sandal', 'footwear', 'giầy'];
+        $shoeWords = ['giày', 'dép', 'sneaker', 'boot', 'sandal', 'footwear'];
         foreach ($shoeWords as $w) {
             if (mb_stripos($q, $w) !== false) return self::INTENT_SHOES;
         }
@@ -446,14 +448,13 @@ class ChatbotService
             return '(Hiện không có sản phẩm phù hợp còn hàng trong hệ thống.)';
         }
 
-        $url = rtrim(env('FRONTEND_URL', 'http://localhost:3000'), '/');
-        return $products->map(function ($p) use ($url) {
+        return $products->map(function ($p) {
             $price = number_format($p->gia_khuyen_mai ?? $p->gia_goc, 0, ',', '.') . '₫';
-            $brand = $p->thuongHieu?->ten ? " — {$p->thuongHieu->ten}" : '';
+            $brand = $p->thuong_hieu?->ten ? " — {$p->thuong_hieu->ten}" : '';
             $img   = $p->anhChinh?->url ?? 'https://via.placeholder.com/150';
             
             // Format: ![ProductName](ImageURL) [ProductName](LinkURL) — Brand — Price
-            return "![{$p->ten_san_pham}]({$img})\n[{$p->ten_san_pham}]({$url}/products/{$p->duong_dan}){$brand}\n**Giá: {$price}**";
+            return "![{$p->ten_san_pham}]({$img})\n[{$p->ten_san_pham}]({$this->frontendUrl}/products/{$p->duong_dan}){$brand}\n**Giá: {$price}**";
         })->join("\n\n---\n\n"); // Ngăn cách các sản phẩm bằng đường kẻ gạch ngang cho đẹp
     }
 
@@ -515,7 +516,7 @@ PROMPT;
         }
 
         // Câu rất ngắn + không chứa từ khóa mua sắm
-        $shoppingKw = ['size', 'giày', 'giầy', 'áo', 'quần', 'mua', 'tìm', 'sản phẩm', 'thể thao', 'cao', 'nặng', 'chân', 'kg', 'cm', 'mm', 'nike', 'adidas', 'dép'];
+        $shoppingKw = ['size', 'giày', 'áo', 'quần', 'mua', 'tìm', 'sản phẩm', 'thể thao', 'cao', 'nặng', 'chân', 'kg', 'cm', 'mm', 'nike', 'adidas', 'dép'];
         if (mb_strlen($q) <= 20) {
             foreach ($shoppingKw as $kw) {
                 if (mb_stripos($q, $kw) !== false) return false;

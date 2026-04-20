@@ -33,6 +33,15 @@ class DanhMucSeeder extends Seeder
                     $parentName = trim($product['categories'][1]);
                     $childName = trim($product['categories'][2]);
 
+                    // Bổ sung chuẩn hóa (Normalization) để tránh trùng lặp hoặc sai cấu trúc
+                    // 1. Phụ kiện không bao giờ chứa Giày
+                    if (($parentName === 'Phụ kiện' || $parentName === 'Accessories') && str_contains($childName, 'Giày')) {
+                        $parentName = 'Thời trang';
+                    }
+
+                    // 2. Đồng nhất tên danh mục (ví dụ: 'Giày thể thao' và 'Giày Lifestyle' có thể gộp hoặc tách tùy ý)
+                    // Ở đây ta giữ nguyên tên gốc nhưng đảm bảo gom nhóm đúng cha.
+
                     $parents[$parentName] = true;
                     $children[$parentName][$childName] = true;
                 }

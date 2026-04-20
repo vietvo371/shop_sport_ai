@@ -22,6 +22,7 @@ import { AddAddressModal } from '@/components/checkout/AddAddressModal';
 import { useCoupon } from '@/hooks/useCoupon';
 import { CouponResponse } from '@/types/coupon.types';
 import { Tag, X } from 'lucide-react';
+import { AvailableCoupons } from '@/components/cart/AvailableCoupons';
 
 export default function CheckoutPage() {
     return (
@@ -82,22 +83,27 @@ function CheckoutContent() {
         }
     }, [addresses]);
 
-    const handleApplyCoupon = async () => {
-        if (!couponInput.trim()) return;
+    const handleApplyCouponByCode = async (code: string) => {
+        if (!code.trim()) return;
         if (!tamTinh) return;
 
         try {
             const res = await validateCoupon({
-                ma_code: couponInput.trim(),
+                ma_code: code.trim(),
                 tam_tinh: tamTinh,
             });
             setAppliedCoupon(res);
+            setCouponInput(code.trim());
             toast.success(`Áp dụng mã ${res.ma_code} thành công! Giảm ${new Intl.NumberFormat('vi-VN').format(res.so_tien_giam)}đ`);
         } catch (error: any) {
             setAppliedCoupon(null);
             const errMsgs = error?.errors ? Object.values(error.errors).flat().join(', ') : error?.message;
             toast.error(errMsgs || 'Mã giảm giá không hợp lệ.');
         }
+    };
+
+    const handleApplyCoupon = async () => {
+        await handleApplyCouponByCode(couponInput);
     };
 
     const handleRemoveCoupon = () => {
@@ -171,6 +177,20 @@ function CheckoutContent() {
 
     const isLoading = isBuyNowMode ? isAddressesLoading : (isCartLoading || isAddressesLoading);
     const isProcessing = isPlacing || isBuyingNow || isCreatingPaymentUrl;
+
+    // Shipping Fee Logic (Sync with BE Level 2)
+    const selectedAddress = addresses?.find((a: any) => a.id === selectedAddressId);
+    let shippingFee = 35000;
+    if (selectedAddress) {
+        if (selectedAddress.tinh_thanh.toLowerCase().includes('đà nẵng')) {
+            shippingFee = 20000;
+        }
+    }
+    if (tamTinh >= 1000000) {
+        shippingFee = 0;
+    }
+
+    const tongThanhToan = Math.max(0, tamTinh - (appliedCoupon?.so_tien_giam || 0) + shippingFee);
 
     if (isLoading) {
         return (
@@ -388,6 +408,10 @@ function CheckoutContent() {
                                             </button>
                                         </div>
                                     )}
+
+                                    {!appliedCoupon && (
+                                        <AvailableCoupons onApply={handleApplyCouponByCode} />
+                                    )}
                                 </div>
 
                                 <div className="flex justify-between text-sm text-slate-600">
@@ -404,8 +428,15 @@ function CheckoutContent() {
 
                                 <div className="flex justify-between text-sm text-slate-600">
                                     <span>Phí giao hàng</span>
-                                    <span className="font-medium text-emerald-600">Miễn phí</span>
+                                    <span className={`font-medium ${shippingFee === 0 ? 'text-emerald-600' : 'text-slate-900'}`}>
+                                        {shippingFee === 0 ? 'Miễn phí' : `${new Intl.NumberFormat('vi-VN').format(shippingFee)} ₫`}
+                                    </span>
                                 </div>
+                                {shippingFee > 0 && (
+                                    <p className="text-[10px] text-muted-foreground italic -mt-2">
+                                        (Cửa hàng tại Đà Nẵng: Nội thành 20k, Ngoại tỉnh 35k)
+                                    </p>
+                                )}
 
                                 <Separator className="my-3 opacity-50" />
 
@@ -413,11 +444,9 @@ function CheckoutContent() {
                                     <span className="text-base font-semibold text-slate-900">Tổng cộng</span>
                                     <div className="text-right">
                                         <span className="text-2xl font-bold text-primary block">
-                                            {new Intl.NumberFormat('vi-VN').format(
-                                                Math.max(0, tamTinh - (appliedCoupon?.so_tien_giam || 0))
-                                            )} ₫
+                                            {new Intl.NumberFormat('vi-VN').format(tongThanhToan)} ₫
                                         </span>
-                                        <span className="text-xs text-muted-foreground">(Đã bao gồm VAT)</span>
+                                        <span className="text-xs text-muted-foreground">(Đã bao gồm phí ship và VAT)</span>
                                     </div>
                                 </div>
 

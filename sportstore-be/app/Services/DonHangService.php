@@ -70,12 +70,23 @@ class DonHangService
                 }
             }
 
-            $phiVanChuyen = 0; // TODO: tích hợp API GHTK/GHN để tính phí dynamic
-            $tongTien = $tamTinh - $soTienGiam + $phiVanChuyen;
-
-            // 3. Snapshot địa chỉ
+            // 3. Xác định địa chỉ và tính phí vận chuyển (Level 2)
             $diaChi = $user->diaChi()->findOrFail($data['dia_chi_id']);
             $diaChiGiaoHang = "{$diaChi->dia_chi_cu_the}, {$diaChi->phuong_xa}, {$diaChi->quan_huyen}, {$diaChi->tinh_thanh}";
+
+            $phiVanChuyen = 35000; // Mặc định phí ngoại tỉnh
+            
+            // Nếu tại Đà Nẵng (Shop tại 233 Nguyễn Hoàng, Đà Nẵng)
+            if (str_contains(mb_strtolower($diaChi->tinh_thanh), 'đà nẵng')) {
+                $phiVanChuyen = 20000;
+            }
+
+            // Miễn phí vận chuyển cho đơn hàng > 1.000.000đ
+            if ($tamTinh >= 1000000) {
+                $phiVanChuyen = 0;
+            }
+
+            $tongTien = $tamTinh - $soTienGiam + $phiVanChuyen;
 
             // 4. Tạo đơn hàng
             $donHang = DonHang::create([
@@ -320,23 +331,35 @@ class DonHangService
      */
     public function updateStatus(DonHang $donHang, string $trangThai, string $ghiChu = '', ?NguoiDung $admin = null): DonHang
     {
-        // 0. Kiểm tra nếu trạng thái mới trùng với trạng thái cũ thì bỏ qua
-        if ($trangThai === $donHang->trang_thai) {
+        // 0. Kiểm tra nếu trạng thái mới trùng với trạng thái cũ VÀ không có ghi chú thì bỏ qua
+        if ($trangThai === $donHang->trang_thai && empty($ghiChu)) {
             return $donHang;
         }
 
         // 1. Kiểm tra trạng thái cuối (Terminal States)
-        $terminalStates = ['da_giao', 'da_huy', 'hoan_tra'];
+        $terminalStates = ['da_huy', 'hoan_tra'];
         if (in_array($donHang->trang_thai, $terminalStates)) {
+            // KHÔNG cho phép chuyển đi bất kỳ đâu nếu đã Hủy hoặc Hoàn trả
             throw new HttpResponseException(ApiResponse::error(
-                "Đơn hàng đã ở trạng thái kết thúc ({$donHang->trang_thai}), không thể thay đổi trạng thái.",
+                "Đơn hàng đã kết thúc ({$donHang->trang_thai}), không thể thay đổi sang trạng thái khác.",
                 422
             ));
         }
 
+        if ($donHang->trang_thai === 'da_giao') {
+            // 'Đã giao' chỉ được phép chuyển sang 'Hoàn trả'
+            if ($trangThai !== 'hoan_tra') {
+                throw new HttpResponseException(ApiResponse::error(
+                    "Đơn hàng đã giao thành công, chỉ có thể chuyển sang trạng thái Hoàn trả.",
+                    422
+                ));
+            }
+        }
+
         return DB::transaction(function () use ($donHang, $trangThai, $ghiChu, $admin) {
-            // 2. Hoàn tồn kho nếu Huỷ đơn
-            if ($trangThai === 'da_huy') {
+            // 2. Hoàn tồn kho nếu chuyển SANG 'Đã hủy' hoặc 'Hoàn trả'
+            // CHỈ thực hiện nếu thực sự có sự thay đổi trạng thái và trạng thái mới là Terminal
+            if ($trangThai !== $donHang->trang_thai && in_array($trangThai, ['da_huy', 'hoan_tra'])) {
                 foreach ($donHang->items as $item) {
                     if ($item->bienThe) {
                         $item->bienThe->increment('ton_kho', $item->so_luong);

@@ -37,6 +37,10 @@ class BangSizeAdminController extends Controller
             $query->where('thuong_hieu_id', $request->thuong_hieu_id);
         }
 
+        if ($request->has('search')) {
+            $query->where('ten_size', 'LIKE', '%' . $request->search . '%');
+        }
+
         $items = $query->latest()->get();
         return ApiResponse::success($items, 'Lấy danh sách bảng size thành công');
     }
