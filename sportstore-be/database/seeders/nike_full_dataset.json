@@ -3,17 +3,17 @@
     {
       "title": "Nike Pro Seamless",
       "image": "https://static.nike.com/a/images/f_auto/dpr_1.0,cs_srgb/h_993,c_limit/5b945286-82de-42b8-9759-1c1fa2d41885/nike-just-do-it.png",
-      "link": "https://www.nike.com/vn/w/training-gear-up-3pn6y"
+      "link": "/products?category=thoi-trang"
     },
     {
       "title": "The Green Edit",
       "image": "https://static.nike.com/a/images/q_auto:eco/t_product_v1/f_auto/dpr_1.0/h_589,c_limit/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/59e7dabe-2741-4c89-a3bd-08f02eee03db/W+NIKE+ASTROGRABBER+LTHR.png",
-      "link": "https://www.nike.com/vn/w/a6d74zbdka"
+      "link": "/products?brand=nike"
     },
     {
       "title": "Shop by Sport",
       "image": "https://static.nike.com/a/images/f_auto/dpr_1.0,cs_srgb/h_697,c_limit/1f6dcd2f-749b-412d-938b-abac8e505a10/nike-just-do-it.png",
-      "link": "https://www.nike.com/vn/w/running-37v7j"
+      "link": "/products?brand=nike"
     }
   ],
   "products": [
@@ -214,6 +214,133 @@
       ],
       "short_description": "Giày Nike Winflo 12 (White) chất lượng cao được thiết kế mang lại sự thoải mái và hiệu suất tối đa.",
       "description": "<p><strong>Nike Winflo 12 (White)</strong> mang đến sự kết hợp hoàn hảo giữa phong cách và chức năng, trở thành lựa chọn lý tưởng cho các vận động viên cũng như những người đam mê giày sneaker.</p><p>Được trang bị công công nghệ tiên tiến của Nike, đôi giày này cung cấp khả năng hỗ trợ vượt trội, độ bền cao và cảm giác êm ái trong từng bước di chuyển.</p>"
+    },
+    {
+      "id": 90002,
+      "name": "Nike Air Force 1 '07",
+      "slug": "air-force-1-07-shoes-XA6c5cfz",
+      "permalink": "https://www.nike.com/vn/t/air-force-1-07-shoes-XA6c5cfz/IH1698-100",
+      "price": "3239000",
+      "regular_price": "3239000",
+      "short_description": "Nike Air Force 1 '07",
+      "description": "<p>Nike Air Force 1 '07 – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Giày thể thao"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/6a864f6a-d44d-4778-af91-2d24ee5bab06/AIR+FORCE+1+%2707.png",
+        "https://static.nike.com/a/images/t_default/6a864f6a-d44d-4778-af91-2d24ee5bab06/AIR+FORCE+1+%2707.png"
+      ]
+    },
+    {
+      "id": 90003,
+      "name": "Nike ACG Pegasus Trail",
+      "slug": "acg-pegasus-trail-trail-running-shoes-dbAF25n8",
+      "permalink": "https://www.nike.com/vn/t/acg-pegasus-trail-trail-running-shoes-dbAF25n8/HV8116-310",
+      "price": "4109000",
+      "regular_price": "4109000",
+      "short_description": "Nike ACG Pegasus Trail",
+      "description": "<p>Nike ACG Pegasus Trail – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Chạy bộ",
+        "Giày chạy bộ"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/e24e71b7-8169-4399-946c-06308e01cd39/NIKE+ACG+PEGASUS+TRAIL.png"
+      ]
+    },
+    {
+      "id": 90004,
+      "name": "Nike Air Max Plus VII",
+      "slug": "air-max-plus-vii-shoes-JWetcx34",
+      "permalink": "https://www.nike.com/vn/t/air-max-plus-vii-shoes-JWetcx34/HQ2197-003",
+      "price": "5279000",
+      "regular_price": "5279000",
+      "short_description": "Nike Air Max Plus VII",
+      "description": "<p>Nike Air Max Plus VII – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Giày thể thao"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/5e39933d-27a8-4af1-82ca-1613868e39de/NIKE+AIR+MAX+PLUS+VII.png"
+      ]
+    },
+    {
+      "id": 90005,
+      "name": "Nike Zoom Fly 6",
+      "slug": "zoom-fly-6-road-racing-shoes-PTwDtp",
+      "permalink": "https://www.nike.com/vn/t/zoom-fly-6-road-racing-shoes-PTwDtp/IR1995-010",
+      "price": "5279000",
+      "regular_price": "5279000",
+      "short_description": "Nike Zoom Fly 6",
+      "description": "<p>Nike Zoom Fly 6 – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Chạy bộ",
+        "Giày chạy bộ"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/7abbb7ae-33e2-4727-b5d7-1fc0e78918d6/ZOOMX+VAPORFLY+NEXT%25+4.png"
+      ]
+    },
+    {
+      "id": 90006,
+      "name": "Nike Dunk Low Retro SE",
+      "slug": "dunk-low-retro-se-shoes-nBeQmTff",
+      "permalink": "https://www.nike.com/vn/t/dunk-low-retro-se-shoes-nBeQmTff/IH1942-002",
+      "price": "3519000",
+      "regular_price": "3519000",
+      "short_description": "Nike Dunk Low Retro SE",
+      "description": "<p>Nike Dunk Low Retro SE – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Thời trang",
+        "Giày thể thao"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/53fa9c1a-5822-42cb-8077-3cd1ea5cd194/NIKE+DUNK+LOW+RETRO+SE.png"
+      ]
+    },
+    {
+      "id": 90007,
+      "name": "Nike Free Metcon 7",
+      "slug": "free-metcon-7-training-shoes-epk6icDn",
+      "permalink": "https://www.nike.com/vn/t/free-metcon-7-training-shoes-epk6icDn/II7405-102",
+      "price": "3669000",
+      "regular_price": "3669000",
+      "short_description": "Nike Free Metcon 7",
+      "description": "<p>Nike Free Metcon 7 – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Thể thao",
+        "Giày thể thao"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/664c0ff8-c3d3-4d56-a203-c4bc67a25011/NIKE+FREE+METCON+7.png"
+      ]
+    },
+    {
+      "id": 90008,
+      "name": "Nike Vomero 18",
+      "slug": "vomero-18-road-running-shoes-PTwDtp",
+      "permalink": "https://www.nike.com/vn/t/vomero-18-road-running-shoes-PTwDtp/HV9280-001",
+      "price": "4539000",
+      "regular_price": "4539000",
+      "short_description": "Nike Vomero 18",
+      "description": "<p>Nike Vomero 18 – sản phẩm chính hãng Nike.</p>",
+      "categories": [
+        "Nike",
+        "Chạy bộ",
+        "Giày chạy bộ"
+      ],
+      "images": [
+        "https://static.nike.com/a/images/t_default/u_9ddf04c7-2a9a-4d76-add1-d15af8f0263d,c_scale,fl_relative,w_1.0,h_1.0,fl_layer_apply/7abbb7ae-33e2-4727-b5d7-1fc0e78918d6/ZOOMX+VAPORFLY+NEXT%25+4.png"
+      ]
     }
   ]
 }

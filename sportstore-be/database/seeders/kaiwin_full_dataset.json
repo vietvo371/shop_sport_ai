@@ -3,17 +3,17 @@
     {
       "title": "Giày Pickleball",
       "image": "https://bizweb.dktcdn.net/100/017/070/themes/778721/assets/slider_1.jpg?1762267092687",
-      "link": "https://kaiwinsport.com/giay-pickleball"
+      "link": "/products?category=pickleball-giay-pickleball"
     },
     {
       "title": "Giày Balance",
       "image": "https://bizweb.dktcdn.net/100/017/070/themes/778721/assets/slider_2.jpg?1762267092687",
-      "link": "https://kaiwinsport.com/giay-pickleball?q=collections:4027608%20AND%20product_type.filter_key:(%22Balance%22)&page=1&view=grid"
+      "link": "/products?category=pickleball-giay-pickleball"
     },
     {
       "title": "Vợt Pickleball",
       "image": "https://bizweb.dktcdn.net/100/017/070/themes/778721/assets/slider_5.jpg?1762267092687",
-      "link": "https://kaiwinsport.com/vot-pickleball"
+      "link": "/products?category=pickleball-vot-pickleball"
     }
   ],
   "products": [
@@ -397,6 +397,148 @@
         "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-tra-ng-1.jpg?v=1773846007813",
         "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-tra-ng-2.jpg?v=1773846008377",
         "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-tra-ng-3.jpg?v=1773846008990"
+      ]
+    },
+    {
+      "id": 91002,
+      "name": "Giày Thể Thao Kaiwin ONESHOT - Màu Đỏ",
+      "slug": "giay-the-thao-kaiwin-oneshot-mau-do",
+      "permalink": "https://kaiwinsport.com/products/giay-the-thao-kaiwin-oneshot-mau-do",
+      "price": "1299000",
+      "regular_price": "1299000",
+      "short_description": "Giày Thể Thao Kaiwin ONESHOT - Màu Đỏ",
+      "description": "<p>Giày Thể Thao Kaiwin ONESHOT - Màu Đỏ – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Giày Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-do-1.jpg?v=1773845721750",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-do-3.jpg?v=1773845722997",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-do-4.jpg?v=1773845723567",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-do-5.jpg?v=1773845724217"
+      ]
+    },
+    {
+      "id": 91003,
+      "name": "Giày Thể Thao Kaiwin ONESHOT - Màu Xanh Đen",
+      "slug": "giay-the-thao-kaiwin-oneshot-mau-xanh-den",
+      "permalink": "https://kaiwinsport.com/products/giay-the-thao-kaiwin-oneshot-mau-xanh-den",
+      "price": "1299000",
+      "regular_price": "1299000",
+      "short_description": "Giày Thể Thao Kaiwin ONESHOT - Màu Xanh Đen",
+      "description": "<p>Giày Thể Thao Kaiwin ONESHOT - Màu Xanh Đen – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Giày Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-xanh-than-1.jpg?v=1773845585813",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-xanh-than-2.jpg?v=1773845586433",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-xanh-than-3.jpg?v=1773845587023",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-xanh-than-4.jpg?v=1773845587570"
+      ]
+    },
+    {
+      "id": 91004,
+      "name": "Vợt Pickleball Kaiwin WAVE - Màu Đen",
+      "slug": "vot-pickleball-kaiwin-wave-mau-den",
+      "permalink": "https://kaiwinsport.com/products/vot-pickleball-kaiwin-wave-mau-den",
+      "price": "1799000",
+      "regular_price": "1799000",
+      "short_description": "Vợt Pickleball Kaiwin WAVE - Màu Đen",
+      "description": "<p>Vợt Pickleball Kaiwin WAVE - Màu Đen – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-den.jpg?v=1775679998783",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-den-2-2.jpg?v=1775679999507",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-den-2-1.jpg?v=1775680000113"
+      ]
+    },
+    {
+      "id": 91005,
+      "name": "Vợt Pickleball Kaiwin WAVE - Màu Xanh Bích",
+      "slug": "vot-pickleball-kaiwin-wave-mau-xanh-bich",
+      "permalink": "https://kaiwinsport.com/products/vot-pickleball-kaiwin-wave-mau-xanh-bich",
+      "price": "1799000",
+      "regular_price": "1799000",
+      "short_description": "Vợt Pickleball Kaiwin WAVE - Màu Xanh Bích",
+      "description": "<p>Vợt Pickleball Kaiwin WAVE - Màu Xanh Bích – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-xanh-bich-1.jpg?v=1775679966237",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-xanh-bich-3.jpg?v=1775679967037"
+      ]
+    },
+    {
+      "id": 91006,
+      "name": "Vợt Pickleball Kaiwin ROCKET - Màu Xanh Coban",
+      "slug": "vot-pickleball-kaiwin-rocket-mau-xanh-coban",
+      "permalink": "https://kaiwinsport.com/products/vot-pickleball-kaiwin-rocket-mau-xanh-coban",
+      "price": "2699000",
+      "regular_price": "2699000",
+      "short_description": "Vợt Pickleball Kaiwin ROCKET - Màu Xanh Coban",
+      "description": "<p>Vợt Pickleball Kaiwin ROCKET - Màu Xanh Coban – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-rocket-mau-xanh-coban.jpg?v=1773847277927",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-rocket-mau-xanh-coban-1.jpg?v=1773847277927",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-rocket-mau-xanh-coban-2.jpg?v=1773847277927"
+      ]
+    },
+    {
+      "id": 91007,
+      "name": "Vợt Pickleball Kaiwin ROCKET - Màu Kem Sữa",
+      "slug": "vot-pickleball-kaiwin-rocket-mau-kem-sua",
+      "permalink": "https://kaiwinsport.com/products/vot-pickleball-kaiwin-rocket-mau-kem-sua",
+      "price": "2699000",
+      "regular_price": "2699000",
+      "short_description": "Vợt Pickleball Kaiwin ROCKET - Màu Kem Sữa",
+      "description": "<p>Vợt Pickleball Kaiwin ROCKET - Màu Kem Sữa – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-rocket-mau-kem-sua.jpg?v=1773847201797",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-rocket-mau-kem-sua-1.jpg?v=1773847201797",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-rocket-mau-kem-sua-2.jpg?v=1773847201797"
+      ]
+    },
+    {
+      "id": 91008,
+      "name": "Balo Pickleball Kaiwin Diamond - Màu Hồng",
+      "slug": "balo-pickelball-kaiwin-diamond-mau-hong",
+      "permalink": "https://kaiwinsport.com/products/balo-pickelball-kaiwin-diamond-mau-hong",
+      "price": "1899000",
+      "regular_price": "1899000",
+      "short_description": "Balo Pickleball Kaiwin Diamond - Màu Hồng",
+      "description": "<p>Balo Pickleball Kaiwin Diamond - Màu Hồng – sản phẩm chính hãng Kaiwin.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Balo Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/balodiamond-mauhong-1.jpg?v=1757977826967",
+        "https://bizweb.dktcdn.net/100/017/070/products/balodiamond-mauhong-3.jpg?v=1757977831517",
+        "https://bizweb.dktcdn.net/100/017/070/products/balodiamond-mauhong-4.jpg?v=1757977835923",
+        "https://bizweb.dktcdn.net/100/017/070/products/balodiamond-mauhong.jpg?v=1757977840200"
       ]
     }
   ]

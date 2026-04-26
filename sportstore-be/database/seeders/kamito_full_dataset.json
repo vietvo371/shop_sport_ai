@@ -3,17 +3,17 @@
     {
       "title": "VỢT GENESIS",
       "image": "https://cdn.hstatic.net/files/1000341630/file/tt_genesis_2048x2048.jpg",
-      "link": "https://kamito.vn/search?q=genesis"
+      "link": "/products?category=pickleball-vot-pickleball"
     },
     {
       "title": "PICKLEBALL",
       "image": "https://cdn.hstatic.net/files/1000341630/file/banner_web_alpha_x__1__2048x2048.jpg",
-      "link": "https://kamito.vn/collections/bst-alpha"
+      "link": "/products?category=pickleball-pickleball"
     },
     {
       "title": "BỘ SƯU TẬP TRÌNH",
       "image": "https://cdn.hstatic.net/files/1000341630/file/tr_nh__3__2048x2048.jpg",
-      "link": "https://kamito.vn/collections/bst-trinh-1"
+      "link": "/products"
     }
   ],
   "products": [
@@ -585,6 +585,168 @@
       "images": [
         "https://product.hstatic.net/1000341630/product/ftb06694_cba259ee3ce448d4a7af1c25821dd462_grande.jpg",
         "https://product.hstatic.net/1000341630/product/ftb06694_cba259ee3ce448d4a7af1c25821dd462.jpg"
+      ]
+    },
+    {
+      "id": 92001,
+      "name": "Vợt Pickleball Kamito Alpha-X Her Power",
+      "slug": "vot-pickleball-kamito-alpha-x-her-power",
+      "permalink": "https://kamito.vn/products/vot-pickleball-kamito-alpha-x-her-power",
+      "price": "5200000",
+      "regular_price": "5200000",
+      "short_description": "Vợt Pickleball Kamito Alpha-X Her Power",
+      "description": "<p>Vợt Pickleball Kamito Alpha-X Her Power – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "http://cdn.hstatic.net/products/1000341630/variant_hong_05_7dffeb540f4342a0a1bf0f24ed52ade0_grande.jpg"
+      ]
+    },
+    {
+      "id": 92002,
+      "name": "Vợt Pickleball Kamito Genesis (14mm)",
+      "slug": "vot-pickleball-kamito-genesis-14mm",
+      "permalink": "https://kamito.vn/products/vot-pickleball-kamito-genesis-14mm",
+      "price": "3500000",
+      "regular_price": "4800000",
+      "short_description": "Vợt Pickleball Kamito Genesis (14mm)",
+      "description": "<p>Vợt Pickleball Kamito Genesis (14mm) – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "http://cdn.hstatic.net/products/1000341630/den__2__e0370aa913a8472db2c44773ea2fa0cf_grande.jpg"
+      ]
+    },
+    {
+      "id": 92003,
+      "name": "Vợt Pickleball Kamito Alpha 2 (14mm)",
+      "slug": "vot-pickleball-kamito-alpha-2-14mm",
+      "permalink": "https://kamito.vn/products/vot-pickleball-kamito-alpha-2-14mm",
+      "price": "3150000",
+      "regular_price": "4200000",
+      "short_description": "Vợt Pickleball Kamito Alpha 2 (14mm)",
+      "description": "<p>Vợt Pickleball Kamito Alpha 2 (14mm) – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "http://cdn.hstatic.net/products/1000341630/alpha-01_1f650cd4bf944df0bd72382cd99a4414_grande.jpg"
+      ]
+    },
+    {
+      "id": 92004,
+      "name": "Vợt Pickleball Kamito Champion",
+      "slug": "vot-pickleball-kamito-champion",
+      "permalink": "https://kamito.vn/products/vot-pickleball-kamito-champion",
+      "price": "899000",
+      "regular_price": "2600000",
+      "short_description": "Vợt Pickleball Kamito Champion",
+      "description": "<p>Vợt Pickleball Kamito Champion – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "http://cdn.hstatic.net/products/1000341630/t9-30_vot_champion-01_c3cfbfb0b0764e79bf84977b3d607a64_grande.jpg"
+      ]
+    },
+    {
+      "id": 92006,
+      "name": "Vợt Pickleball Kamito Omega (14mm)",
+      "slug": "vot-pickleball-kamito-omega-14mm",
+      "permalink": "https://kamito.vn/products/vot-pickleball-kamito-omega-14mm",
+      "price": "1050000",
+      "regular_price": "3200000",
+      "short_description": "Vợt Pickleball Kamito Omega (14mm)",
+      "description": "<p>Vợt Pickleball Kamito Omega (14mm) – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "http://cdn.hstatic.net/products/1000341630/kamito18657_435f83bcde7f4c44a5bc7816e521b041_large_7cc2143e8cb44fb4946b225439e8fedc_grande.jpg"
+      ]
+    },
+    {
+      "id": 92007,
+      "name": "Vợt Pickleball Kamito Alpha (14mm)",
+      "slug": "vot-pickleball-kamito-alpha-14mm",
+      "permalink": "https://kamito.vn/products/vot-pickleball-kamito-alpha-14mm",
+      "price": "2900000",
+      "regular_price": "4200000",
+      "short_description": "Vợt Pickleball Kamito Alpha (14mm)",
+      "description": "<p>Vợt Pickleball Kamito Alpha (14mm) – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "http://product.hstatic.net/1000341630/product/9_7c1edd729e4c4784986279ec5765ea35_grande.jpg"
+      ]
+    },
+    {
+      "id": 92009,
+      "name": "Giày Kamito Velocidad Play TF Fire Back",
+      "slug": "giay-kamito-velocidad-play-tf-fire-back",
+      "permalink": "https://kamito.vn/products/giay-kamito-velocidad-play-tf-fire-back",
+      "price": "349000",
+      "regular_price": "499000",
+      "short_description": "Giày Kamito Velocidad Play TF Fire Back",
+      "description": "<p>Giày Kamito Velocidad Play TF Fire Back – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Bóng đá",
+        "Giày bóng đá"
+      ],
+      "images": [
+        "http://product.hstatic.net/1000341630/product/t8-10_pack_shot09001_b0a147afeb21435990435505a22b9e5b_grande.jpg"
+      ]
+    },
+    {
+      "id": 92010,
+      "name": "Giày Kamito VELOCIDAD KID TF FIRE BACK",
+      "slug": "giay-kamito-velocidad-kid-tf-fire-back",
+      "permalink": "https://kamito.vn/products/giay-kamito-velocidad-kid-tf-fire-back",
+      "price": "279000",
+      "regular_price": "499000",
+      "short_description": "Giày Kamito VELOCIDAD KID TF FIRE BACK",
+      "description": "<p>Giày Kamito VELOCIDAD KID TF FIRE BACK – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Bóng đá",
+        "Giày bóng đá"
+      ],
+      "images": [
+        "http://product.hstatic.net/1000341630/product/xanh_02_7f15de0798af40f581c4ddaf05e32dc6_grande.jpg"
+      ]
+    },
+    {
+      "id": 92011,
+      "name": "Giày bóng đá Kamito Artista Play TF Kid",
+      "slug": "giay-bong-da-kamito-artista-play-tf-kid",
+      "permalink": "https://kamito.vn/products/giay-bong-da-kamito-artista-play-tf-kid",
+      "price": "499000",
+      "regular_price": "499000",
+      "short_description": "Giày bóng đá Kamito Artista Play TF Kid",
+      "description": "<p>Giày bóng đá Kamito Artista Play TF Kid – sản phẩm chính hãng Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Bóng đá",
+        "Giày bóng đá"
+      ],
+      "images": [
+        "http://cdn.hstatic.net/products/1000341630/variant_xanh-ngoc_015_c15f4785437f4ef0858f2250dcde803e_grande.png"
       ]
     }
   ]
