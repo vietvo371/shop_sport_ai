@@ -284,44 +284,6 @@
       ]
     },
     {
-      "id": 2005,
-      "name": "Túi đựng giày Kaiwin KW 201 - Xanh ngọc",
-      "slug": "tui-dung-giay-kaiwin-kw-201-xanh-ngoc",
-      "permalink": "https://kaiwinsport.com/tui-dung-giay-kaiwin-kw-201-xanh-ngoc",
-      "price": "95000",
-      "regular_price": "95000",
-      "short_description": "Túi đựng giày tiện lợi, phong cách thể thao.",
-      "description": "<p>Túi đựng giày Kaiwin giúp bạn bảo quản giày sạch sẽ, gọn gàng khi di chuyển đến sân tập. Thiết kế ngăn chứa rộng rãi, khóa kéo chắc chắn.</p>",
-      "categories": [
-        "Kaiwin",
-        "Phụ kiện",
-        "Balo - Túi thể thao"
-      ],
-      "images": [
-        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/tui-dung-giay-kaiwin-kw-201-xanh-ngoc.jpg",
-        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/tui-dung-giay-kaiwin-kw-201-xanh-ngoc.jpg"
-      ]
-    },
-    {
-      "id": 2006,
-      "name": "Sa bàn chiến thuật bóng đá KAIWIN bằng da",
-      "slug": "sa-ban-chien-thuat-bong-da-kaiwin-bang-da",
-      "permalink": "https://kaiwinsport.com/sa-ban-chien-thuat-bong-da-kaiwin-bang-da",
-      "price": "204000",
-      "regular_price": "204000",
-      "short_description": "Công cụ hỗ trợ đắc lực cho các huấn luyện viên và đội bóng.",
-      "description": "<p>Sa bàn chiến thuật bằng da cao cấp, đi kèm bộ quân cờ nam châm và bút viết, giúp truyền đạt chiến thuật một cách trực quan và hiệu quả.</p>",
-      "categories": [
-        "Kaiwin",
-        "Bóng bàn",
-        "Sa bàn chiến thuật"
-      ],
-      "images": [
-        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/sa-ban-chien-thuat-bong-da-kaiwin-bang-da.jpg",
-        "https://bizweb.dktcdn.net/thumb/large/100/017/070/products/sa-ban-chien-thuat-bong-da-kaiwin-bang-da.jpg"
-      ]
-    },
-    {
       "id": 2007,
       "name": "Balo Thể Thao Kaiwin Technology - Màu Đỏ",
       "slug": "balo-the-thao-kaiwin-technology-mau-do",
@@ -395,6 +357,46 @@
       "images": [
         "https://bizweb.dktcdn.net/100/017/070/products/balo-technology-do2.jpg",
         "https://bizweb.dktcdn.net/100/017/070/products/balo-technology-do1.jpg"
+      ]
+    },
+    {
+      "id": 9001,
+      "name": "Vợt Pickleball KAIWIN WAVE - Màu Trắng",
+      "slug": "vot-pickleball-kaiwin-wave-mau-trang",
+      "permalink": "https://kaiwinsport.com/products/vot-pickleball-kaiwin-wave-mau-trang",
+      "price": "1799000",
+      "regular_price": "1799000",
+      "short_description": "Vợt Pickleball KAIWIN WAVE - Màu Trắng",
+      "description": "<p>Vợt Pickleball KAIWIN WAVE với thiết kế hiện đại, mang lại cảm giác chơi thoải mái và kiểm soát bóng tốt.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Vợt Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-trang-1.jpg?v=1775679931787",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-trang-2.jpg?v=1775679931787",
+        "https://bizweb.dktcdn.net/100/017/070/products/vot-pickleball-wave-mau-trang-3.jpg?v=1775679931787"
+      ]
+    },
+    {
+      "id": 9002,
+      "name": "Giày Thể Thao KAIWIN ONESHOT - Màu Trắng",
+      "slug": "giay-the-thao-kaiwin-oneshot-mau-trang",
+      "permalink": "https://kaiwinsport.com/products/giay-the-thao-kaiwin-oneshot-mau-trang",
+      "price": "1299000",
+      "regular_price": "1299000",
+      "short_description": "Giày Thể Thao KAIWIN ONESHOT - Màu Trắng",
+      "description": "<p>Giày Thể Thao KAIWIN ONESHOT thiết kế năng động, phù hợp cho nhiều môn thể thao.</p>",
+      "categories": [
+        "Kaiwin",
+        "Pickleball",
+        "Giày Pickleball"
+      ],
+      "images": [
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-tra-ng-1.jpg?v=1773846007813",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-tra-ng-2.jpg?v=1773846008377",
+        "https://bizweb.dktcdn.net/100/017/070/products/gia-y-balance-ma-u-tra-ng-3.jpg?v=1773846008990"
       ]
     }
   ]

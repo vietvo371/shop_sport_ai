@@ -24,7 +24,7 @@ class AuthController extends Controller
      * Đăng ký tài khoản
      *
      * Đăng ký thành viên mới cho SportStore. Mật khẩu sẽ được băm (hash) tự động.
-     * 
+     *
      * @unauthenticated
      * @bodyParam ho_va_ten string required Họ và tên người dùng. Example: Nguyễn Văn A
      * @bodyParam email string required Địa chỉ email hợp lệ. Example: nguyenva@email.com
@@ -63,7 +63,7 @@ class AuthController extends Controller
      * Đăng nhập
      *
      * Xác thực người dùng bằng Email và Mật khẩu. Sẽ trả về Access Token sử dụng cho các request sau.
-     * 
+     *
      * @unauthenticated
      * @bodyParam email string required Email đã đăng ký. Example: nguyenva@email.com
      * @bodyParam mat_khau string required Mật khẩu đăng nhập. Example: password123
@@ -117,7 +117,7 @@ class AuthController extends Controller
      * Cập nhật thông tin cá nhân
      *
      * Cập nhật Profile. Nếu muốn đổi mật khẩu thì cung cấp thêm `mat_khau_cu` và `mat_khau_moi`.
-     * 
+     *
      * @authenticated
      * @bodyParam ho_va_ten string Họ và tên mới. Example: Nguyễn Văn B
      * @bodyParam so_dien_thoai string Số điện thoại mới. Example: 0912345678

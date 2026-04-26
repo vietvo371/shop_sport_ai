@@ -417,139 +417,6 @@
       ]
     },
     {
-      "id": 1012,
-      "name": "Áo Polo Kamito LS.04",
-      "slug": "ao-polo-kamito-ls-04",
-      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-04",
-      "price": "140000",
-      "regular_price": "140000",
-      "short_description": "Áo Polo Kamito LS.04",
-      "description": "<p>Áo Polo kiểu dáng thể thao trang nhã, thích hợp mặc hàng ngày.</p>",
-      "categories": [
-        "Kamito",
-        "Thời trang",
-        "Áo Polo"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_04_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_04_2.jpg"
-      ]
-    },
-    {
-      "id": 1013,
-      "name": "Áo Polo Kamito LS.05",
-      "slug": "ao-polo-kamito-ls-05",
-      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-05",
-      "price": "399000",
-      "regular_price": "399000",
-      "short_description": "Áo Polo Kamito LS.05",
-      "description": "<p>Áo Polo chất liệu cao cấp thoáng mát từ bộ sưu tập Kamito Lifestyle.</p>",
-      "categories": [
-        "Kamito",
-        "Thời trang",
-        "Áo Polo"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_05_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_05_2.jpg"
-      ]
-    },
-    {
-      "id": 1014,
-      "name": "Áo Polo Kamito LS.03",
-      "slug": "ao-polo-kamito-ls-03",
-      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-03",
-      "price": "399000",
-      "regular_price": "399000",
-      "short_description": "Áo Polo Kamito LS.03",
-      "description": "<p>Áo Polo Kamito LS.03 thiết kế hiện đại, phù hợp cho vận động và dạo phố.</p>",
-      "categories": [
-        "Kamito",
-        "Thời trang",
-        "Áo Polo"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_03_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_03_2.jpg"
-      ]
-    },
-    {
-      "id": 1015,
-      "name": "Áo Polo Kamito LS.02",
-      "slug": "ao-polo-kamito-ls-02",
-      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-02",
-      "price": "399000",
-      "regular_price": "399000",
-      "short_description": "Áo Polo Kamito LS.02",
-      "description": "<p>Áo Polo nam tính, năng động dành cho các hoạt động thể thao nhẹ nhàng.</p>",
-      "categories": [
-        "Kamito",
-        "Thời trang",
-        "Áo Polo"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_02_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_02_2.jpg"
-      ]
-    },
-    {
-      "id": 1016,
-      "name": "Áo Polo Kamito LS.01",
-      "slug": "ao-polo-kamito-ls-01",
-      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-01",
-      "price": "399000",
-      "regular_price": "399000",
-      "short_description": "Áo Polo Kamito LS.01",
-      "description": "<p>Áo Polo tinh tế thuộc phân khúc Lifestyle cao cấp của Kamito.</p>",
-      "categories": [
-        "Kamito",
-        "Thời trang",
-        "Áo Polo"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_01_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/ao_polo_kamito_ls_01_2.jpg"
-      ]
-    },
-    {
-      "id": 1017,
-      "name": "Balo Thể Thao Kamito UltraFlex",
-      "slug": "balo-the-thao-kamito-ultraflex",
-      "permalink": "https://kamito.vn/products/balo-the-thao-kamito-ultraflex",
-      "price": "1200000",
-      "regular_price": "1200000",
-      "short_description": "Balo Thể Thao Kamito UltraFlex",
-      "description": "<p>Balo thể thao đa năng Kamito UltraFlex với ngăn chứa rộng rãi, thích hợp đựng đồ thể thao và giày chuyên dụng.</p>",
-      "categories": [
-        "Kamito",
-        "Phụ kiện",
-        "Balo - Túi thể thao"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/balo_the_thao_kamito_ultraflex_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/balo_the_thao_kamito_ultraflex_2.jpg"
-      ]
-    },
-    {
-      "id": 1018,
-      "name": "Giày Thể Thao Lifestyle Kamito LS01",
-      "slug": "giay-the-thao-lifestyle-kamito-ls01",
-      "permalink": "https://kamito.vn/products/giay-life-style-kamito-ls01",
-      "price": "539000",
-      "regular_price": "899000",
-      "short_description": "Giày Thể Thao Lifestyle Kamito LS01",
-      "description": "<p>Dòng giày Lifestyle LS01 thể hiện phong cách thời trang đường phố khỏe khoắn, hiện đại.</p>",
-      "categories": [
-        "Kamito",
-        "Thời trang",
-        "Giày thể thao"
-      ],
-      "images": [
-        "https://cdn.hstatic.net/products/1000341630/giay_lifestyle_kamito_ls01_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/giay_lifestyle_kamito_ls01_2.jpg"
-      ]
-    },
-    {
       "id": 1019,
       "name": "Giày Thể Thao Kamito Amazing Khau Phạ",
       "slug": "giay-the-thao-kamito-amazing-khau-pha",
@@ -583,8 +450,141 @@
         "Giày thể thao"
       ],
       "images": [
-        "https://cdn.hstatic.net/products/1000341630/giay_lifestyle_kamito_amazing_vn_1.jpg",
-        "https://cdn.hstatic.net/products/1000341630/giay_lifestyle_kamito_amazing_vn_2.jpg"
+        "https://product.hstatic.net/1000341630/product/k7358_67f84e1f81d0404abb3286e0b75f99db_grande.jpg",
+        "https://product.hstatic.net/1000341630/product/k7358_67f84e1f81d0404abb3286e0b75f99db.jpg"
+      ]
+    },
+    {
+      "id": 1012,
+      "name": "Áo Polo Kamito LS.04",
+      "slug": "ao-polo-kamito-ls-04",
+      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-04",
+      "price": "140000",
+      "regular_price": "140000",
+      "short_description": "Áo Polo Kamito LS.04",
+      "description": "<p>Áo Polo kiểu dáng thể thao trang nhã, thích hợp mặc hàng ngày.</p>",
+      "categories": [
+        "Kamito",
+        "Thời trang",
+        "Áo Polo"
+      ],
+      "images": [
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-05_5e2443cbc289423e9872c700250f3eaa_grande.jpg",
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-05_5e2443cbc289423e9872c700250f3eaa.jpg"
+      ]
+    },
+    {
+      "id": 1013,
+      "name": "Áo Polo Kamito LS.05",
+      "slug": "ao-polo-kamito-ls-05",
+      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-05",
+      "price": "399000",
+      "regular_price": "399000",
+      "short_description": "Áo Polo Kamito LS.05",
+      "description": "<p>Áo Polo chất liệu cao cấp thoáng mát từ bộ sưu tập Kamito Lifestyle.</p>",
+      "categories": [
+        "Kamito",
+        "Thời trang",
+        "Áo Polo"
+      ],
+      "images": [
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-07_4fce7794e6ab42dcb6a8a8f614d4edc4_grande.jpg",
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-07_4fce7794e6ab42dcb6a8a8f614d4edc4.jpg"
+      ]
+    },
+    {
+      "id": 1014,
+      "name": "Áo Polo Kamito LS.03",
+      "slug": "ao-polo-kamito-ls-03",
+      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-03",
+      "price": "399000",
+      "regular_price": "399000",
+      "short_description": "Áo Polo Kamito LS.03",
+      "description": "<p>Áo Polo Kamito LS.03 thiết kế hiện đại, phù hợp cho vận động và dạo phố.</p>",
+      "categories": [
+        "Kamito",
+        "Thời trang",
+        "Áo Polo"
+      ],
+      "images": [
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-01_2b026d7fe078465c9dbcc634a47ff42e_grande.jpg",
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-01_2b026d7fe078465c9dbcc634a47ff42e.jpg"
+      ]
+    },
+    {
+      "id": 1015,
+      "name": "Áo Polo Kamito LS.02",
+      "slug": "ao-polo-kamito-ls-02",
+      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-02",
+      "price": "399000",
+      "regular_price": "399000",
+      "short_description": "Áo Polo Kamito LS.02",
+      "description": "<p>Áo Polo nam tính, năng động dành cho các hoạt động thể thao nhẹ nhàng.</p>",
+      "categories": [
+        "Kamito",
+        "Thời trang",
+        "Áo Polo"
+      ],
+      "images": [
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-07_4fce7794e6ab42dcb6a8a8f614d4edc4_grande.jpg",
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-07_4fce7794e6ab42dcb6a8a8f614d4edc4.jpg"
+      ]
+    },
+    {
+      "id": 1016,
+      "name": "Áo Polo Kamito LS.01",
+      "slug": "ao-polo-kamito-ls-01",
+      "permalink": "https://kamito.vn/products/ao-polo-kamito-ls-01",
+      "price": "399000",
+      "regular_price": "399000",
+      "short_description": "Áo Polo Kamito LS.01",
+      "description": "<p>Áo Polo tinh tế thuộc phân khúc Lifestyle cao cấp của Kamito.</p>",
+      "categories": [
+        "Kamito",
+        "Thời trang",
+        "Áo Polo"
+      ],
+      "images": [
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-05_5e2443cbc289423e9872c700250f3eaa_grande.jpg",
+        "https://cdn.hstatic.net/products/1000341630/ao_lifestyle-05_5e2443cbc289423e9872c700250f3eaa.jpg"
+      ]
+    },
+    {
+      "id": 1017,
+      "name": "Balo Thể Thao Kamito UltraFlex",
+      "slug": "balo-the-thao-kamito-ultraflex",
+      "permalink": "https://kamito.vn/products/balo-the-thao-kamito-ultraflex",
+      "price": "1200000",
+      "regular_price": "1200000",
+      "short_description": "Balo Thể Thao Kamito UltraFlex",
+      "description": "<p>Balo thể thao đa năng Kamito UltraFlex với ngăn chứa rộng rãi, thích hợp đựng đồ thể thao và giày chuyên dụng.</p>",
+      "categories": [
+        "Kamito",
+        "Phụ kiện",
+        "Balo - Túi thể thao"
+      ],
+      "images": [
+        "https://cdn.hstatic.net/products/1000341630/balo_ultraflex-01_0a602b4d50624d36a67cf91082f50c15_grande.jpg",
+        "https://cdn.hstatic.net/products/1000341630/balo_ultraflex-01_0a602b4d50624d36a67cf91082f50c15.jpg"
+      ]
+    },
+    {
+      "id": 1018,
+      "name": "Giày Thể Thao Lifestyle Kamito LS01",
+      "slug": "giay-the-thao-lifestyle-kamito-ls01",
+      "permalink": "https://kamito.vn/products/giay-life-style-kamito-ls01",
+      "price": "539000",
+      "regular_price": "899000",
+      "short_description": "Giày Thể Thao Lifestyle Kamito LS01",
+      "description": "<p>Dòng giày Lifestyle LS01 thể hiện phong cách thời trang đường phố khỏe khoắn, hiện đại.</p>",
+      "categories": [
+        "Kamito",
+        "Thời trang",
+        "Giày thể thao"
+      ],
+      "images": [
+        "https://product.hstatic.net/1000341630/product/ftb06694_cba259ee3ce448d4a7af1c25821dd462_grande.jpg",
+        "https://product.hstatic.net/1000341630/product/ftb06694_cba259ee3ce448d4a7af1c25821dd462.jpg"
       ]
     }
   ]
