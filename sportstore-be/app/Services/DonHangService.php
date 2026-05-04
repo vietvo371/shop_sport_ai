@@ -127,8 +127,10 @@ class DonHangService
                 if ($item->bienThe) {
                     $item->bienThe->decrement('ton_kho', $item->so_luong);
                 }
-                // Trừ kho tổng sản phẩm
-                $item->sanPham->decrement('so_luong_ton_kho', $item->so_luong);
+                // Trừ kho tổng sản phẩm (chỉ trừ nếu còn đủ số lượng)
+                if (($item->sanPham->so_luong_ton_kho ?? 0) >= $item->so_luong) {
+                    $item->sanPham->decrement('so_luong_ton_kho', $item->so_luong);
+                }
             }
 
             // 6. Ghi lịch sử trạng thái
@@ -265,7 +267,10 @@ class DonHangService
             if ($bienThe) {
                 $bienThe->decrement('ton_kho', $soLuong);
             }
-            $sanPham->decrement('so_luong_ton_kho', $soLuong);
+            // Chỉ trừ kho tổng nếu còn đủ số lượng
+            if (($sanPham->so_luong_ton_kho ?? 0) >= $soLuong) {
+                $sanPham->decrement('so_luong_ton_kho', $soLuong);
+            }
 
             // 6. Ghi lịch sử trạng thái
             LichSuTrangThaiDon::create([
