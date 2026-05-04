@@ -18,27 +18,27 @@ class StandardRBACSeeder extends Seeder
             ['ten' => 'Thêm sản phẩm', 'ma_slug' => 'them_sp', 'nhom' => 'Sản phẩm'],
             ['ten' => 'Sửa sản phẩm', 'ma_slug' => 'sua_sp', 'nhom' => 'Sản phẩm'],
             ['ten' => 'Xóa sản phẩm', 'ma_slug' => 'xoa_sp', 'nhom' => 'Sản phẩm'],
-            
+
             // Nhóm Catalog
             ['ten' => 'Quản lý danh mục & thương hiệu', 'ma_slug' => 'quan_ly_catalog', 'nhom' => 'Catalog'],
-            
+
             // Nhóm Đơn hàng
             ['ten' => 'Xem đơn hàng', 'ma_slug' => 'xem_don', 'nhom' => 'Đơn hàng'],
             ['ten' => 'Cập nhật đơn hàng', 'ma_slug' => 'cap_nhat_don', 'nhom' => 'Đơn hàng'],
             ['ten' => 'Hủy đơn hàng', 'ma_slug' => 'huy_don', 'nhom' => 'Đơn hàng'],
             ['ten' => 'In hóa đơn', 'ma_slug' => 'in_hoa_don', 'nhom' => 'Đơn hàng'],
-            
+
             // Nhóm Đánh giá
             ['ten' => 'Duyệt đánh giá', 'ma_slug' => 'duyet_danh_gia', 'nhom' => 'Đánh giá'],
-            
+
             // Nhóm Marketing
             ['ten' => 'Quản lý Banner', 'ma_slug' => 'quan_ly_banner', 'nhom' => 'Marketing'],
             ['ten' => 'Quản lý Mã giảm giá', 'ma_slug' => 'ma_giam_gia', 'nhom' => 'Marketing'],
             ['ten' => 'Gửi thông báo quảng bá', 'ma_slug' => 'gui_quang_ba', 'nhom' => 'Marketing'],
-            
+
             // Nhóm Báo cáo
             ['ten' => 'Xem báo cáo doanh thu', 'ma_slug' => 'xem_doanh_thu', 'nhom' => 'Báo cáo'],
-            
+
             // Nhóm Hệ thống
             ['ten' => 'Xem bảng điều khiển', 'ma_slug' => 'xem_dashboard', 'nhom' => 'Hệ thống'],
             ['ten' => 'Xem danh sách người dùng', 'ma_slug' => 'xem_user', 'nhom' => 'Hệ thống'],

@@ -21,6 +21,11 @@ class CheckPermission
     {
         $user = $request->user();
 
+        // Tài khoản master và legacy admin có full access
+        if ($user->is_master || $user->vai_tro === 'quan_tri') {
+            return $next($request);
+        }
+
         if (!$user || !$user->hasPermission($permission)) {
             return ApiResponse::error('Bạn không có quyền thực hiện hành động này.', 403);
         }

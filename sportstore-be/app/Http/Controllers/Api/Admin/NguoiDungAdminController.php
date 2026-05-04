@@ -16,16 +16,24 @@ use Illuminate\Http\Request;
 class NguoiDungAdminController extends Controller
 {
     /**
+     * Kiểm tra quyền - tự động bypass cho tài khoản master và legacy admin (quan_tri)
+     */
+    private function checkPermission(string $permission): bool
+    {
+        $user = auth()->user();
+        return $user->is_master || $user->vai_tro === 'quan_tri' || $user->hasPermission($permission);
+    }
+
+    /**
      * Danh sách người dùng (Admin)
      *
      * @queryParam page int Số trang. Example: 1
      * @queryParam search string Tìm kiếm theo tên, email, sđt. Example: "Nguyen Van A"
-     * @queryParam vai_tro string Lọc theo vai trò (khach_hang, quan_tri).
+     * @queryParam loai string Lọc theo loại: 'khach_hang' (RBAC customer role) hoặc 'nhan_vien' (non-customer roles). Example: khach_hang
      */
     public function index(Request $request): JsonResponse
     {
-        // Chèn kiểm tra quyền (Tùy chọn: có thể dùng middleware ở api.php thay thế)
-        if (!$request->user()->hasPermission('xem_user')) {
+        if (!$this->checkPermission('xem_user')) {
             return ApiResponse::error('Bạn không có quyền xem danh sách người dùng.', 403);
         }
 
@@ -40,8 +48,16 @@ class NguoiDungAdminController extends Controller
             });
         }
 
-        if ($request->has('vai_tro')) {
-            $query->where('vai_tro', $request->vai_tro);
+        // Lọc theo loại: khach_hang hoặc nhan_vien
+        if ($request->has('loai')) {
+            $loai = $request->loai;
+            if ($loai === 'khach_hang') {
+                // Khách hàng: vai_tro='khach_hang' (legacy column)
+                $query->where('vai_tro', 'khach_hang');
+            } elseif ($loai === 'nhan_vien') {
+                // Nhân viên: vai_tro='quan_tri' (legacy column)
+                $query->where('vai_tro', 'quan_tri');
+            }
         }
 
         return ApiResponse::paginate($query->paginate(20), '[Admin] Danh sách người dùng');
@@ -52,7 +68,7 @@ class NguoiDungAdminController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        if (!auth()->user()->hasPermission('xem_user')) {
+        if (!$this->checkPermission('xem_user')) {
             return ApiResponse::error('Bạn không có quyền xem thông tin người dùng.', 403);
         }
 
@@ -67,8 +83,8 @@ class NguoiDungAdminController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
-        if (!auth()->user()->hasPermission('them_user')) {
-            return ApiResponse::error('Bạn không có quyền thêm mới người dùng.', 403);
+        if (!$this->checkPermission('sua_user')) {
+            return ApiResponse::error('Bạn không có quyền tạo người dùng.', 403);
         }
 
         $data = $request->validate([
@@ -86,13 +102,20 @@ class NguoiDungAdminController extends Controller
         ]);
 
         $data['mat_khau'] = bcrypt($data['mat_khau']);
-        $data['xac_thuc_email_luc'] = now(); // Mặc định xác thực luôn khi admin tạo
+        $data['xac_thuc_email_luc'] = now();
 
         $user = NguoiDung::create($data);
 
-        if (isset($data['vai_tro_ids'])) {
+        if (isset($data['vai_tro_ids']) && count($data['vai_tro_ids']) > 0) {
             $user->cacVaiTro()->sync($data['vai_tro_ids']);
+        } elseif ($data['vai_tro'] === 'quan_tri') {
+            $managerRole = \App\Models\VaiTro::where('ma_slug', 'manager')->first();
+            if ($managerRole) {
+                $user->cacVaiTro()->syncWithoutDetaching([$managerRole->id]);
+            }
         }
+
+        $user->forgetPermissionsCache();
 
         return ApiResponse::success($user->load('cacVaiTro'), '[Admin] Thêm mới người dùng thành công', 201);
     }
@@ -105,14 +128,24 @@ class NguoiDungAdminController extends Controller
      */
     public function update(Request $request, int $id): JsonResponse
     {
-        if (!auth()->user()->hasPermission('sua_user')) {
+        if (!$this->checkPermission('sua_user')) {
             return ApiResponse::error('Bạn không có quyền chỉnh sửa người dùng.', 403);
         }
 
-        $user = NguoiDung::findOrFail($id);
-        
+        $targetUser = NguoiDung::findOrFail($id);
+
+        // Ngăn chặn tự sửa chính mình
+        if ($targetUser->id === auth()->id()) {
+            return ApiResponse::error('Bạn không thể tự thay đổi quyền hạn hoặc trạng thái tài khoản của chính mình.', 403);
+        }
+
+        // Ngăn chặn sửa tài khoản master
+        if ($targetUser->is_master) {
+            return ApiResponse::error('Không thể chỉnh sửa tài khoản Master của hệ thống.', 403);
+        }
+
         $data = $request->validate([
-            'vai_tro'      => 'sometimes|in:khach_hang,quan_tri', // Backward compatibility
+            'vai_tro'      => 'sometimes|in:khach_hang,quan_tri',
             'trang_thai'   => 'sometimes|boolean',
             'vai_tro_ids'  => 'sometimes|array',
             'vai_tro_ids.*'=> 'exists:vai_tro,id'
@@ -122,13 +155,13 @@ class NguoiDungAdminController extends Controller
         ]);
 
         if (isset($data['vai_tro_ids'])) {
-            // Chặn việc tự gỡ quyền admin của chính mình nếu là Super Admin duy nhất (tùy chọn)
-            $user->cacVaiTro()->sync($data['vai_tro_ids']);
+            $targetUser->cacVaiTro()->sync($data['vai_tro_ids']);
+            $targetUser->forgetPermissionsCache();
         }
 
-        $user->update($data);
+        $targetUser->update($data);
 
-        return ApiResponse::success($user->load('cacVaiTro'), '[Admin] Cập nhật người dùng thành công');
+        return ApiResponse::success($targetUser->load('cacVaiTro'), '[Admin] Cập nhật người dùng thành công');
     }
 
     /**
@@ -136,12 +169,12 @@ class NguoiDungAdminController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        if (!auth()->user()->hasPermission('go_bo_user')) {
+        if (!$this->checkPermission('phan_quyen')) {
             return ApiResponse::error('Bạn không có quyền xóa người dùng.', 403);
         }
 
         $user = NguoiDung::findOrFail($id);
-        
+
         // Ngăn chặn xóa tài khoản master
         if ($user->is_master) {
             return ApiResponse::error('Không thể xóa tài khoản Master của hệ thống', 403);

@@ -6,6 +6,8 @@ use App\Models\VaiTro;
 use App\Models\Quyen;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Event;
+use App\Events\UserRolesUpdated;
 
 trait HasPermissions
 {
@@ -18,16 +20,22 @@ trait HasPermissions
     }
 
     /**
+     * Xóa cache quyền của user
+     */
+    public function forgetPermissionsCache(): void
+    {
+        Cache::forget("user_{$this->id}_permissions");
+    }
+
+    /**
      * Kiểm tra người dùng có một quyền cụ thể không
      */
     public function hasPermission(string $permissionSlug): bool
     {
-        // Tài khoản Master (is_master = 1) có mọi quyền mà không cần check DB
         if ($this->is_master) {
             return true;
         }
 
-        // Cache permissions list for the current user during the request
         $permissions = Cache::remember("user_{$this->id}_permissions", 3600, function () {
             return $this->cacVaiTro()
                 ->with('quyen')
@@ -47,12 +55,11 @@ trait HasPermissions
      */
     public function hasRole(string $roleSlug): bool
     {
-        return $this->cacVaiTro->contains('ma_slug', $roleSlug);
+        return $this->cacVaiTro()->where('ma_slug', $roleSlug)->exists();
     }
 
     /**
      * Kiểm tra có phải là Admin (Super Admin) hay không
-     * Đây là hàm helper để tương thích với logic cũ hoặc check nhanh
      */
     public function isSuperAdmin(): bool
     {

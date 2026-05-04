@@ -5,10 +5,12 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\VaiTro;
 use App\Models\Quyen;
+use App\Models\NguoiDung;
 use Illuminate\Http\Request;
 use App\Http\Helpers\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
 class RoleAdminController extends Controller
@@ -18,10 +20,6 @@ class RoleAdminController extends Controller
      */
     public function index(): JsonResponse
     {
-        if (!auth()->user()->hasPermission('phan_quyen')) {
-            return ApiResponse::error('Bạn không có quyền quản lý vai trò.', 403);
-        }
-
         $roles = VaiTro::with('quyen')->get();
         return ApiResponse::success($roles, 'Lấy danh sách vai trò thành công');
     }
@@ -126,6 +124,12 @@ class RoleAdminController extends Controller
 
             if (isset($data['quyen_ids'])) {
                 $role->quyen()->sync($data['quyen_ids']);
+
+                // Xóa cache quyền của tất cả user có vai trò này
+                $userIds = $role->nguoiDung()->pluck('nguoi_dung.id');
+                foreach ($userIds as $userId) {
+                    Cache::forget("user_{$userId}_permissions");
+                }
             }
 
             DB::commit();
