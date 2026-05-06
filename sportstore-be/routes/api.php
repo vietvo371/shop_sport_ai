@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Broadcast;
 
 // ─────────────────────────────────────────────────────────────
 // PUBLIC ROUTES — không cần đăng nhập
@@ -53,6 +54,9 @@ Route::get('size-charts',       [\App\Http\Controllers\Api\BangSizeController::c
 // AUTHENTICATED ROUTES — cần Bearer token
 // ─────────────────────────────────────────────────────────────
 Route::middleware('auth:sanctum')->group(function () {
+
+    // Broadcasting auth
+    Broadcast::routes();
 
     // Auth
     Route::prefix('auth')->group(function () {

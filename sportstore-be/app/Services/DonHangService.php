@@ -10,6 +10,8 @@ use App\Models\LichSuTrangThaiDon;
 use App\Models\MaGiamGia;
 use App\Models\NguoiDung;
 use App\Models\SanPham;
+use App\Events\NewOrderReceived;
+use App\Events\OrderStatusUpdated;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
@@ -143,7 +145,10 @@ class DonHangService
             // 7. Xóa giỏ hàng
             $cart->items()->delete();
 
-            // 8. Notification
+            // 8. Broadcast: đơn hàng mới cho admin
+            event(new NewOrderReceived($donHang));
+
+            // 9. Notification
             $isOnlinePayment = in_array($data['phuong_thuc_tt'], ['vnpay', 'momo']);
             $tieuDe = $isOnlinePayment ? 'Đơn hàng đang chờ thanh toán ⏳' : 'Đặt hàng thành công 🛍️';
             $noiDung = $isOnlinePayment
@@ -279,7 +284,10 @@ class DonHangService
                 'ghi_chu' => 'Đơn hàng được tạo từ Mua ngay.',
             ]);
 
-            // 7. Notification
+            // 7. Broadcast: đơn hàng mới cho admin
+            event(new NewOrderReceived($donHang));
+
+            // 8. Notification
             $isOnlinePayment = in_array($data['phuong_thuc_tt'], ['vnpay', 'momo']);
             $tieuDe = $isOnlinePayment ? 'Đơn hàng đang chờ thanh toán ⏳' : 'Đặt hàng thành công 🛍️';
             $noiDung = $isOnlinePayment
@@ -374,6 +382,9 @@ class DonHangService
             }
 
             $donHang->update(['trang_thai' => $trangThai]);
+
+            // Broadcast trạng thái mới cho user
+            event(new OrderStatusUpdated($donHang));
 
             LichSuTrangThaiDon::create([
                 'don_hang_id' => $donHang->id,

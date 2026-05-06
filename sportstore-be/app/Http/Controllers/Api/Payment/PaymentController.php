@@ -9,6 +9,7 @@ use App\Models\ThanhToan;
 use App\Services\Payment\VNPayService;
 use App\Services\Payment\MoMoService;
 use App\Services\NotificationService;
+use App\Events\OrderPaid;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -175,6 +176,10 @@ class PaymentController extends Controller
 
                 // Gửi thông báo Email + Web hook cho Khách hàng
                 $nguoiDung = $donHang->nguoiDung;
+
+                // Broadcast realtime: thanh toán thành công
+                event(new OrderPaid($donHang));
+
                 if ($nguoiDung) {
                     $tenPhuongThuc = strtoupper($phuongThuc);
                     $this->notificationService->send(

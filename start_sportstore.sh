@@ -36,8 +36,17 @@ tell application "Terminal"
 end tell
 EOF
 
-echo "✅ Đã mở 3 Terminal cho Backend, Frontend và AI Service!"
+# 4. Mở tab mới chạy Laravel Reverb (WebSocket - Port 8080)
+osascript <<EOF
+tell application "Terminal"
+    activate
+    do script "cd '$ROOT_DIR/sportstore-be' && echo '🔌 Khởi động Laravel Reverb WebSocket Server...' && php artisan reverb:start --host=0.0.0.0"
+end tell
+EOF
+
+echo "✅ Đã mở 4 Terminal cho Backend, Queue, Frontend, AI Service và Reverb!"
 echo "Các port tương ứng:"
 echo " - Frontend: http://localhost:3000"
 echo " - Backend:  http://localhost:8000"
 echo " - AI API:   http://localhost:8001"
+echo " - Reverb:   ws://localhost:8080"

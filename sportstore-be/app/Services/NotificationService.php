@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Mail\ThongBaoMail;
 use App\Models\NguoiDung;
 use App\Models\ThongBao;
+use App\Events\NewNotification;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Log;
 
@@ -47,6 +48,9 @@ class NotificationService
             'noi_dung'      => $noiDung,
             'du_lieu_them'  => $duLieuThem,
         ]);
+
+        // 1.5 Broadcast realtime
+        event(new NewNotification($thongBao));
 
         // 2. Gửi email (nếu được bật)
         if ($guiEmail) {
