@@ -7,6 +7,7 @@ use App\Http\Helpers\ApiResponse;
 use App\Models\NguoiDung;
 use App\Models\ThongBao;
 use App\Services\PromotionTargetingService;
+use App\Events\NewNotification;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -104,6 +105,16 @@ class NotificationAdminController extends Controller
 
                 foreach (array_chunk($data, 500) as $chunk) {
                     ThongBao::insert($chunk);
+                }
+
+                // Broadcast realtime cho từng user
+                $insertedNotifications = ThongBao::whereIn('nguoi_dung_id', $userIds)
+                    ->where('tieu_de', $validated['tieu_de'])
+                    ->where('created_at', $now)
+                    ->get();
+
+                foreach ($insertedNotifications as $thongBao) {
+                    event(new NewNotification($thongBao));
                 }
             });
 

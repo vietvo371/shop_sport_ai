@@ -7,5 +7,5 @@ Broadcast::channel('user.{id}', function ($user, $id) {
 });
 
 Broadcast::channel('admin', function ($user) {
-    return $user->vai_tro === 'admin' || $user->is_master;
+    return $user->vai_tro === 'quan_tri' || $user->is_master;
 });

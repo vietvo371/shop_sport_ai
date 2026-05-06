@@ -148,6 +148,22 @@ class DonHangService
             // 8. Broadcast: đơn hàng mới cho admin
             event(new NewOrderReceived($donHang));
 
+            // 8.5 Notification DB cho nhân viên có quyền xem đơn
+            $adminUsers = NguoiDung::where('vai_tro', 'quan_tri')->get()
+                ->filter(fn($u) => $u->is_master || $u->hasPermission('xem_don'));
+            foreach ($adminUsers as $admin) {
+                $this->notificationService->send(
+                    user: $admin,
+                    loai: 'don_hang',
+                    tieuDe: "Đơn hàng mới #{$donHang->ma_don_hang}",
+                    noiDung: "Khách hàng {$user->ho_va_ten} vừa đặt đơn hàng mới trị giá " . number_format($donHang->tong_tien) . "đ.",
+                    duLieuThem: ['link' => '/admin/orders'],
+                    hanhDongUrl: config('app.frontend_url') . '/admin/orders',
+                    hanhDongText: 'Xem đơn hàng',
+                    guiEmail: false,
+                );
+            }
+
             // 9. Notification
             $isOnlinePayment = in_array($data['phuong_thuc_tt'], ['vnpay', 'momo']);
             $tieuDe = $isOnlinePayment ? 'Đơn hàng đang chờ thanh toán ⏳' : 'Đặt hàng thành công 🛍️';
@@ -286,6 +302,22 @@ class DonHangService
 
             // 7. Broadcast: đơn hàng mới cho admin
             event(new NewOrderReceived($donHang));
+
+            // 7.5 Notification DB cho nhân viên có quyền xem đơn
+            $adminUsers = NguoiDung::where('vai_tro', 'quan_tri')->get()
+                ->filter(fn($u) => $u->is_master || $u->hasPermission('xem_don'));
+            foreach ($adminUsers as $admin) {
+                $this->notificationService->send(
+                    user: $admin,
+                    loai: 'don_hang',
+                    tieuDe: "Đơn hàng mới #{$donHang->ma_don_hang}",
+                    noiDung: "Khách hàng {$user->ho_va_ten} vừa đặt đơn hàng mới trị giá " . number_format($donHang->tong_tien) . "đ.",
+                    duLieuThem: ['link' => '/admin/orders'],
+                    hanhDongUrl: config('app.frontend_url') . '/admin/orders',
+                    hanhDongText: 'Xem đơn hàng',
+                    guiEmail: false,
+                );
+            }
 
             // 8. Notification
             $isOnlinePayment = in_array($data['phuong_thuc_tt'], ['vnpay', 'momo']);
