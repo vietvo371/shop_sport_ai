@@ -20,6 +20,14 @@ tell application "Terminal"
 end tell
 EOF
 
+# Chạy Schedule Worker (auto-cancel đơn chưa thanh toán, etc.)
+osascript <<EOF
+tell application "Terminal"
+    activate
+    do script "cd '$ROOT_DIR/sportstore-be' && echo '⏰ Khởi động Schedule Worker...' && php artisan schedule:work"
+end tell
+EOF
+
 # 2. Mở tab mới chạy Frontend (NextJS - Port 3000)
 osascript <<EOF
 tell application "Terminal"
@@ -44,7 +52,7 @@ tell application "Terminal"
 end tell
 EOF
 
-echo "✅ Đã mở 4 Terminal cho Backend, Queue, Frontend, AI Service và Reverb!"
+echo "✅ Đã mở 5 Terminal cho Backend, Queue, Schedule, Frontend, AI Service và Reverb!"
 echo "Các port tương ứng:"
 echo " - Frontend: http://localhost:3000"
 echo " - Backend:  http://localhost:8000"

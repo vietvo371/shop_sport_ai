@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs cat)",
+      "Bash(php -r \"echo PHP_VERSION;\")",
+      "Bash(php artisan *)"
+    ]
+  }
+}
