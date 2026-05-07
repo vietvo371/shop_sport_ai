@@ -4,7 +4,9 @@
       "Bash(xargs cat)",
       "Bash(php -r \"echo PHP_VERSION;\")",
       "Bash(php artisan *)",
-      "Bash(xargs ls)"
+      "Bash(xargs ls)",
+      "Bash(cat /Volumes/MAC_OPTION/DATN/CivicTwinAI/composer.json 2>/dev/null | grep -E '\"php\"|\"laravel/framework\"|\"laravel/reverb\"')",
+      "Read(//Volumes/MAC_OPTION/DATN/CivicTwinAI/**)"
     ]
   }
 }

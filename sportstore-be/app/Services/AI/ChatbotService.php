@@ -98,7 +98,7 @@ class ChatbotService
         $productCtx  = $this->searchRelevantProducts($noiDung, $intent, $sizeAdvice, $brandId);
 
         // 8. Xây dựng Prompt và gọi AI
-        $systemPrompt = $this->buildSystemPrompt($sizeAdvice, $this->frontendUrl);
+        $systemPrompt = $this->buildSystemPrompt($sizeAdvice);
         $messages     = $this->buildMessages($lichSu, $systemPrompt, $productCtx);
 
         try {
@@ -305,12 +305,22 @@ class ChatbotService
             $res['weight'] = (int)$m[1];
         }
 
-        // Độ dài chân: dài 26cm, 260mm, chân 26
+        // Độ dài chân: dài 26cm, 260mm, chân 26, hoặc số đơn lẻ 230-310 (mm)
         if (preg_match('/(?:chân|dài)[^\d]*(\d{2,3})(?:\s*(?:cm|mm))?/i', $query, $m)) {
             $val = (int)$m[1];
             $res['foot'] = ($val < 100) ? $val * 10 : $val;
         } elseif (preg_match('/\b(\d{2,3})\s*mm\b/i', $query, $m)) {
             $res['foot'] = (int)$m[1];
+        } elseif (preg_match('/\b(\d{2,3})\s*cm\b/i', $query, $m)) {
+            $val = (int)$m[1];
+            $res['foot'] = ($val < 100) ? $val * 10 : $val;
+        } elseif (!$res['height'] && !$res['weight'] && preg_match('/^\s*(\d{2,3})\s*$/', $query, $m)) {
+            $val = (int)$m[1];
+            if ($val >= 200 && $val <= 320) {
+                $res['foot'] = $val;
+            } elseif ($val >= 20 && $val <= 32) {
+                $res['foot'] = $val * 10;
+            }
         }
 
         return $res;
@@ -396,12 +406,10 @@ class ChatbotService
 
         $qb = SanPham::where('trang_thai', true);
 
-        // Lọc theo thương hiệu nếu có
         if ($brandId) {
             $qb->where('thuong_hieu_id', $brandId);
         }
 
-        // Lọc theo loại sản phẩm dựa trên intent
         if ($intent === self::INTENT_SHOES) {
             $qb->where(function ($q) {
                 $q->where('ten_san_pham', 'like', '%giày%')
@@ -416,10 +424,33 @@ class ChatbotService
             });
         }
 
-        // Lọc theo size còn hàng
+        // Lọc thêm theo từ khóa phụ trong query (vd: "bóng đá", "chạy bộ", "pickleball")
+        $categoryKeywords = ['bóng đá', 'bóng rổ', 'chạy bộ', 'tennis', 'pickleball', 'cầu lông', 'bơi', 'gym', 'tập gym', 'leo núi', 'đá bóng', 'futsal'];
+        $matchedCategory = null;
+        $qLower = mb_strtolower($query);
+        foreach ($categoryKeywords as $ck) {
+            if (mb_stripos($qLower, $ck) !== false) {
+                $matchedCategory = $ck;
+                break;
+            }
+        }
+        if ($matchedCategory) {
+            $qb->where(function ($q) use ($matchedCategory) {
+                $q->where('ten_san_pham', 'like', "%{$matchedCategory}%")
+                  ->orWhereHas('danhMuc', fn ($dq) => $dq->where('ten', 'like', "%{$matchedCategory}%"));
+            });
+        }
+
+        // Lọc theo size còn hàng (với fallback nếu size cụ thể không match)
         if (!empty($sizeAdvice)) {
             $sizes = collect($sizeAdvice)->pluck('size')->toArray();
-            $qb->whereHas('bienThe', fn ($q) => $q->whereIn('kich_co', $sizes)->where('ton_kho', '>', 0));
+            $qbWithSize = clone $qb;
+            $qbWithSize->whereHas('bienThe', fn ($q) => $q->whereIn('kich_co', $sizes)->where('ton_kho', '>', 0));
+            if ($qbWithSize->exists()) {
+                $qb = $qbWithSize;
+            } else {
+                $qb->whereHas('bienThe', fn ($q) => $q->where('ton_kho', '>', 0));
+            }
         } else {
             $qb->whereHas('bienThe', fn ($q) => $q->where('ton_kho', '>', 0));
         }
@@ -481,12 +512,14 @@ QUY TẮC CẦN TUÂN THỦ NGHIÊM NGẶT:
 1. **Chào hỏi**: Vui vẻ, hỏi thăm khách hàng. KHÔNG đề cập sản phẩm nếu khách chỉ chào.
 2. **Tư vấn size**: Sử dụng ngay "THÔNG TIN SIZE TỪ HỆ THỐNG" kèm theo. Đây là dữ liệu chuẩn, hãy cung cấp cho khách một cách chuyên nghiệp.
 3. **Đề xuất sản phẩm (ĐẶC BIỆT QUAN TRỌNG)**:
-   - **CẤM TỰ BỊA TÊN SẢN PHẨM.**
-   - Bạn chỉ được quyền sử dụng danh sách sản phẩm ĐÃ CÓ (còn hàng) được cung cấp trong context dưới dây.
-   - Luôn hiển thị đầy đủ: Ảnh sản phẩm, Tên sản phẩm kèm Link, và Giá.
+   - **TUYỆT ĐỐI CẤM TỰ BỊA TÊN SẢN PHẨM, GIÁ, HOẶC LINK.**
+   - Nếu phần "SẢN PHẨM ĐANG CÓ" bên dưới ghi "(Hiện không có sản phẩm phù hợp...)" → hãy nói rằng shop hiện chưa có sản phẩm phù hợp và gợi ý khách xem thêm tại website.
+   - Chỉ được giới thiệu SẢN PHẨM CÓ TRONG DANH SÁCH bên dưới. Giữ nguyên 100% tên, giá, link — KHÔNG sửa đổi.
+   - Hiển thị đầy đủ: Ảnh, Tên kèm Link, và Giá.
    - Trình bày dạng danh sách đẹp mắt.
-4. **Link sản phẩm**: Giữ nguyên CHÍNH XÁC link Markdown được cung cấp trong context. KHÔNG được tự thay đổi domain hay đường dẫn của link.
-5. **Ngôn ngữ**: Tiếng Việt, thân thiện nhưng chuyên nghiệp. Sử dụng các emoji phù hợp.
+4. **Link sản phẩm**: Giữ nguyên CHÍNH XÁC link Markdown được cung cấp. KHÔNG thay đổi domain hay đường dẫn.
+5. **Ngôn ngữ**: Tiếng Việt, thân thiện nhưng chuyên nghiệp. Sử dụng emoji phù hợp.
+6. **Không biết / không tìm thấy**: Nếu khách hỏi thứ bạn không rõ → hỏi lại cho rõ, KHÔNG đoán mò.
 {$adviceSection}
 PROMPT;
     }

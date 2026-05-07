@@ -48,14 +48,19 @@ class ThuongHieuAdminController extends Controller
         }
 
         $data = $request->validate([
-            'ten' => 'required|string|max:100', 
-            'mo_ta' => 'nullable|string'
+            'ten' => 'required|string|max:100',
+            'mo_ta' => 'nullable|string',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
         ]);
-        
+
         $data['duong_dan'] = Str::slug($data['ten']);
-        
+
         if (ThuongHieu::where('duong_dan', $data['duong_dan'])->exists()) {
             return ApiResponse::error('Tên thương hiệu này tạo ra đường dẫn đã tồn tại, vui lòng chọn tên khác.', 422);
+        }
+
+        if ($request->hasFile('logo')) {
+            $data['logo'] = $request->file('logo')->store('brands', 'public');
         }
 
         return ApiResponse::created(ThuongHieu::create($data), '[Admin] Đã tạo thương hiệu');
@@ -69,9 +74,10 @@ class ThuongHieuAdminController extends Controller
 
         $b = ThuongHieu::findOrFail($id);
         $data = $request->validate([
-            'ten' => 'sometimes|string|max:100', 
-            'mo_ta' => 'nullable|string', 
-            'trang_thai' => 'boolean'
+            'ten' => 'sometimes|string|max:100',
+            'mo_ta' => 'nullable|string',
+            'trang_thai' => 'boolean',
+            'logo' => 'nullable|image|mimes:jpg,jpeg,png,webp,svg|max:2048',
         ]);
 
         if (isset($data['ten']) && $data['ten'] !== $b->ten) {
@@ -79,6 +85,13 @@ class ThuongHieuAdminController extends Controller
             if (ThuongHieu::where('duong_dan', $data['duong_dan'])->where('id', '!=', $id)->exists()) {
                 return ApiResponse::error('Tên thương hiệu này tạo ra đường dẫn đã tồn tại, vui lòng chọn tên khác.', 422);
             }
+        }
+
+        if ($request->hasFile('logo')) {
+            if ($b->logo) {
+                \Illuminate\Support\Facades\Storage::disk('public')->delete($b->logo);
+            }
+            $data['logo'] = $request->file('logo')->store('brands', 'public');
         }
 
         $b->update($data);
