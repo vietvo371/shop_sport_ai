@@ -94,8 +94,17 @@ class ChatbotService
 
         // 7. Đủ thông tin → Tra bảng size và tìm sản phẩm
         $brandId     = $this->detectBrand($noiDung);
+        if (!$brandId) {
+            foreach ($lichSu->where('vai_tro', 'nguoi_dung') as $msg) {
+                $brandId = $this->detectBrand($msg->noi_dung);
+                if ($brandId) break;
+            }
+        }
         $sizeAdvice  = $this->getSizeAdvice($measurements, $brandId, $intent);
-        $productCtx  = $this->searchRelevantProducts($noiDung, $intent, $sizeAdvice, $brandId);
+
+        // Tổng hợp query từ lịch sử user để search sản phẩm chính xác
+        $searchQuery = $lichSu->where('vai_tro', 'nguoi_dung')->pluck('noi_dung')->join(' ');
+        $productCtx  = $this->searchRelevantProducts($searchQuery, $intent, $sizeAdvice, $brandId);
 
         // 8. Xây dựng Prompt và gọi AI
         $systemPrompt = $this->buildSystemPrompt($sizeAdvice);
@@ -425,12 +434,13 @@ class ChatbotService
         }
 
         // Lọc thêm theo từ khóa phụ trong query (vd: "bóng đá", "chạy bộ", "pickleball")
-        $categoryKeywords = ['bóng đá', 'bóng rổ', 'chạy bộ', 'tennis', 'pickleball', 'cầu lông', 'bơi', 'gym', 'tập gym', 'leo núi', 'đá bóng', 'futsal'];
+        $categoryKeywords = ['bóng đá', 'đá banh', 'bóng rổ', 'chạy bộ', 'tennis', 'pickleball', 'cầu lông', 'bơi', 'gym', 'tập gym', 'leo núi', 'đá bóng', 'futsal', 'bóng chuyền', 'cầu lông'];
+        $categoryMap = ['đá banh' => 'bóng đá', 'đá bóng' => 'bóng đá'];
         $matchedCategory = null;
         $qLower = mb_strtolower($query);
         foreach ($categoryKeywords as $ck) {
             if (mb_stripos($qLower, $ck) !== false) {
-                $matchedCategory = $ck;
+                $matchedCategory = $categoryMap[$ck] ?? $ck;
                 break;
             }
         }
@@ -455,12 +465,12 @@ class ChatbotService
             $qb->whereHas('bienThe', fn ($q) => $q->where('ton_kho', '>', 0));
         }
 
-        // Tìm theo từ khóa nếu không có size advice
-        if (empty($sizeAdvice)) {
+        // Tìm theo từ khóa nếu không có size advice và không đã lọc brand/category
+        if (empty($sizeAdvice) && !$brandId && !$matchedCategory) {
             $stopWords = ['tôi', 'mình', 'bạn', 'shop', 'cho', 'và', 'hoặc', 'với', 'có', 'thể', 'không', 'được', 'gì', 'nào', 'là', 'thì', 'của', 'trong', 'hay', 'muốn', 'cần', 'mua'];
             $keywords  = array_filter(
                 explode(' ', mb_strtolower($query)),
-                fn ($w) => mb_strlen($w) > 2 && !in_array($w, $stopWords)
+                fn ($w) => mb_strlen($w) > 2 && !in_array($w, $stopWords) && !preg_match('/^\d+(?:mm|cm|kg)?$/', $w)
             );
 
             if (!empty($keywords)) {
